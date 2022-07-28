@@ -50,8 +50,8 @@ const EditQuizDetails = () => {
             onChange={handleChange}
           />
           <FormSelectItem
-            name={"quizType"}
-            labelText="quiz type"
+            name={"privacy"}
+            labelText="Privacy"
             value={formData.privacy}
             onChange={handleChange}
             options={formData.privacyOptions}
@@ -62,6 +62,7 @@ const EditQuizDetails = () => {
             value={formData.quizType}
             onChange={handleChange}
             options={formData.quizTypeOptions}
+            disabled={true}
           />
         </form>
       </div>

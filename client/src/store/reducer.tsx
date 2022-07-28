@@ -114,6 +114,22 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       editQuizDetails: action.payload,
     };
   }
+  if (action.type === ActionType.DELETE_QUIZ_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if(action.type === ActionType.DELETE_QUIZ_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      manageSingleQuiz: false,
+      singleQuizDetails: null,
+      singleQuizQuestions: [],
+      numOfQuestions: 0,
+    }
+  }
   if(action.type === ActionType.SET_QUESTION_TYPE) {
     return {
       ...state,

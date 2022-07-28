@@ -5,13 +5,14 @@ import { SingleQuiz as SingleQuizInterface } from "../store/@types/context";
 import useAppContext from "../store/appContext";
 import QuizActivities from "./QuizActivities";
 import AllQuestions from "./AllQuestions";
+import Loading from "./Loading";
 
 interface ViewSingleQuizProps {
   quiz: SingleQuizInterface;
 }
 
 const ViewSingleQuiz: React.FC<ViewSingleQuizProps> = ({ quiz }) => {
-  const { singleQuizDetails, endManageQuiz } = useAppContext();
+  const { singleQuizDetails,isLoading, endManageQuiz } = useAppContext();
   return (
     <Wrapper>
       <span className="cancel-btn" onClick={() => endManageQuiz()}>

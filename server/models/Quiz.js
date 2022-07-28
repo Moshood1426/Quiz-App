@@ -61,7 +61,7 @@ const QuizSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-   participants: [TestParticipantsSchema],
+    participants: [TestParticipantsSchema],
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",
@@ -72,5 +72,10 @@ const QuizSchema = new mongoose.Schema(
 );
 
 QuizSchema.index({ quizCode: 1 }, { unique: true });
+
+QuizSchema.pre("remove", async function () {
+  await this.model("question").deleteMany({ forQuiz: this._id });
+  await this.model("activities").deleteMany({ for: this._id });
+});
 
 module.exports = mongoose.model("quiz", QuizSchema);

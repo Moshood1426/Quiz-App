@@ -17,7 +17,7 @@ const AllQuiz: React.FC = () => {
     </Wrapper>;
   }
 
-  if (quiz.length < 1) {
+  if (quiz.length < 1 && !isLoading) {
     return (
       <Wrapper>
         <h4>No Jobs To Show</h4>

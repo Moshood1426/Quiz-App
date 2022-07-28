@@ -1,6 +1,7 @@
 import React from "react";
 import Wrapper from "../assets/wrappers/AllQuestions";
 import useAppContext from "../store/appContext";
+import Loading from "./Loading";
 import SingleQuestion from "./SingleQuestions";
 
 interface AllQuestionsProps {
@@ -13,6 +14,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({ startAddingQuestion }) => {
     numOfQuestions,
     editCurrentQuiz,
     editQuizDetails,
+    isLoading
   } = useAppContext();
 
   const totalPoints = singleQuizQuestions.reduce((acc, item) => {
@@ -46,7 +48,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({ startAddingQuestion }) => {
         )}
       </div>
       <div className="questions-container">
-        {quizDetails.length < 1 ? (
+        {isLoading ? <Loading /> : quizDetails.length < 1 ? (
           <p className="no-questions">
             No questions set for this quiz. Click edit quiz to start setting
             questions.

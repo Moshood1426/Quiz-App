@@ -45,6 +45,7 @@ export interface ContextType extends InitialState {
   setQuestionType: (
     type: "true-false" | "multiple-choice" | "fill-in-gap" | ""
   ) => void;
+  deleteQuiz: (quizId: object) => Promise<void>;
 }
 
 export interface ContextProps {

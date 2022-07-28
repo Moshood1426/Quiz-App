@@ -223,6 +223,19 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     localStorage.setItem("edit_quiz", JSON.stringify({ details, questions }));
   };
 
+  const deleteQuiz = async (quizId: object) => {
+    dispatch({type: ActionType.DELETE_QUIZ_BEGIN})
+
+    try {
+      await authFetch.delete(`/quiz/${quizId}`)
+      dispatch({type: ActionType.DELETE_QUIZ_SUCCESS})
+    } catch (error) {
+      console.log(error)
+      //logoutUser()
+    }
+
+  }
+
   const setQuestionType = (
     type: "true-false" | "multiple-choice" | "fill-in-gap" | ""
   ) => {
@@ -242,6 +255,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         endManageQuiz,
         editQuiz,
         setQuestionType,
+        deleteQuiz
       }}
     >
       {children}

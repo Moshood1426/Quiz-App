@@ -6,13 +6,13 @@ import AllQuestions from "../components/AllQuestions";
 import useAppContext from "../store/appContext";
 
 const EditQuiz = () => {
-  const [addQuestion, setAddQuestion] = useState(false)
-  
-  const startAddingQuestions = (arg: boolean) => {
-    setAddQuestion(arg)
-  }
-
+  const [addQuestion, setAddQuestion] = useState(false);
   const navigate = useNavigate();
+
+  const startAddingQuestions = (arg: boolean) => {
+    setAddQuestion(arg);
+  };
+
   useEffect(() => {
     document.body.style.overflow = "auto";
   }, []);
@@ -27,6 +27,10 @@ const EditQuiz = () => {
       console.log("cancelled");
     }
   };
+
+  const saveEdit = () => {
+    
+  }
 
   return (
     <Wrapper>
@@ -47,9 +51,11 @@ const EditQuiz = () => {
       </div>
       <div className="edit-quiz-content">
         <EditQuizDetails />
-        <AllQuestions startAddingQuestion={startAddingQuestions}/>
+        <AllQuestions startAddingQuestion={startAddingQuestions} />
       </div>
-      {addQuestion && <AddQuestionsModal startAddingQuestion={startAddingQuestions}/>}
+      {addQuestion && (
+        <AddQuestionsModal startAddingQuestion={startAddingQuestions} />
+      )}
     </Wrapper>
   );
 };

@@ -8,6 +8,7 @@ interface FormSelectItemProps {
   dontLabel?: boolean;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  disabled?: boolean;
 }
 
 const FormSelectItem: React.FC<FormSelectItemProps> = ({
@@ -17,6 +18,7 @@ const FormSelectItem: React.FC<FormSelectItemProps> = ({
   options,
   value,
   dontLabel,
+  disabled
 }) => {
   return (
     <Wrapper>
@@ -29,6 +31,7 @@ const FormSelectItem: React.FC<FormSelectItemProps> = ({
         className="formInput"
         onChange={onChange}
         value={value}
+        disabled={disabled}
       >
         {options.map((item, index) => {
           return (

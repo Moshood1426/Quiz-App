@@ -34,9 +34,11 @@ const ManageQuiz = () => {
       privacy: formData.privacy,
       type: isActive,
     };
-    getAllQuiz(reqObj);
+    if (!manageSingleQuiz) {
+      getAllQuiz(reqObj);
+    }
     //eslint-disable-next-line
-  }, [isActive, formData]);
+  }, [isActive, formData, manageSingleQuiz]);
 
   useEffect(() => {
     if (manageSingleQuiz) {
@@ -59,8 +61,8 @@ const ManageQuiz = () => {
   };
 
   const clearFilters = () => {
-    setFormData(initialState)
-  }
+    setFormData(initialState);
+  };
 
   return (
     <Wrapper>
@@ -86,7 +88,9 @@ const ManageQuiz = () => {
             Quick
           </li>
         </ul>
-        <span className="manage-quiz-filter-btn" onClick={clearFilters}>❌ filters</span>
+        <span className="manage-quiz-filter-btn" onClick={clearFilters}>
+          ❌ filters
+        </span>
       </div>
       <div className="manage-quiz-filter">
         <FormItem

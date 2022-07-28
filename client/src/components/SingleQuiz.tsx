@@ -14,14 +14,24 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
   const navigate = useNavigate();
   const {
     startManageQuiz,
-    editQuiz: editCurrentQuiz,
+    editQuiz: editSingleQuiz,
+    deleteQuiz,
     singleQuizDetails,
     singleQuizQuestions,
   } = useAppContext();
 
   const editQuiz = () => {
-    editCurrentQuiz(singleQuizDetails!, singleQuizQuestions);
+    editSingleQuiz(singleQuizDetails!, singleQuizQuestions);
     navigate(`/edit-quiz/${singleQuizDetails?._id}`);
+  };
+
+  const deleteSingleQuiz = () => {
+    const alert = window.confirm(
+      "Quiz will be deleted alongside all its questions"
+    );
+    if (alert) {
+      if(singleQuizDetails) deleteQuiz(singleQuizDetails._id)
+    }
   };
 
   return (
@@ -88,7 +98,12 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
                 <button className="btn single-quiz-edit-btn" onClick={editQuiz}>
                   ✍Edit
                 </button>
-                <button className="btn single-quiz-delete-btn">🗑Delete</button>
+                <button
+                  className="btn single-quiz-delete-btn"
+                  onClick={deleteSingleQuiz}
+                >
+                  🗑Delete
+                </button>
               </>
             ) : (
               <button

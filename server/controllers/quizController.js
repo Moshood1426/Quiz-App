@@ -80,4 +80,24 @@ const getSingleQuiz = async (req, res) => {
   res.status(StatusCodes.OK).json({ quiz });
 };
 
-module.exports = { createQuiz, getAllQuiz, getSingleQuiz };
+const deleteSingleQuiz = async (req, res) => {
+  const { quizId } = req.params;
+
+  if (!quizId) {
+    throw new BadRequestError("Kindly input a valid quizId");
+  }
+
+  const quiz = await Quiz.findOne({ _id: quizId });
+  if (!quiz) {
+    throw new NotFoundError("Kindly input a valid quizId");
+  }
+
+  await quiz.remove()
+  res.status(StatusCodes.OK).json({ msg: "Quiz deleted succesfully" });
+};
+
+const editQuiz = async(req, res) => {
+  
+}
+
+module.exports = { createQuiz, getAllQuiz, getSingleQuiz, deleteSingleQuiz };
