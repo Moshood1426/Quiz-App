@@ -17,11 +17,9 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
     editQuiz: editSingleQuiz,
     deleteQuiz,
     singleQuizDetails,
-    singleQuizQuestions,
   } = useAppContext();
 
   const editQuiz = () => {
-    editSingleQuiz(singleQuizDetails!, singleQuizQuestions);
     navigate(`/edit-quiz/${singleQuizDetails?._id}`);
   };
 

@@ -4,6 +4,7 @@ const {
   getAllQuiz,
   deleteSingleQuiz,
   getSingleQuiz,
+  editQuiz,
 } = require("../controllers/quizController");
 const router = express.Router();
 const authenticateUser = require("../middleware/authMiddleware");
@@ -16,6 +17,7 @@ router
 router
   .route("/:quizId")
   .get(authenticateUser, getSingleQuiz)
-  .delete(authenticateUser, deleteSingleQuiz);
+  .delete(authenticateUser, deleteSingleQuiz)
+  .patch(authenticateUser, editQuiz)
 
 module.exports = router;

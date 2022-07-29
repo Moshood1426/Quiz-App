@@ -41,11 +41,18 @@ export interface ContextType extends InitialState {
   getAllQuiz: (reqObj: GetAllQuizArgs) => Promise<void>;
   startManageQuiz: (quizId: object) => void;
   endManageQuiz: () => void;
-  editQuiz: (details: SingleQuiz, questions: SingleQuestion[]) => void;
+  editQuiz: (quizId: string) => void;
   setQuestionType: (
     type: "true-false" | "multiple-choice" | "fill-in-gap" | ""
   ) => void;
   deleteQuiz: (quizId: object) => Promise<void>;
+  executeEditQuiz: (quizId: object, quizObj: editQuizArg) => Promise<void>;
+}
+
+export interface editQuizArg {
+  quizTitle: string;
+  quizType: string;
+  privacy: string;
 }
 
 export interface ContextProps {

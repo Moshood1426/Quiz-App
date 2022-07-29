@@ -15,6 +15,7 @@ import {
   GetSingleQuizResponse,
   SingleQuiz,
   SingleQuestion,
+  editQuizArg,
 } from "./@types/context";
 import ActionType from "./actions";
 
@@ -218,23 +219,57 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
-  const editQuiz = (details: SingleQuiz, questions: SingleQuestion[]) => {
-    dispatch({ type: ActionType.EDIT_QUIZ, payload: { details, questions } });
-    localStorage.setItem("edit_quiz", JSON.stringify({ details, questions }));
+  const editQuiz = async (quizId: string) => {
+    dispatch({ type: ActionType.GET_SINGLE_QUIZ_BEGIN });
+    try {
+      const { data: quiz } = await authFetch.get<GetSingleQuizResponse>(
+        `/quiz/${quizId}`
+      );
+      const { data } = await authFetch.get<GetQuizQuestionsResponse>(
+        `/question/${quizId}`
+      );
+      console.log(data)
+      dispatch({
+        type: ActionType.EDIT_QUIZ,
+        payload: { questions: data.questions, details: quiz.quiz },
+      });
+    } catch (error) {
+      console.log(error);
+      //logoutUser()
+    }
+  };
+
+  const executeEditQuiz = async (quizId: object, editQuiz: editQuizArg) => {
+    dispatch({ type: ActionType.EXECUTE_EDIT_QUIZ_BEGIN });
+    try {
+      await authFetch.patch(`/question/${quizId}`, { ...editQuiz });
+      dispatch({ type: ActionType.EXECUTE_EDIT_QUIZ_SUCCESS });
+    } catch (error) {
+      let message;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({
+        type: ActionType.EXECUTE_EDIT_QUIZ_FAILED,
+        payload: { message },
+      });
+    }
+    clearAlert();
   };
 
   const deleteQuiz = async (quizId: object) => {
-    dispatch({type: ActionType.DELETE_QUIZ_BEGIN})
+    dispatch({ type: ActionType.DELETE_QUIZ_BEGIN });
 
     try {
-      await authFetch.delete(`/quiz/${quizId}`)
-      dispatch({type: ActionType.DELETE_QUIZ_SUCCESS})
+      await authFetch.delete(`/quiz/${quizId}`);
+      dispatch({ type: ActionType.DELETE_QUIZ_SUCCESS });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       //logoutUser()
     }
-
-  }
+  };
 
   const setQuestionType = (
     type: "true-false" | "multiple-choice" | "fill-in-gap" | ""
@@ -255,7 +290,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         endManageQuiz,
         editQuiz,
         setQuestionType,
-        deleteQuiz
+        deleteQuiz,
+        executeEditQuiz,
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-const { BadRequestError } = require("../errors");
+const { BadRequestError, NotFoundError } = require("../errors");
 const Quiz = require("../models/Quiz");
 const Activities = require("../models/Activities");
 const Question = require("../models/Questions");
@@ -6,7 +6,7 @@ const { StatusCodes } = require("http-status-codes");
 
 const createQuiz = async (req, res) => {
   const { quizCode, quizTitle, quizType } = req.body;
-  console.log(req.user.userId);
+
   if (!quizCode || !quizTitle || !quizType) {
     throw new BadRequestError("Please input all essentail quiz details");
   }
@@ -97,7 +97,27 @@ const deleteSingleQuiz = async (req, res) => {
 };
 
 const editQuiz = async(req, res) => {
-  
+  console.log(req.user.userId)
+  const { quizCode, quizTitle, privacy } = req.body
+  const { quizId } = req.params;
+//check user id tommorow
+  if (!quizCode || !quizTitle || !privacy) {
+    throw new BadRequestError("Please input all essentail quiz details");
+  }
+  const createdBy = req.user.userId;
+
+  const quiz = await Quiz.findOne({ _id: quizId, createdBy: createdBy });
+
+  if(!quiz) {
+    throw new NotFoundError("Something went wrong")
+  }
+
+  quiz.quizCode = quizCode
+  quiz.quizTitle = quizTitle
+  quiz.privacy = privacy
+  await quiz.save()
+
+  res.status(StatusCodes.OK).json({msg: "Quiz details updated successfully"})
 }
 
-module.exports = { createQuiz, getAllQuiz, getSingleQuiz, deleteSingleQuiz };
+module.exports = { createQuiz, getAllQuiz, getSingleQuiz, deleteSingleQuiz, editQuiz };

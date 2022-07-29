@@ -114,6 +114,28 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       editQuizDetails: action.payload,
     };
   }
+  if(action.type === ActionType.EXECUTE_EDIT_QUIZ_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if(action.type === ActionType.EXECUTE_EDIT_QUIZ_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      editCurrentQuiz: false,
+    }
+  }
+  if(action.type === ActionType.EXECUTE_EDIT_QUIZ_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload
+    }
+  }
   if (action.type === ActionType.DELETE_QUIZ_BEGIN) {
     return {
       ...state,

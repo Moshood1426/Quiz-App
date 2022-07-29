@@ -4,18 +4,25 @@ import Wrapper from "../assets/wrappers/EditQuiz";
 import { AddQuestionsModal, EditQuizDetails, Navbar } from "../components";
 import AllQuestions from "../components/AllQuestions";
 import useAppContext from "../store/appContext";
+import { useParams } from "react-router-dom";
 
 const EditQuiz = () => {
   const [addQuestion, setAddQuestion] = useState(false);
   const navigate = useNavigate();
+  const { editQuiz } = useAppContext()
+  const { id } = useParams()
+
+  useEffect(() => {
+    if(id) {
+      editQuiz(id)
+    }
+
+    document.body.style.overflow = "auto";
+  }, []);
 
   const startAddingQuestions = (arg: boolean) => {
     setAddQuestion(arg);
   };
-
-  useEffect(() => {
-    document.body.style.overflow = "auto";
-  }, []);
 
   const cancelEdit = () => {
     const alert = window.confirm(
@@ -29,7 +36,7 @@ const EditQuiz = () => {
   };
 
   const saveEdit = () => {
-    
+
   }
 
   return (
