@@ -36,7 +36,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
         </Route>
         <Route
-          path="/edit-quiz/:id"
+          path="/:id"
           element={
             <ProtectedRoute>
               <EditQuiz />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../assets/wrappers/EditQuizDetails";
 import useAppContext from "../store/appContext";
 import FormItem from "./FormItem";
@@ -10,13 +10,25 @@ const EditQuizDetails = () => {
   } = useAppContext();
 
   const [formData, setFormData] = useState({
-    quizCode: details?.quizCode!,
-    quizTitle: details?.quizTitle!,
-    privacy: details?.privacy ? "private" : "public",
+    quizCode: "",
+    quizTitle: "",
+    privacy: "private",
     privacyOptions: ["private", "public"],
-    quizType: details?.quizType!,
+    quizType: "quick",
     quizTypeOptions: ["moderated", "quick"],
   });
+
+  useEffect(() => {
+    if (details) {
+      setFormData((item) => ({
+        ...item,
+        quizCode: details.quizCode,
+        quizTitle: details.quizTitle,
+        privacy: details.privacy ? "private" : "public",
+        quizType: details.quizType
+      }));
+    }
+  }, [details]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

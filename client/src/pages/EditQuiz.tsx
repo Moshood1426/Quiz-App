@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Wrapper from "../assets/wrappers/EditQuiz";
 import { AddQuestionsModal, EditQuizDetails, Navbar } from "../components";
@@ -14,10 +14,11 @@ const EditQuiz = () => {
 
   useEffect(() => {
     if(id) {
-      editQuiz(id)
+      const quizId = new String(id)
+      editQuiz(quizId)
     }
-
     document.body.style.overflow = "auto";
+    //eslint-disable-next-line
   }, []);
 
   const startAddingQuestions = (arg: boolean) => {

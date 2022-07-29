@@ -219,8 +219,9 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
-  const editQuiz = async (quizId: string) => {
-    dispatch({ type: ActionType.GET_SINGLE_QUIZ_BEGIN });
+  const editQuiz = async (quizId: object) => {
+    dispatch({ type: ActionType.GET_QUIZ_BEGIN });
+
     try {
       const { data: quiz } = await authFetch.get<GetSingleQuizResponse>(
         `/quiz/${quizId}`
@@ -228,9 +229,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       const { data } = await authFetch.get<GetQuizQuestionsResponse>(
         `/question/${quizId}`
       );
-      console.log(data)
       dispatch({
-        type: ActionType.EDIT_QUIZ,
+        type: ActionType.EDIT_QUIZ_SUCCESS,
         payload: { questions: data.questions, details: quiz.quiz },
       });
     } catch (error) {

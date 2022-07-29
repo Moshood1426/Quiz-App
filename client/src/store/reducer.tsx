@@ -105,8 +105,13 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       alertType: "",
     };
   }
-  if (action.type === ActionType.EDIT_QUIZ) {
-    //const editQuiz = localStorage.getItem("edit_quiz")
+  if(action.type === ActionType.EDIT_QUIZ_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    }
+  }
+  if (action.type === ActionType.EDIT_QUIZ_SUCCESS) {
     return {
       ...state,
       isLoading: false,

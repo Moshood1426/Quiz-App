@@ -41,7 +41,7 @@ export interface ContextType extends InitialState {
   getAllQuiz: (reqObj: GetAllQuizArgs) => Promise<void>;
   startManageQuiz: (quizId: object) => void;
   endManageQuiz: () => void;
-  editQuiz: (quizId: string) => void;
+  editQuiz: (quizId: object) => Promise<void>;
   setQuestionType: (
     type: "true-false" | "multiple-choice" | "fill-in-gap" | ""
   ) => void;

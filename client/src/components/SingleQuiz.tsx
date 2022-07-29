@@ -14,13 +14,12 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
   const navigate = useNavigate();
   const {
     startManageQuiz,
-    editQuiz: editSingleQuiz,
     deleteQuiz,
     singleQuizDetails,
   } = useAppContext();
 
   const editQuiz = () => {
-    navigate(`/edit-quiz/${singleQuizDetails?._id}`);
+    navigate(`/${singleQuizDetails?._id}`);
   };
 
   const deleteSingleQuiz = () => {
