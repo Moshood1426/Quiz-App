@@ -1,21 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Wrapper from "../assets/wrappers/Options";
 import useAppContext from "../store/appContext";
 import FormItem from "./FormItem";
 
-type MultipleChoiceState = [
-  {
-    a: string;
-    b: string;
-    c: string;
-    d: string;
-  },
-  { answer: string }
-];
-
 const Options = () => {
   const { questionEdit, setEditQuestion } = useAppContext();
-  const [fillGap, setFillGap] = useState([""]);
 
   function handleMultipleChoiceChange(
     event: React.ChangeEvent<HTMLInputElement>
@@ -42,13 +31,6 @@ const Options = () => {
     };
     setEditQuestion(questionObj);
   };
-
-  /*
-  questionEdit.options.map((item, index) => {
-    return (
-      <div className="multiple-choice" key={index}>
-   
-  */
 
   if (questionEdit.type === "multiple-choice") {
     return (
