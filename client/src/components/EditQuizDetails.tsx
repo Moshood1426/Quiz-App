@@ -1,46 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Wrapper from "../assets/wrappers/EditQuizDetails";
 import useAppContext from "../store/appContext";
+import Alert from "./Alert";
 import FormItem from "./FormItem";
 import FormSelectItem from "./FormSelectItem";
 
-const EditQuizDetails = () => {
-  const {
-    editQuizDetails: { details },
-  } = useAppContext();
-
-  const [formData, setFormData] = useState({
-    quizCode: "",
-    quizTitle: "",
-    privacy: "private",
-    privacyOptions: ["private", "public"],
-    quizType: "quick",
-    quizTypeOptions: ["moderated", "quick"],
-  });
-
-  useEffect(() => {
-    if (details) {
-      setFormData((item) => ({
-        ...item,
-        quizCode: details.quizCode,
-        quizTitle: details.quizTitle,
-        privacy: details.privacy ? "private" : "public",
-        quizType: details.quizType
-      }));
-    }
-  }, [details]);
-
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setFormData((prevValue) => ({ ...prevValue, [name]: value }));
+interface EditQuizDetailsProps {
+  formData: {
+    quizCode: string;
+    quizTitle: string;
+    privacy: string;
+    quizType: string;
+    quizTypeOptions: string[];
+    privacyOptions: string[];
   };
+  handleChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+}
+
+const EditQuizDetails: React.FC<EditQuizDetailsProps> = ({
+  formData,
+  handleChange,
+}) => {
+  const { showAlert } = useAppContext()
 
   return (
     <Wrapper>
       <div className="edit-quiz-details">
+        {showAlert && <Alert />}
         <h4 className="edit-quiz-details-title">Quiz Details</h4>
         <form className="edit-quiz-details-form">
           <FormItem
@@ -50,7 +38,7 @@ const EditQuizDetails = () => {
             placeholder={"enter your quiz title"}
             type={"text"}
             value={formData.quizTitle}
-            onChange={handleChange}
+            onChange={(event) => handleChange(event)}
           />
           <FormItem
             label={true}
@@ -59,13 +47,13 @@ const EditQuizDetails = () => {
             placeholder={"enter your unique quiz code"}
             type={"text"}
             value={formData.quizCode}
-            onChange={handleChange}
+            onChange={(event) => handleChange(event)}
           />
           <FormSelectItem
             name={"privacy"}
             labelText="Privacy"
             value={formData.privacy}
-            onChange={handleChange}
+            onChange={(event) => handleChange(event)}
             options={formData.privacyOptions}
           />
           <FormSelectItem

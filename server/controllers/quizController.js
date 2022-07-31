@@ -97,10 +97,10 @@ const deleteSingleQuiz = async (req, res) => {
 };
 
 const editQuiz = async(req, res) => {
-  console.log(req.user.userId)
+
   const { quizCode, quizTitle, privacy } = req.body
   const { quizId } = req.params;
-//check user id tommorow
+
   if (!quizCode || !quizTitle || !privacy) {
     throw new BadRequestError("Please input all essentail quiz details");
   }
@@ -114,7 +114,7 @@ const editQuiz = async(req, res) => {
 
   quiz.quizCode = quizCode
   quiz.quizTitle = quizTitle
-  quiz.privacy = privacy
+  quiz.privacy = privacy === "private" ? true : false
   await quiz.save()
 
   res.status(StatusCodes.OK).json({msg: "Quiz details updated successfully"})

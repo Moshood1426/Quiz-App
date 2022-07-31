@@ -46,12 +46,12 @@ export interface ContextType extends InitialState {
     type: "true-false" | "multiple-choice" | "fill-in-gap" | ""
   ) => void;
   deleteQuiz: (quizId: object) => Promise<void>;
-  executeEditQuiz: (quizId: object, quizObj: editQuizArg) => Promise<void>;
+  executeEditQuiz: (quizId: object, quizObj: editQuizArg) => Promise<boolean>;
 }
 
 export interface editQuizArg {
   quizTitle: string;
-  quizType: string;
+  quizCode: string;
   privacy: string;
 }
 

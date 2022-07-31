@@ -19,6 +19,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
   } = useAppContext();
 
   const editQuiz = () => {
+    
     navigate(`/${singleQuizDetails?._id}`);
   };
 

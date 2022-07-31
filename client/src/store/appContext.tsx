@@ -1,6 +1,6 @@
 import React, { useContext, useReducer, createContext } from "react";
 import reducer from "./reducer";
-import axios from "axios";
+import axios, { Axios, AxiosError } from "axios";
 import {
   ContextType,
   registerArgs,
@@ -18,6 +18,7 @@ import {
   editQuizArg,
 } from "./@types/context";
 import ActionType from "./actions";
+import { useNavigate } from "react-router-dom";
 
 const user = localStorage.getItem("user");
 const editQuiz = localStorage.getItem("edit_quiz");
@@ -35,10 +36,8 @@ const initialState: InitialState = {
   singleQuizDetails: null,
   singleQuizQuestions: [],
   numOfQuestions: 0,
-  editCurrentQuiz: editQuiz ? true : false,
-  editQuizDetails: editQuiz
-    ? JSON.parse(editQuiz)
-    : { details: null, questions: null },
+  editCurrentQuiz: false,
+  editQuizDetails: { details: null, questions: null },
   editingQuestion: false,
   questionEdit: {
     type: "",
@@ -89,7 +88,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: ActionType.CLEAR_ALERT });
-    }, 1500);
+    }, 2000);
   };
 
   const addUserToLocalStorage = (user: User) => {
@@ -220,7 +219,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   const editQuiz = async (quizId: object) => {
-    dispatch({ type: ActionType.GET_QUIZ_BEGIN });
+    dispatch({ type: ActionType.EDIT_QUIZ_BEGIN });
 
     try {
       const { data: quiz } = await authFetch.get<GetSingleQuizResponse>(
@@ -239,11 +238,12 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
-  const executeEditQuiz = async (quizId: object, editQuiz: editQuizArg) => {
-    dispatch({ type: ActionType.EXECUTE_EDIT_QUIZ_BEGIN });
+  const executeEditQuiz = async (quizId: object, quizObj: editQuizArg) => {
+    dispatch({type: ActionType.EXECUTE_EDIT_QUIZ_BEGIN})
     try {
-      await authFetch.patch(`/question/${quizId}`, { ...editQuiz });
-      dispatch({ type: ActionType.EXECUTE_EDIT_QUIZ_SUCCESS });
+      await axios.patch(`api/v1/quiz/${quizId}`, { ...quizObj });
+      dispatch({type: ActionType.EXECUTE_EDIT_QUIZ_SUCCESS})
+      return true
     } catch (error) {
       let message;
       if (axios.isAxiosError(error)) {
@@ -251,12 +251,10 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       } else {
         message = { msg: "An unexpected error occurred" };
       }
-      dispatch({
-        type: ActionType.EXECUTE_EDIT_QUIZ_FAILED,
-        payload: { message },
-      });
+      dispatch({type: ActionType.EXECUTE_EDIT_QUIZ_FAILED, payload: {message}})
+      clearAlert()
+      return false
     }
-    clearAlert();
   };
 
   const deleteQuiz = async (quizId: object) => {

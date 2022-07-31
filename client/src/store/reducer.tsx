@@ -105,49 +105,50 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       alertType: "",
     };
   }
-  if(action.type === ActionType.EDIT_QUIZ_BEGIN) {
+  if (action.type === ActionType.EDIT_QUIZ_BEGIN) {
     return {
       ...state,
       isLoading: true,
-    }
+      editCurrentQuiz: true
+    };
   }
   if (action.type === ActionType.EDIT_QUIZ_SUCCESS) {
     return {
       ...state,
       isLoading: false,
-      editCurrentQuiz: true,
       editQuizDetails: action.payload,
     };
   }
-  if(action.type === ActionType.EXECUTE_EDIT_QUIZ_BEGIN) {
+  if (action.type === ActionType.EXECUTE_EDIT_QUIZ_BEGIN) {
     return {
       ...state,
-      isLoading: true
-    }
+      isLoading: true,
+    };
   }
-  if(action.type === ActionType.EXECUTE_EDIT_QUIZ_SUCCESS) {
+  if (action.type === ActionType.EXECUTE_EDIT_QUIZ_SUCCESS) {
     return {
       ...state,
       isLoading: false,
       editCurrentQuiz: false,
-    }
+      editQuizDetails: { details: null, questions: null },
+    };
   }
-  if(action.type === ActionType.EXECUTE_EDIT_QUIZ_FAILED) {
+  if (action.type === ActionType.EXECUTE_EDIT_QUIZ_FAILED) {
     return {
       ...state,
       isLoading: false,
       showAlert: true,
       alertType: "danger",
-      alertText: action.payload
-    }
+      alertText: action.payload.message.msg,
+    };
   }
   if (action.type === ActionType.DELETE_QUIZ_BEGIN) {
     return {
       ...state,
-      isLoading: true
-    }
+      isLoading: true,
+    };
   }
-  if(action.type === ActionType.DELETE_QUIZ_SUCCESS) {
+  if (action.type === ActionType.DELETE_QUIZ_SUCCESS) {
     return {
       ...state,
       isLoading: false,
@@ -155,13 +156,13 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       singleQuizDetails: null,
       singleQuizQuestions: [],
       numOfQuestions: 0,
-    }
+    };
   }
-  if(action.type === ActionType.SET_QUESTION_TYPE) {
+  if (action.type === ActionType.SET_QUESTION_TYPE) {
     return {
       ...state,
-      questionEdit: {...state.questionEdit, type: action.payload}
-    }
+      questionEdit: { ...state.questionEdit, type: action.payload },
+    };
   }
   throw new Error(`no such action : ${action.type}`);
 };
