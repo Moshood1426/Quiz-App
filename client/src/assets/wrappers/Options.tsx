@@ -55,6 +55,7 @@ const Wrapper = styled.div`
   .fill-gap-input {
     display: grid;
     width: 90%;
+    max-width: 350px;
     margin: 0 auto;
   }
 
@@ -68,11 +69,6 @@ const Wrapper = styled.div`
       grid-template-columns: 1fr 1fr;
       max-width: 550px;
       margin: 0 auto;
-    }
-
-    .fill-gap-input {
-      grid-template-columns: 1fr 1fr;
-      grid-column-gap: 1em;
     }
   }
 `;

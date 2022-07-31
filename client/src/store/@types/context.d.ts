@@ -28,7 +28,7 @@ export interface InitialState {
     type: "true-false" | "multiple-choice" | "fill-in-gap" | "";
     question: "";
     correctAnswer: "";
-    options: [];
+    options: string[];
     points: 1;
   };
 }
@@ -47,6 +47,8 @@ export interface ContextType extends InitialState {
   ) => void;
   deleteQuiz: (quizId: object) => Promise<void>;
   executeEditQuiz: (quizId: object, quizObj: editQuizArg) => Promise<boolean>;
+  setEditQuestion: (questionObj: questionEdit) => void
+  cancelEditQuestion: () => void
 }
 
 export interface editQuizArg {
@@ -141,7 +143,7 @@ interface Participants {
 }
 
 export interface SingleQuestion {
-  type: "multiple-choice" | "true-false" | "fill-in-the-gap";
+  type:  "multiple-choice" | "true-false" | "fill-in-gap";
   question: string;
   options: string[];
   correctAnswer: string;
@@ -152,4 +154,12 @@ export interface SingleQuestion {
   createdAt: Date;
   updatedAt: Date;
   __v: number;
+}
+
+export interface questionEdit {
+  type: "" | "multiple-choice" | "true-false" | "fill-in-gap";
+  question: string;
+  options: string[];
+  correctAnswer: string;
+  points: number;
 }

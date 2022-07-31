@@ -71,22 +71,6 @@ const Options = () => {
     }
   };
 
-  const addRemoveAnswer = (arg: "add" | "remove") => {
-    if (arg === "add") {
-      if (fillGap.length < 4) {
-        setFillGap((item) => [...item, ""]);
-      } else {
-        throw new Error("cant add more than 4 answers");
-      }
-    } else {
-      if (fillGap.length > 1) {
-        setFillGap(fillGap.slice(0, fillGap.length - 1));
-      } else {
-        throw new Error("cant have less than 1 answer");
-      }
-    }
-  };
-
   function renderMultipleChoice() {
     let result = [];
     for (let item in multipleChoice[0]) {
@@ -141,12 +125,6 @@ const Options = () => {
                 />
               );
             })}
-          </div>
-          <div className="add-remove-answer">
-            <span onClick={() => addRemoveAnswer("add")}>➕ Add Option</span>
-            <span onClick={() => addRemoveAnswer("remove")}>
-              ➖ Remove Option
-            </span>
           </div>
         </div>
       </Wrapper>

@@ -23,6 +23,7 @@ const EditQuiz = () => {
     executeEditQuiz,
     editQuizDetails: { details },
     validateInput,
+    editingQuestion
   } = useAppContext();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -50,8 +51,6 @@ const EditQuiz = () => {
       }));
     }
   }, [details]);
-
-  //navigate away once edit is saved
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -119,9 +118,9 @@ const EditQuiz = () => {
       </div>
       <div className="edit-quiz-content">
         <EditQuizDetails formData={formData} handleChange={handleChange} />
-        <AllQuestions startAddingQuestion={startAddingQuestions} />
+        <AllQuestions startAddingQuestion={startAddingQuestions} extraDetails={true}/>
       </div>
-      {addQuestion && (
+      {(addQuestion || editingQuestion) && (
         <AddQuestionsModal startAddingQuestion={startAddingQuestions} />
       )}
     </Wrapper>

@@ -6,9 +6,10 @@ import SingleQuestion from "./SingleQuestions";
 
 interface AllQuestionsProps {
   startAddingQuestion?: (arg: boolean) => void;
+  extraDetails?: boolean
 }
 
-const AllQuestions: React.FC<AllQuestionsProps> = ({ startAddingQuestion }) => {
+const AllQuestions: React.FC<AllQuestionsProps> = ({ startAddingQuestion, extraDetails }) => {
   const {
     singleQuizQuestions,
     numOfQuestions,
@@ -60,6 +61,8 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({ startAddingQuestion }) => {
                 key={item._id.toString()}
                 question={item}
                 index={index}
+                extraDetails={extraDetails}
+                id={item._id}
               />
             );
           })

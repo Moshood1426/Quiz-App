@@ -109,7 +109,7 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
     return {
       ...state,
       isLoading: true,
-      editCurrentQuiz: true
+      editCurrentQuiz: true,
     };
   }
   if (action.type === ActionType.EDIT_QUIZ_SUCCESS) {
@@ -159,9 +159,41 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
     };
   }
   if (action.type === ActionType.SET_QUESTION_TYPE) {
+    const options = action.payload === "true-false" ? ["true", "false"] : action.payload === "multiple-choice" ? ["", "", "", ""] : [""]
+   console.log(options)
     return {
       ...state,
-      questionEdit: { ...state.questionEdit, type: action.payload },
+      questionEdit: { 
+        ...state.questionEdit, 
+        type: action.payload,
+        options: options
+      },
+    };
+  }
+  if (action.type === ActionType.SET_EDIT_QUESTION) {
+    return {
+      ...state,
+      editingQuestion: true,
+      questionEdit: {
+        type: action.payload.type,
+        question: action.payload.question,
+        correctAnswer: action.payload.correctAnswer,
+        options: action.payload.options,
+        points: action.payload.points,
+      },
+    };
+  }
+  if (action.type === ActionType.CANCEL_EDIT_QUESTION) {
+    return {
+      ...state,
+      editingQuestion: false,
+      questionEdit: {
+        type: "",
+        question: "",
+        correctAnswer: "",
+        options: [],
+        points: 1,
+      },
     };
   }
   throw new Error(`no such action : ${action.type}`);

@@ -4,6 +4,7 @@ import Logo from "./Logo";
 import FormSelectItem from "./FormSelectItem";
 import useAppContext from "../store/appContext";
 import Options from "./Options";
+import { questionEdit, SingleQuestion } from "../store/@types/context";
 
 interface AddQuestionContentProps {
   startAddingQuestion: (arg: boolean) => void;
@@ -12,11 +13,24 @@ interface AddQuestionContentProps {
 const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
   startAddingQuestion,
 }) => {
-  const { questionEdit, setQuestionType } = useAppContext();
+  const {
+    questionEdit,
+    editingQuestion,
+    setEditQuestion,
+    setQuestionType,
+    cancelEditQuestion,
+  } = useAppContext();
 
   const handleChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {};
+  ) => {
+    const value = event.target.value;
+    const name = event.target.name;
+    if (questionEdit.type !== "") {
+      const obj: questionEdit = { ...questionEdit, [name]: value };
+      setEditQuestion(obj);
+    }
+  };
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
@@ -36,6 +50,7 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
     if (alert) {
       startAddingQuestion(false);
       setQuestionType("");
+      if (editingQuestion) cancelEditQuestion();
     } else {
       console.log("cancelled");
     }

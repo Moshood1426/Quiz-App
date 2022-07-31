@@ -8,6 +8,11 @@ const Wrapper = styled.div`
   p {
     margin: 0;
   }
+
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+  }
   
   .question-tag {
     background-color: #fce7ff;
@@ -16,6 +21,23 @@ const Wrapper = styled.div`
     padding: 0.3em 0.6em;
     border-radius: 10px;
     margin-bottom: 1em;
+  }
+
+  .question-edit-btn {
+    margin-right: 1em;
+    font-weight: normal;
+  }
+
+  .question-delete-btn {
+    font-weight: normal;
+  }
+
+  .question-edit-btn:hover {
+    background-color: var(--primary-400);
+  }
+
+  .question-delete-btn:hover {
+    background-color: var(--primary-400);
   }
 
   .question-content {

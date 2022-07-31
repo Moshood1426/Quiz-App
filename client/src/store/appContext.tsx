@@ -1,6 +1,6 @@
 import React, { useContext, useReducer, createContext } from "react";
 import reducer from "./reducer";
-import axios, { Axios, AxiosError } from "axios";
+import axios from "axios";
 import {
   ContextType,
   registerArgs,
@@ -16,12 +16,11 @@ import {
   SingleQuiz,
   SingleQuestion,
   editQuizArg,
+  questionEdit,
 } from "./@types/context";
 import ActionType from "./actions";
-import { useNavigate } from "react-router-dom";
 
 const user = localStorage.getItem("user");
-const editQuiz = localStorage.getItem("edit_quiz");
 
 const initialState: InitialState = {
   showAlert: false,
@@ -275,6 +274,14 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.SET_QUESTION_TYPE, payload: type });
   };
 
+  const setEditQuestion = (questionObj: questionEdit) => {
+    dispatch({type: ActionType.SET_EDIT_QUESTION, payload: {...questionObj}})
+  }
+
+  const cancelEditQuestion = () => {
+    dispatch({type: ActionType.CANCEL_EDIT_QUESTION})
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -290,6 +297,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         setQuestionType,
         deleteQuiz,
         executeEditQuiz,
+        setEditQuestion,
+        cancelEditQuestion
       }}
     >
       {children}
