@@ -160,13 +160,14 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
   }
   if (action.type === ActionType.SET_QUESTION_TYPE) {
     const options = action.payload === "true-false" ? ["true", "false"] : action.payload === "multiple-choice" ? ["", "", "", ""] : [""]
-   console.log(options)
+
     return {
       ...state,
       questionEdit: { 
         ...state.questionEdit, 
         type: action.payload,
-        options: options
+        options: options,
+        correctAnswer: ""
       },
     };
   }

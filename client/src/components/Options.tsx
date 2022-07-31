@@ -14,95 +14,71 @@ type MultipleChoiceState = [
 ];
 
 const Options = () => {
-  const { questionEdit } = useAppContext();
-  const [multipleChoice, setMultipleChoice] = useState<MultipleChoiceState>([
-    {
-      a: "option A",
-      b: "option B",
-      c: "option C",
-      d: "option D",
-    },
-    { answer: "" },
-  ]);
-  const [trueFalse, setTrueFalse] = useState({
-    answer: true,
-    options: ["true", "false"],
-  });
+  const { questionEdit, setEditQuestion } = useAppContext();
   const [fillGap, setFillGap] = useState([""]);
 
   function handleMultipleChoiceChange(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
-    setMultipleChoice((item) => [item[0], { answer: event.target.value }]);
+    const name = parseInt(event.target.name);
+    const value = event.target.value;
+    const options = questionEdit.options.map((item, index) =>
+      index === name ? (item = value) : item
+    );
+    const questionObj = { ...questionEdit, options };
+    setEditQuestion(questionObj);
   }
 
-  function handleMultipleChoiceOptions(
-    event: React.ChangeEvent<HTMLInputElement>
-  ) {
-    setMultipleChoice((item) => [
-      { ...item[0], [event.target.name]: event.target.value },
-      item[1],
-    ]);
-  }
-
-  const handleTrueFalseChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (event.target.value === "true") {
-      setTrueFalse((item) => ({ ...item, answer: true }));
-    } else {
-      setTrueFalse((item) => ({ ...item, answer: false }));
-    }
+  const handleCorrectAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const questionObj = { ...questionEdit, correctAnswer: event.target.value };
+    setEditQuestion(questionObj);
   };
 
   const handleFillGapChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    for (let i = 0; i < fillGap.length; i++) {
-      if (i.toString() === event.target.name) {
-        setFillGap((item) => {
-          return item.map((val, index) => {
-            if (index === i) {
-              return (val = event.target.value);
-            } else {
-              return val;
-            }
-          });
-        });
-      }
-    }
+    const questionObj = {
+      ...questionEdit,
+      correctAnswer: event.target.value,
+      options: [event.target.value],
+    };
+    setEditQuestion(questionObj);
   };
 
-  function renderMultipleChoice() {
-    let result = [];
-    for (let item in multipleChoice[0]) {
-      result.push(
-        <div className="multiple-choice" key={item}>
-          <input
-            type="radio"
-            name="multipleChoice"
-            value={multipleChoice[0][item as keyof typeof multipleChoice[0]]}
-            onChange={handleMultipleChoiceChange}
-            className="multiple-choice-radio"
-          />
-          <label htmlFor={item} className="multiple-choice-label">
-            <FormItem
-              type="text"
-              name={item}
-              value={multipleChoice[0][item as keyof typeof multipleChoice[0]]}
-              onChange={handleMultipleChoiceOptions}
-              placeholder="kindly add an answer"
-            />
-          </label>
-        </div>
-      );
-    }
-    return result;
-  }
+  /*
+  questionEdit.options.map((item, index) => {
+    return (
+      <div className="multiple-choice" key={index}>
+   
+  */
 
   if (questionEdit.type === "multiple-choice") {
     return (
       <Wrapper>
         <div className="multiple-choice-container">
-          {renderMultipleChoice()}
+          {questionEdit.options.map((item, index) => {
+            return (
+              <div className="multiple-choice" key={index}>
+                <input
+                  type="radio"
+                  name="multipleChoice"
+                  value={item}
+                  onChange={handleCorrectAnswer}
+                  className="multiple-choice-radio"
+                  checked={
+                    questionEdit.correctAnswer === item && item ? true : false
+                  }
+                />
+                <label htmlFor={item} className="multiple-choice-label">
+                  <FormItem
+                    type="text"
+                    name={index.toString()}
+                    value={item}
+                    onChange={handleMultipleChoiceChange}
+                    placeholder="kindly add an answer"
+                  />
+                </label>
+              </div>
+            );
+          })}
         </div>
       </Wrapper>
     );
@@ -113,18 +89,13 @@ const Options = () => {
       <Wrapper>
         <div className="fill-gap-container">
           <div className="fill-gap-input">
-            {fillGap.map((item, index) => {
-              return (
-                <FormItem
-                  name={index.toString()}
-                  type="input"
-                  value={item}
-                  onChange={handleFillGapChange}
-                  placeholder="enter answer"
-                  key={index}
-                />
-              );
-            })}
+            <FormItem
+              name="fillGap"
+              type="input"
+              value={questionEdit.correctAnswer}
+              onChange={handleFillGapChange}
+              placeholder="enter answer"
+            />
           </div>
         </div>
       </Wrapper>
@@ -135,14 +106,15 @@ const Options = () => {
     return (
       <Wrapper>
         <div className="true-false-container">
-          {trueFalse.options.map((item, index) => {
+          {questionEdit.options.map((item, index) => {
             return (
               <div key={index} className="true-false">
                 <input
                   type="radio"
                   name="trueFalse"
                   value={item}
-                  onChange={handleTrueFalseChange}
+                  onChange={handleCorrectAnswer}
+                  //checked={questionEdit.correctAnswer ? true : false}
                 />
                 <label htmlFor={item} className="true-false-label">
                   {item}
