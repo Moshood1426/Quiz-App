@@ -7,6 +7,7 @@ import {
   QuizActivities,
   ViewSingleQuiz,
 } from "../../components";
+import Loading from "../../components/Loading";
 import { GetAllQuizArgs } from "../../store/@types/context";
 import useAppContext from "../../store/appContext";
 
@@ -24,7 +25,8 @@ const ManageQuiz = () => {
   const [isActive, setIsActive] = useState<"all" | "moderated" | "quick">(
     "all"
   );
-  const { getAllQuiz, manageSingleQuiz, singleQuizDetails } = useAppContext();
+  const { getAllQuiz, isLoading, manageSingleQuiz, singleQuizDetails } =
+    useAppContext();
 
   useEffect(() => {
     const reqObj: GetAllQuizArgs = {
@@ -123,8 +125,14 @@ const ManageQuiz = () => {
         />
       </div>
       <div className="manage-quiz-content-container">
-        <AllQuiz />
-        <QuizActivities />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <AllQuiz />
+            <QuizActivities />
+          </>
+        )}
       </div>
       {manageSingleQuiz && singleQuizDetails && (
         <ViewSingleQuiz quiz={{ ...singleQuizDetails }} />
