@@ -40,7 +40,8 @@ const getQuizQuestions = async (req, res) => {
 };
 
 const editQuestion = async (req, res) => {
-  const { type, question, options, correctAnswer, points, questionId } = req.body;
+  const { type, question, options, correctAnswer, points, questionId } =
+    req.body;
 
   if (!type || !question || !correctAnswer || !options || !points) {
     throw new BadRequestError("Kindly fill required fields");
@@ -61,14 +62,27 @@ const editQuestion = async (req, res) => {
   questionObj.question = question;
   questionObj.options = options;
   questionObj.correctAnswer = correctAnswer;
-  questionObj.points = points
+  questionObj.points = points;
   await questionObj.save();
 
   res.status(StatusCodes.OK).json({ msg: "Question updated succesfully" });
 };
 
+const deleteQuestion = async (req, res) => {
+  const { quizId } = req.params;
+
+  const question = await Question.findOne({ _id: quizId });
+  if (!question) {
+    throw new NotFoundError("Invalid question selected");
+  }
+  await question.remove();
+
+  res.status(StatusCodes.OK).json({ msg: "Question deleted succesfully" });
+};
+
 module.exports = {
   createQuestion,
   getQuizQuestions,
-  editQuestion
+  editQuestion,
+  deleteQuestion
 };
