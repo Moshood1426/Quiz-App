@@ -17,18 +17,23 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
   extraDetails,
 }) => {
   const {
-    editQuizDetails: { questions },
+    editQuizDetails: { questions, details },
     setEditQuestion,
+    deleteQuestion,
+    editQuiz
   } = useAppContext();
 
   const editQuestion = (id: object) => {
     const question = questions?.find((item) => item._id === id);
     if (question) {
       setEditQuestion(question, true);
-      localStorage.setItem("questionId", JSON.stringify(question._id))
+      localStorage.setItem("questionId", JSON.stringify(question._id));
     }
   };
-  const deleteQuestion = () => {};
+  const deleteSingleQuestion = (id: object) => {
+    deleteQuestion(id);
+    if (details) editQuiz(details?._id);
+  };
 
   return (
     <Wrapper>
@@ -44,7 +49,7 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
             </button>
             <button
               className="btn question-delete-btn alert-danger"
-              onClick={() => deleteQuestion()}
+              onClick={() => deleteSingleQuestion(id)}
             >
               🗑Delete
             </button>
@@ -52,7 +57,9 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
         )}
       </div>
       <div className="question-footer">
-        <span className="question-type">📝Question Type: {question.type.split("-").join(" ")}</span>
+        <span className="question-type">
+          📝Question Type: {question.type.split("-").join(" ")}
+        </span>
         <span className="question-point">⚪ Point: {question.points}</span>
       </div>
       <h5 className="question-content">{question.question}</h5>

@@ -13,8 +13,6 @@ import {
   GetAllQuizResponse,
   GetQuizQuestionsResponse,
   GetSingleQuizResponse,
-  SingleQuiz,
-  SingleQuestion,
   editQuizArg,
   questionEdit,
 } from "./@types/context";
@@ -293,7 +291,6 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       ...state.questionEdit,
       forQuiz: state.editQuizDetails.details?._id,
     };
-    console.log(questionObj)
     dispatch({ type: ActionType.CREATE_QUESTION_BEGIN });
     try {
       await axios.post("api/v1/question", questionObj);
@@ -316,12 +313,37 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   const editQuestion = async() => {
-    const questionId = localStorage.getItem("questionId")!
-    const questionObj = { ...state.questionEdit, questionId: JSON.parse(questionId) }
+    const questionId = JSON.parse(localStorage.getItem("questionId")!)
+    const questionObj = { ...state.questionEdit }
+    dispatch({type: ActionType.EDIT_QUESTION_BEGIN})
     try {
-      console.log(questionObj)
+      await axios.patch(`/api/v1/question/${questionId}`, {...questionObj})
+      dispatch({type: ActionType.EDIT_QUESTION_SUCCESS})
+      return true
     } catch (error) {
-      
+      let message: any;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({
+        type: ActionType.EDIT_QUESTION_FAILED,
+        payload: { message },
+      });
+      clearAlert()
+      return false
+    }
+  }
+
+  const deleteQuestion = async(quizId: object) => {
+    dispatch({type: ActionType.DELETE_QUESTION_BEGIN})
+    try {
+      await authFetch.delete(`/question/${quizId}`)
+      dispatch({type: ActionType.DELETE_QUESTION_SUCCESS})
+    } catch (error) {
+      console.log(error)
+      //logoutUser()
     }
   }
 
@@ -343,7 +365,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         setEditQuestion,
         cancelEditQuestion,
         createQuestion,
-        editQuestion
+        editQuestion,
+        deleteQuestion
       }}
     >
       {children}

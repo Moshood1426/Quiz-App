@@ -40,8 +40,8 @@ const getQuizQuestions = async (req, res) => {
 };
 
 const editQuestion = async (req, res) => {
-  const { type, question, options, correctAnswer, points, questionId } =
-    req.body;
+  const { type, question, options, correctAnswer, points } = req.body;
+  const { quizId } = req.params;
 
   if (!type || !question || !correctAnswer || !options || !points) {
     throw new BadRequestError("Kindly fill required fields");
@@ -50,7 +50,7 @@ const editQuestion = async (req, res) => {
   const createdBy = req.user.userId;
 
   const questionObj = await Question.findOne({
-    _id: questionId,
+    _id: quizId,
     createdBy,
   });
 
@@ -84,5 +84,5 @@ module.exports = {
   createQuestion,
   getQuizQuestions,
   editQuestion,
-  deleteQuestion
+  deleteQuestion,
 };

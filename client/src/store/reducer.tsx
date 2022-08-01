@@ -205,10 +205,10 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
   if (action.type === ActionType.CREATE_QUESTION_BEGIN) {
     return {
       ...state,
-      isLoading: true
+      isLoading: true,
     };
   }
-  if(action.type === ActionType.CREATE_QUESTION_SUCCESS) {
+  if (action.type === ActionType.CREATE_QUESTION_SUCCESS) {
     return {
       ...state,
       isLoading: false,
@@ -219,15 +219,56 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
         options: [],
         points: 1,
       },
-    }
+    };
   }
-  if(action.type === ActionType.CREATE_QUESTION_FAILED) {
+  if (action.type === ActionType.CREATE_QUESTION_FAILED) {
     return {
       ...state,
       isLoading: false,
       showAlert: true,
       alertType: "danger",
-      alertText: action.payload.message.msg
+      alertText: action.payload.message.msg,
+    };
+  }
+  if (action.type === ActionType.EDIT_QUESTION_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === ActionType.EDIT_QUESTION_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      editingQuestion: false,
+      questionEdit: {
+        type: "",
+        question: "",
+        correctAnswer: "",
+        options: [],
+        points: 1,
+      },
+    };
+  }
+  if (action.type === ActionType.EDIT_QUESTION_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.message.msg,
+    };
+  }
+  if(action.type === ActionType.DELETE_QUESTION_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if(action.type === ActionType.DELETE_QUESTION_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false
     }
   }
   throw new Error(`no such action : ${action.type}`);

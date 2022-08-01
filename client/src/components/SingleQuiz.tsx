@@ -19,15 +19,15 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
   } = useAppContext();
 
   const editQuiz = () => {
-    
     navigate(`/${singleQuizDetails?._id}`);
   };
 
   const deleteSingleQuiz = () => {
     const alert = window.confirm(
-      "Quiz will be deleted alongside all its questions"
+      "Are you sure you want to delete quiz?"
     );
     if (alert) {
+      navigate("/manage-quiz")
       if(singleQuizDetails) deleteQuiz(singleQuizDetails._id)
     }
   };

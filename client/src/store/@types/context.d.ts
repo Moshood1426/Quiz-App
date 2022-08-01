@@ -50,7 +50,8 @@ export interface ContextType extends InitialState {
   setEditQuestion: (questionObj: questionEdit, edit?: boolean) => void
   cancelEditQuestion: () => void
   createQuestion: () => Promise<boolean>
-  editQuestion: () => Promise<void>
+  editQuestion: () => Promise<boolean>
+  deleteQuestion: (quizId: object) => Promise<void>
 }
 
 export interface editQuizArg {
