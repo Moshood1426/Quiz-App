@@ -4,7 +4,8 @@ import Logo from "./Logo";
 import FormSelectItem from "./FormSelectItem";
 import useAppContext from "../store/appContext";
 import Options from "./Options";
-import { questionEdit, SingleQuestion } from "../store/@types/context";
+import { questionEdit } from "../store/@types/context";
+import Alert from "./Alert";
 
 interface AddQuestionContentProps {
   startAddingQuestion: (arg: boolean) => void;
@@ -14,11 +15,16 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
   startAddingQuestion,
 }) => {
   const {
+    showAlert,
+    editQuizDetails,
     questionEdit,
     editingQuestion,
     setEditQuestion,
     setQuestionType,
     cancelEditQuestion,
+    createQuestion,
+    editQuestion,
+    editQuiz,
   } = useAppContext();
 
   const handleChange = (
@@ -28,7 +34,8 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
     const name = event.target.name;
     if (questionEdit.type !== "") {
       const obj: questionEdit = { ...questionEdit, [name]: value };
-      setEditQuestion(obj);
+      const editing = editingQuestion ? true : false;
+      setEditQuestion(obj, editing);
     }
   };
 
@@ -53,6 +60,16 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
       if (editingQuestion) cancelEditQuestion();
     } else {
       console.log("cancelled");
+    }
+  };
+
+  const saveQuestion = async () => {
+    const result = editingQuestion
+      ? await editQuestion()
+      : await createQuestion();
+    if (result) {
+      startAddingQuestion(false);
+      if (editQuizDetails.details) editQuiz(editQuizDetails.details?._id);
     }
   };
 
@@ -88,6 +105,7 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
         </div>
       </div>
       <div className="ques-content-container">
+        {showAlert && <Alert />}
         <div>
           <label htmlFor="question" className="formLabel">
             Enter Question Below{" "}
@@ -104,6 +122,9 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
         <div className="options">
           <Options />
         </div>
+      </div>
+      <div className="save" onClick={saveQuestion}>
+        <span>Save</span>
       </div>
       <div className="cancel" onClick={cancelAddQuestion}>
         <span>❌ Cancel</span>

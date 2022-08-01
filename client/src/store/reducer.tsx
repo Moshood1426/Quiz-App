@@ -159,22 +159,27 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
     };
   }
   if (action.type === ActionType.SET_QUESTION_TYPE) {
-    const options = action.payload === "true-false" ? ["true", "false"] : action.payload === "multiple-choice" ? ["", "", "", ""] : [""]
+    const options =
+      action.payload === "true-false"
+        ? ["true", "false"]
+        : action.payload === "multiple-choice"
+        ? ["", "", "", ""]
+        : [""];
 
     return {
       ...state,
-      questionEdit: { 
-        ...state.questionEdit, 
+      questionEdit: {
+        ...state.questionEdit,
         type: action.payload,
         options: options,
-        correctAnswer: ""
+        correctAnswer: "",
       },
     };
   }
   if (action.type === ActionType.SET_EDIT_QUESTION) {
     return {
       ...state,
-      editingQuestion: true,
+      editingQuestion: action.payload.edit ? true : false,
       questionEdit: {
         type: action.payload.type,
         question: action.payload.question,
@@ -196,6 +201,34 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
         points: 1,
       },
     };
+  }
+  if (action.type === ActionType.CREATE_QUESTION_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    };
+  }
+  if(action.type === ActionType.CREATE_QUESTION_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      questionEdit: {
+        type: "",
+        question: "",
+        correctAnswer: "",
+        options: [],
+        points: 1,
+      },
+    }
+  }
+  if(action.type === ActionType.CREATE_QUESTION_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.message.msg
+    }
   }
   throw new Error(`no such action : ${action.type}`);
 };

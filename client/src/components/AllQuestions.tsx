@@ -1,26 +1,34 @@
 import React from "react";
 import Wrapper from "../assets/wrappers/AllQuestions";
+import { SingleQuestion as SingleQuestionType } from "../store/@types/context";
 import useAppContext from "../store/appContext";
 import Loading from "./Loading";
 import SingleQuestion from "./SingleQuestions";
 
 interface AllQuestionsProps {
   startAddingQuestion?: (arg: boolean) => void;
-  extraDetails?: boolean
+  extraDetails?: boolean;
 }
 
-const AllQuestions: React.FC<AllQuestionsProps> = ({ startAddingQuestion, extraDetails }) => {
+const AllQuestions: React.FC<AllQuestionsProps> = ({
+  startAddingQuestion,
+  extraDetails,
+}) => {
   const {
     singleQuizQuestions,
     numOfQuestions,
     editCurrentQuiz,
     editQuizDetails,
-    isLoading
+    isLoading,
   } = useAppContext();
 
-  const totalPoints = singleQuizQuestions.reduce((acc, item) => {
-    return (acc += item.points);
-  }, 0);
+  const calculateTotalPoints = (arg: SingleQuestionType[]) => {
+    return arg.reduce((acc, item) => {
+      return (acc += item.points);
+    }, 0);
+  };
+
+  const totalPoints = calculateTotalPoints(singleQuizQuestions);
 
   const quizDetails = editCurrentQuiz
     ? editQuizDetails.questions!
@@ -31,7 +39,11 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({ startAddingQuestion, extraD
       <div className="all-questions-header">
         <h3>
           All Questions{" "}
-          <span className="num-of-questions">{numOfQuestions}</span>
+          <span className="num-of-questions">
+            {editCurrentQuiz
+              ? editQuizDetails.questions?.length
+              : numOfQuestions}
+          </span>
         </h3>
         <p className="all-questions-points">
           Total points:{" "}
@@ -49,7 +61,9 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({ startAddingQuestion, extraD
         )}
       </div>
       <div className="questions-container">
-        {isLoading ? <Loading /> : quizDetails.length < 1 ? (
+        {isLoading ? (
+          <Loading />
+        ) : quizDetails.length < 1 ? (
           <p className="no-questions">
             No questions set for this quiz. Click edit quiz to start setting
             questions.

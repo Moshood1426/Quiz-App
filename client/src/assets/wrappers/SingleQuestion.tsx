@@ -20,7 +20,7 @@ const Wrapper = styled.div`
     width: fit-content;
     padding: 0.3em 0.6em;
     border-radius: 10px;
-    margin-bottom: 1em;
+    margin-bottom: .5em;
   }
 
   .question-edit-btn {
@@ -62,6 +62,25 @@ const Wrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1em;
+  }
+
+  .question-footer {
+    margin-bottom: .5em;
+    color: var(--primary-brown);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    margin-bottom: 1.2em;
+  }
+
+  .question-type {
+    margin-right: 2em;
+  }
+
+  .question-point {
+    color: var(--primary-brown);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    
   }
 
   @media (min-width: 550px) {

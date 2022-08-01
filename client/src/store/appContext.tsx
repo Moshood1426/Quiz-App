@@ -238,11 +238,11 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   const executeEditQuiz = async (quizId: object, quizObj: editQuizArg) => {
-    dispatch({type: ActionType.EXECUTE_EDIT_QUIZ_BEGIN})
+    dispatch({ type: ActionType.EXECUTE_EDIT_QUIZ_BEGIN });
     try {
       await axios.patch(`api/v1/quiz/${quizId}`, { ...quizObj });
-      dispatch({type: ActionType.EXECUTE_EDIT_QUIZ_SUCCESS})
-      return true
+      dispatch({ type: ActionType.EXECUTE_EDIT_QUIZ_SUCCESS });
+      return true;
     } catch (error) {
       let message;
       if (axios.isAxiosError(error)) {
@@ -250,9 +250,12 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       } else {
         message = { msg: "An unexpected error occurred" };
       }
-      dispatch({type: ActionType.EXECUTE_EDIT_QUIZ_FAILED, payload: {message}})
-      clearAlert()
-      return false
+      dispatch({
+        type: ActionType.EXECUTE_EDIT_QUIZ_FAILED,
+        payload: { message },
+      });
+      clearAlert();
+      return false;
     }
   };
 
@@ -274,12 +277,50 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.SET_QUESTION_TYPE, payload: type });
   };
 
-  const setEditQuestion = (questionObj: questionEdit) => {
-    dispatch({type: ActionType.SET_EDIT_QUESTION, payload: {...questionObj}})
-  }
+  const setEditQuestion = (questionObj: questionEdit, edit?: boolean) => {
+    dispatch({
+      type: ActionType.SET_EDIT_QUESTION,
+      payload: { ...questionObj, edit: edit ? true : false },
+    });
+  };
 
   const cancelEditQuestion = () => {
-    dispatch({type: ActionType.CANCEL_EDIT_QUESTION})
+    dispatch({ type: ActionType.CANCEL_EDIT_QUESTION });
+  };
+
+  const createQuestion = async () => {
+    const questionObj = {
+      ...state.questionEdit,
+      forQuiz: state.editQuizDetails.details?._id,
+    };
+    console.log(questionObj)
+    dispatch({ type: ActionType.CREATE_QUESTION_BEGIN });
+    try {
+      await axios.post("api/v1/question", questionObj);
+      dispatch({type: ActionType.CREATE_QUESTION_SUCCESS})
+      return true
+    } catch (error) {
+      let message: any;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({
+        type: ActionType.CREATE_QUESTION_FAILED,
+        payload: { message },
+      });
+      clearAlert()
+      return false
+    }
+  };
+
+  const editQuestion = async() => {
+    try {
+      console.log("editing")
+    } catch (error) {
+      
+    }
   }
 
   return (
@@ -298,7 +339,9 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         deleteQuiz,
         executeEditQuiz,
         setEditQuestion,
-        cancelEditQuestion
+        cancelEditQuestion,
+        createQuestion,
+        editQuestion
       }}
     >
       {children}

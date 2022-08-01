@@ -16,31 +16,41 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
   index,
   extraDetails,
 }) => {
-  const { editQuizDetails: { questions }, setEditQuestion} = useAppContext()
+  const {
+    editQuizDetails: { questions },
+    setEditQuestion,
+  } = useAppContext();
 
   const editQuestion = (id: object) => {
-    const question = questions?.find(item => item._id === id)
-    if(question) setEditQuestion(question)
+    const question = questions?.find((item) => item._id === id);
+    if (question) setEditQuestion(question, true);
   };
   const deleteQuestion = () => {};
 
   return (
     <Wrapper>
       <div className="question-header">
-      <p className="question-tag">Question {index + 1}</p>
-      {extraDetails && (
-        <div>
-          <button className="btn question-edit-btn alert-success" onClick={() => editQuestion(id)}>
-            ✍Edit
-          </button>
-          <button
-            className="btn question-delete-btn alert-danger"
-            onClick={() => deleteQuestion()}
-          >
-            🗑Delete
-          </button>
-        </div>
-      )}
+        <p className="question-tag">Question {index + 1}</p>
+        {extraDetails && (
+          <div>
+            <button
+              className="btn question-edit-btn alert-success"
+              onClick={() => editQuestion(id)}
+            >
+              ✍Edit
+            </button>
+            <button
+              className="btn question-delete-btn alert-danger"
+              onClick={() => deleteQuestion()}
+            >
+              🗑Delete
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="question-footer">
+        <span className="question-type">📝Question Type: {question.type.split("-").join(" ")}</span>
+        <span className="question-point">⚪ Point: {question.points}</span>
       </div>
       <h5 className="question-content">{question.question}</h5>
       <ul className="question-options">

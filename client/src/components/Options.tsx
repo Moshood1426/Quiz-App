@@ -4,7 +4,7 @@ import useAppContext from "../store/appContext";
 import FormItem from "./FormItem";
 
 const Options = () => {
-  const { questionEdit, setEditQuestion } = useAppContext();
+  const { questionEdit, editingQuestion, setEditQuestion } = useAppContext();
 
   function handleMultipleChoiceChange(
     event: React.ChangeEvent<HTMLInputElement>
@@ -15,12 +15,14 @@ const Options = () => {
       index === name ? (item = value) : item
     );
     const questionObj = { ...questionEdit, options };
-    setEditQuestion(questionObj);
+    const editing = editingQuestion ? true : false 
+    setEditQuestion(questionObj, editing);
   }
 
   const handleCorrectAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
     const questionObj = { ...questionEdit, correctAnswer: event.target.value };
-    setEditQuestion(questionObj);
+    const editing = editingQuestion ? true : false 
+    setEditQuestion(questionObj, editing);
   };
 
   const handleFillGapChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +31,8 @@ const Options = () => {
       correctAnswer: event.target.value,
       options: [event.target.value],
     };
-    setEditQuestion(questionObj);
+    const editing = editingQuestion ? true : false 
+    setEditQuestion(questionObj, editing);
   };
 
   if (questionEdit.type === "multiple-choice") {

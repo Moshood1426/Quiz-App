@@ -4,7 +4,7 @@ const Quiz = require("../models/Quiz");
 const { StatusCodes } = require("http-status-codes");
 
 const createQuestion = async (req, res) => {
-  const { type, question, options, correctAnswer, forQuiz, createdBy } =
+  const { type, question, options, correctAnswer, forQuiz } =
     req.body;
 
   if (
@@ -12,13 +12,14 @@ const createQuestion = async (req, res) => {
     !question ||
     !correctAnswer ||
     !forQuiz ||
-    !createdBy ||
     !options
   ) {
     throw new BadRequestError("Kindly fill required fields");
   }
 
-  const setQuestion = await Question.create({ ...req.body });
+  const createdBy = req.user.userId
+
+  const setQuestion = await Question.create({ ...req.body, createdBy });
   const quiz = await Quiz.findOne({ _id: setQuestion.forQuiz });
   quiz.noOfQuestions = quiz.noOfQuestions + 1;
   await quiz.save();

@@ -16,9 +16,9 @@ const QuestionsSchema = new mongoose.Schema(
       required: [true, "Kindly enter the options array"],
       validate: {
         validator: function arrayLimit(val) {
-          return val.length > 0 && val.length < 5;
+          return val.length > 0 && val.length < 5 && val.every((item) => item !== "");
         },
-        message: "Options should not exceed 1-4",
+        message: "Options should not be empty",
       },
     },
     correctAnswer: {
