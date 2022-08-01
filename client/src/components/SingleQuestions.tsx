@@ -23,7 +23,10 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
 
   const editQuestion = (id: object) => {
     const question = questions?.find((item) => item._id === id);
-    if (question) setEditQuestion(question, true);
+    if (question) {
+      setEditQuestion(question, true);
+      localStorage.setItem("questionId", JSON.stringify(question._id))
+    }
   };
   const deleteQuestion = () => {};
 

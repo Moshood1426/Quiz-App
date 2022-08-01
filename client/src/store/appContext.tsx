@@ -316,8 +316,10 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   const editQuestion = async() => {
+    const questionId = localStorage.getItem("questionId")!
+    const questionObj = { ...state.questionEdit, questionId: JSON.parse(questionId) }
     try {
-      console.log("editing")
+      console.log(questionObj)
     } catch (error) {
       
     }

@@ -57,7 +57,10 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
     if (alert) {
       startAddingQuestion(false);
       setQuestionType("");
-      if (editingQuestion) cancelEditQuestion();
+      if (editingQuestion) {
+        cancelEditQuestion();
+        localStorage.removeItem("questionId");
+      }
     } else {
       console.log("cancelled");
     }

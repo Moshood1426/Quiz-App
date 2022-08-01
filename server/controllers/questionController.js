@@ -4,20 +4,13 @@ const Quiz = require("../models/Quiz");
 const { StatusCodes } = require("http-status-codes");
 
 const createQuestion = async (req, res) => {
-  const { type, question, options, correctAnswer, forQuiz } =
-    req.body;
+  const { type, question, options, correctAnswer, forQuiz } = req.body;
 
-  if (
-    !type ||
-    !question ||
-    !correctAnswer ||
-    !forQuiz ||
-    !options
-  ) {
+  if (!type || !question || !correctAnswer || !forQuiz || !options) {
     throw new BadRequestError("Kindly fill required fields");
   }
 
-  const createdBy = req.user.userId
+  const createdBy = req.user.userId;
 
   const setQuestion = await Question.create({ ...req.body, createdBy });
   const quiz = await Quiz.findOne({ _id: setQuestion.forQuiz });
@@ -46,7 +39,36 @@ const getQuizQuestions = async (req, res) => {
     .json({ totalQuestions: questions.length, questions });
 };
 
+const editQuestion = async (req, res) => {
+  const { type, question, options, correctAnswer, points, questionId } = req.body;
+
+  if (!type || !question || !correctAnswer || !options || !points) {
+    throw new BadRequestError("Kindly fill required fields");
+  }
+
+  const createdBy = req.user.userId;
+
+  const questionObj = await Question.findOne({
+    _id: questionId,
+    createdBy,
+  });
+
+  if (!questionObj) {
+    throw new NotFoundError("Invalid question edited");
+  }
+
+  questionObj.type = type;
+  questionObj.question = question;
+  questionObj.options = options;
+  questionObj.correctAnswer = correctAnswer;
+  questionObj.points = points
+  await questionObj.save();
+
+  res.status(StatusCodes.OK).json({ msg: "Question updated succesfully" });
+};
+
 module.exports = {
   createQuestion,
   getQuizQuestions,
+  editQuestion
 };
