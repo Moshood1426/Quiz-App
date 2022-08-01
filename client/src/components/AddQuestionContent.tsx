@@ -127,7 +127,7 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
         </div>
       </div>
       <div className="save" onClick={saveQuestion}>
-        <span>Save</span>
+        <span>💾 Save</span>
       </div>
       <div className="cancel" onClick={cancelAddQuestion}>
         <span>❌ Cancel</span>

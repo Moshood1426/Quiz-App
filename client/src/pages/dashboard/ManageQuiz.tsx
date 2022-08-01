@@ -25,7 +25,7 @@ const ManageQuiz = () => {
   const [isActive, setIsActive] = useState<"all" | "moderated" | "quick">(
     "all"
   );
-  const { getAllQuiz, isLoading, manageSingleQuiz, singleQuizDetails } =
+  const { getAllQuiz, isLoading, manageSingleQuiz } =
     useAppContext();
 
   useEffect(() => {
@@ -134,8 +134,8 @@ const ManageQuiz = () => {
           </>
         )}
       </div>
-      {manageSingleQuiz && singleQuizDetails && (
-        <ViewSingleQuiz quiz={{ ...singleQuizDetails }} />
+      {manageSingleQuiz && (
+        <ViewSingleQuiz />
       )}
     </Wrapper>
   );

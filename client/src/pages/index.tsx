@@ -1,4 +1,4 @@
-import Activities from "./dashboard/Activities";
+import Submission from "./dashboard/Submission";
 import CreateQuiz from "./dashboard/CreateQuiz";
 import Explore from "./dashboard/Explore";
 import ManageQuiz from "./dashboard/ManageQuiz";
@@ -17,7 +17,7 @@ export {
   ProtectedRoute,
   SharedLayout,
   ResetPassword,
-  Activities,
+  Submission,
   Explore,
   ManageQuiz,
   CreateQuiz,

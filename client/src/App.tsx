@@ -8,11 +8,11 @@ import {
   ManageQuiz,
   CreateQuiz,
   Profile,
-  Activities,
   EditQuiz,
   NotFound,
 } from "./pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Submission from "./pages/dashboard/Submission";
 
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
           <Route index element={<Explore />} />
           <Route path="/create-quiz" element={<CreateQuiz />} />
           <Route path="/manage-quiz" element={<ManageQuiz />} />
-          <Route path="/activities" element={<Activities />} />
+          <Route path="/submission" element={<Submission />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
         <Route

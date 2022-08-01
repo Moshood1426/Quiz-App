@@ -63,6 +63,7 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
     return {
       ...state,
       isLoading: true,
+      manageSingleQuiz: true,
       editCurrentQuiz: false,
       editQuizDetails: { details: null, questions: null },
     };
@@ -71,7 +72,6 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      manageSingleQuiz: true,
       singleQuizDetails: action.payload,
     };
   }

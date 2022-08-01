@@ -93,7 +93,17 @@ const Wrapper = styled.div`
   .cancel {
     padding: .5em 0;
     font-size: 1rem;
-    background-color: #94D7A2;
+    background-color: var(--red-light);
+    color: var(--red-dark);
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .save {
+    padding: .5em 0;
+    font-size: 1rem;
+    background-color: #bbebc6;
     color: var(--red-dark);
     text-align: center;
     font-weight: bold;
