@@ -95,5 +95,9 @@ const Wrapper = styled.div`
     border-radius: 55% 45% 70% 45% / 39% 30% 70% 70%;
     z-index: 0;
   }
+
+  .log-in {
+    color: var(--primary-200);
+  }
 `;
 export default Wrapper;

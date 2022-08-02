@@ -24,11 +24,11 @@ const Register: React.FC = () => {
     isLoading,
     showAlert,
   } = useAppContext();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if(user) {
-      navigate("/")
+    if (user) {
+      navigate("/");
     }
     //eslint-disable-next-line
   }, [user]);
@@ -131,7 +131,9 @@ const Register: React.FC = () => {
           <div className="foot-div">
             <p className="foot-text">
               If you’re here to take tests,{" "}
-              <span className="log-in">login here</span>{" "}
+              <span className="log-in" onClick={() => navigate("/start-test")}>
+                login here
+              </span>{" "}
             </p>
           </div>
         </div>
@@ -211,7 +213,9 @@ const Register: React.FC = () => {
         <div className="foot-div">
           <p className="foot-text">
             If you’re here to take tests,{" "}
-            <span className="log-in">login here</span>{" "}
+            <span className="log-in" onClick={() => navigate("/start-test")}>
+              login here
+            </span>{" "}
           </p>
         </div>
       </div>

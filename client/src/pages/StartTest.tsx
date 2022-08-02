@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Logo from "../components/Logo";
 import Wrapper from "../assets/wrappers/StartTest";
 import { Card, FormItem } from "../components";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   quizCode: "",
@@ -10,6 +11,8 @@ const initialState = {
 
 const StartTest = () => {
   const [formData, setFormData] = useState(initialState);
+
+  const navigate = useNavigate()
 
   const handleChange = () => {};
   return (
@@ -46,8 +49,8 @@ const StartTest = () => {
       </Card>
       <div className="foot-div">
         <p className="foot-text">
-          If you’re here to take tests,{" "}
-          <span className="log-in">login here</span>{" "}
+          Are you the mentor?{" "}
+          <span className="log-in" onClick={() => navigate("/register")}>login here</span>{" "}
         </p>
       </div>
     </Wrapper>
