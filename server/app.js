@@ -19,6 +19,7 @@ app.use(cookieParser(process.env.JWT_SECRET))
 const authRoute = require("./routes/authRoute")
 const quizRoute = require("./routes/quizRoute")
 const questionRoute = require("./routes/questionRoute")
+const participantRoute = require("./routes/participantRoute")
 
 app.get("/api/v1", (req, res) => {
     res.status(200).json({msg: "connection succesful"})
@@ -27,6 +28,7 @@ app.get("/api/v1", (req, res) => {
 app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/quiz', quizRoute)
 app.use('/api/v1/question', questionRoute)
+app.use("/api/v1/participant", participantRoute)
 
 //setting up error handlers and invoking them
 const errorHandlerMiddleware = require("./middleware/error-handler")
