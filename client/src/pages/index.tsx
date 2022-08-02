@@ -10,6 +10,7 @@ import NotFound from "./NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./Register";
 import ResetPassword from "./ResetPassword";
+import StartTest from "./StartTest";
 
 export {
   Landing,
@@ -23,5 +24,6 @@ export {
   CreateQuiz,
   EditQuiz,
   Profile,
-  NotFound
+  NotFound,
+  StartTest
 };

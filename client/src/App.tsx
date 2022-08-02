@@ -10,6 +10,7 @@ import {
   Profile,
   EditQuiz,
   NotFound,
+  StartTest,
 } from "./pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Submission from "./pages/dashboard/Submission";
@@ -43,6 +44,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/start-test" element={<StartTest />}/>
         <Route path="/*" element={<NotFound />}/>
       </Routes>
     </Router>
