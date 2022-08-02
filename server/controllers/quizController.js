@@ -120,4 +120,22 @@ const editQuiz = async(req, res) => {
   res.status(StatusCodes.OK).json({msg: "Quiz details updated successfully"})
 }
 
-module.exports = { createQuiz, getAllQuiz, getSingleQuiz, deleteSingleQuiz, editQuiz };
+const addParticipant = async (req, res) => {
+  const { identifier } = req.body
+  const { quizId } = req.params
+  if(!identifier) {
+    throw new BadRequestError("Please enter a valid identifier")
+  }
+
+  const quiz = await Quiz.findOne({_id: quizId})
+  if(!quiz) {
+    throw new NotFoundError("Invalid quiz Id input")
+  }
+  const singleItem = {identifier}
+
+  const quizUpdate = await Quiz.findOneAndUpdate({_id: quizId}, { participants: [...quiz.participants, singleItem] })
+
+  res.status(StatusCodes.CREATED).json({quizUpdate})
+}
+
+module.exports = { createQuiz, getAllQuiz, getSingleQuiz, deleteSingleQuiz, editQuiz, addParticipant };

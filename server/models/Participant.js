@@ -1,0 +1,37 @@
+const mongoose = require("mongoose");
+
+const answerSchema = new mongoose.Schema({
+  questionId: {
+    type: mongoose.Types.ObjectId,
+    ref: "question",
+    required: [true, "Kindly enter answer for valid Question"],
+  },
+  answer: {
+    type: String,
+    required: [true, "Kindly enter an answer"],
+  },
+});
+
+const ParticipantSchema = new mongoose.Schema({
+  identifier: {
+    type: String,
+    required: [true, "identifier should be provided"],
+    minLength: [5, "Identifier should not be less than 5 chars"],
+  },
+  answers: [answerSchema],
+  quizId: {
+    type: mongoose.Types.ObjectId,
+    ref: "quiz",
+    required: [true, "kindly enter quizId"],
+  },
+  submitted: {
+    type: Boolean,
+    default: false
+  },
+  startedTest: {
+    type: Boolean,
+    default: false
+  }
+});
+
+module.exports = mongoose.model("participant", ParticipantSchema);

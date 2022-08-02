@@ -129,6 +129,13 @@ interface SingleQuiz {
   __v: Number;
 }
 
+export interface SingleParticipant {
+  _id: object
+  startedTest: string
+  submitted: string
+  identifier: string
+}
+
 interface Activity {
   action: string;
   for: object;

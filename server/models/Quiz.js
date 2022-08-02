@@ -1,25 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-const TestParticipantsSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: [true, "Please enter an email"],
-    validate: {
-      validator: validator.isEmail,
-      message: "Please enter a valid email address",
-    },
-  },
-  startedTest: {
-    type: Boolean,
-    default: false,
-  },
-  submitted: {
-    type: Boolean,
-    default: false,
-  },
-});
-
 const QuizSchema = new mongoose.Schema(
   {
     quizTitle: {
@@ -57,11 +38,6 @@ const QuizSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    allowNonParticipants: {
-      type: Boolean,
-      default: false,
-    },
-    participants: [TestParticipantsSchema],
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",

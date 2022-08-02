@@ -294,8 +294,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.CREATE_QUESTION_BEGIN });
     try {
       await axios.post("api/v1/question", questionObj);
-      dispatch({type: ActionType.CREATE_QUESTION_SUCCESS})
-      return true
+      dispatch({ type: ActionType.CREATE_QUESTION_SUCCESS });
+      return true;
     } catch (error) {
       let message: any;
       if (axios.isAxiosError(error)) {
@@ -307,19 +307,19 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         type: ActionType.CREATE_QUESTION_FAILED,
         payload: { message },
       });
-      clearAlert()
-      return false
+      clearAlert();
+      return false;
     }
   };
 
-  const editQuestion = async() => {
-    const questionId = JSON.parse(localStorage.getItem("questionId")!)
-    const questionObj = { ...state.questionEdit }
-    dispatch({type: ActionType.EDIT_QUESTION_BEGIN})
+  const editQuestion = async () => {
+    const questionId = JSON.parse(localStorage.getItem("questionId")!);
+    const questionObj = { ...state.questionEdit };
+    dispatch({ type: ActionType.EDIT_QUESTION_BEGIN });
     try {
-      await axios.patch(`/api/v1/question/${questionId}`, {...questionObj})
-      dispatch({type: ActionType.EDIT_QUESTION_SUCCESS})
-      return true
+      await axios.patch(`/api/v1/question/${questionId}`, { ...questionObj });
+      dispatch({ type: ActionType.EDIT_QUESTION_SUCCESS });
+      return true;
     } catch (error) {
       let message: any;
       if (axios.isAxiosError(error)) {
@@ -331,21 +331,21 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         type: ActionType.EDIT_QUESTION_FAILED,
         payload: { message },
       });
-      clearAlert()
-      return false
+      clearAlert();
+      return false;
     }
-  }
+  };
 
-  const deleteQuestion = async(quizId: object) => {
-    dispatch({type: ActionType.DELETE_QUESTION_BEGIN})
+  const deleteQuestion = async (quizId: object) => {
+    dispatch({ type: ActionType.DELETE_QUESTION_BEGIN });
     try {
-      await authFetch.delete(`/question/${quizId}`)
-      dispatch({type: ActionType.DELETE_QUESTION_SUCCESS})
+      await authFetch.delete(`/question/${quizId}`);
+      dispatch({ type: ActionType.DELETE_QUESTION_SUCCESS });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       //logoutUser()
     }
-  }
+  };
 
   return (
     <AppContext.Provider
@@ -366,7 +366,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         cancelEditQuestion,
         createQuestion,
         editQuestion,
-        deleteQuestion
+        deleteQuestion,
       }}
     >
       {children}
