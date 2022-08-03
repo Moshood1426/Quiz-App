@@ -1,6 +1,7 @@
 import React from "react";
 import Wrapper from "../assets/wrappers/SingleQuiz";
 import Moment from "react-moment";
+import { getTime } from "../utils/actions";
 import { SingleQuiz as SingleQuizInterface } from "../store/@types/context";
 import useAppContext from "../store/appContext";
 import { useNavigate } from "react-router-dom";
@@ -12,23 +13,17 @@ interface SingleQuizProps {
 
 const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
   const navigate = useNavigate();
-  const {
-    startManageQuiz,
-    deleteQuiz,
-    singleQuizDetails,
-  } = useAppContext();
+  const { startManageQuiz, deleteQuiz, singleQuizDetails } = useAppContext();
 
   const editQuiz = () => {
     navigate(`/${singleQuizDetails?._id}`);
   };
 
   const deleteSingleQuiz = () => {
-    const alert = window.confirm(
-      "Are you sure you want to delete quiz?"
-    );
+    const alert = window.confirm("Are you sure you want to delete quiz?");
     if (alert) {
-      navigate("/manage-quiz")
-      if(singleQuizDetails) deleteQuiz(singleQuizDetails._id)
+      navigate("/manage-quiz");
+      if (singleQuizDetails) deleteQuiz(singleQuizDetails._id);
     }
   };
 
@@ -80,19 +75,18 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
           </p>
         </div>
         <div className="single-quiz-footer">
-          <div>
+          <div className="single-quiz-date">
             <p>
-              Scheduled for:{" "}
-              {quiz.startDate ? (
-                `<span>${quiz.startDate}</span>`
+              {quiz.published ? (
+                getTime(quiz.startDate, quiz.endDate)
               ) : (
-                <span className="start-date">not published</span>
+                <p className="single-quiz-date-time">⏰ not published</p>
               )}
             </p>
           </div>
           <div>
             {extraDetails ? (
-              <>
+              <div>
                 <button className="btn single-quiz-edit-btn" onClick={editQuiz}>
                   ✍Edit
                 </button>
@@ -102,10 +96,10 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
                 >
                   🗑Delete
                 </button>
-              </>
+              </div>
             ) : (
               <button
-                className="btn single-quiz-delete-btn"
+                className="btn single-quiz-delete-btn view-details"
                 onClick={() => startManageQuiz(quiz._id)}
               >
                 👁️View Details

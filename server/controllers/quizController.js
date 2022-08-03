@@ -92,13 +92,12 @@ const deleteSingleQuiz = async (req, res) => {
     throw new NotFoundError("Kindly input a valid quizId");
   }
 
-  await quiz.remove()
+  await quiz.remove();
   res.status(StatusCodes.OK).json({ msg: "Quiz deleted succesfully" });
 };
 
-const editQuiz = async(req, res) => {
-
-  const { quizCode, quizTitle, privacy } = req.body
+const editQuiz = async (req, res) => {
+  const { quizCode, quizTitle, privacy } = req.body;
   const { quizId } = req.params;
 
   if (!quizCode || !quizTitle || !privacy) {
@@ -108,34 +107,53 @@ const editQuiz = async(req, res) => {
 
   const quiz = await Quiz.findOne({ _id: quizId, createdBy: createdBy });
 
-  if(!quiz) {
-    throw new NotFoundError("Something went wrong")
+  if (!quiz) {
+    throw new NotFoundError("Something went wrong");
   }
 
-  quiz.quizCode = quizCode
-  quiz.quizTitle = quizTitle
-  quiz.privacy = privacy === "private" ? true : false
-  await quiz.save()
+  quiz.quizCode = quizCode;
+  quiz.quizTitle = quizTitle;
+  quiz.privacy = privacy === "private" ? true : false;
+  await quiz.save();
 
-  res.status(StatusCodes.OK).json({msg: "Quiz details updated successfully"})
-}
+  res.status(StatusCodes.OK).json({ msg: "Quiz details updated successfully" });
+};
 
-const addParticipant = async (req, res) => {
-  const { identifier } = req.body
-  const { quizId } = req.params
-  if(!identifier) {
-    throw new BadRequestError("Please enter a valid identifier")
+const publishQuiz = async (req, res) => {
+  const { anytime, startDate, endDate } = req.body;
+  const { quizId } = req.params;
+
+  if (!anytime) {
+    if (!startDate || !endDate) {
+      throw new BadRequestError(
+        "One of start date or end date should be provided"
+      );
+    }
   }
 
-  const quiz = await Quiz.findOne({_id: quizId})
-  if(!quiz) {
-    throw new NotFoundError("Invalid quiz Id input")
+  const quiz = await Quiz.findOne({ _id: quizId });
+  if (!quiz) {
+    throw new NotFoundError("quiz not found");
   }
-  const singleItem = {identifier}
 
-  const quizUpdate = await Quiz.findOneAndUpdate({_id: quizId}, { participants: [...quiz.participants, singleItem] })
+  if (anytime) {
+    quiz.published = true;
+    await quiz.save();
+  } else {
+    startDate && (quiz.startDate = startDate);
+    endDate && (quiz.endDate = endDate);
+    quiz.published = true;
+    await quiz.save();
+  }
 
-  res.status(StatusCodes.CREATED).json({quizUpdate})
-}
+  res.status(StatusCodes.CREATED).json({ msg: "Quiz succesfully published" });
+};
 
-module.exports = { createQuiz, getAllQuiz, getSingleQuiz, deleteSingleQuiz, editQuiz, addParticipant };
+module.exports = {
+  createQuiz,
+  getAllQuiz,
+  getSingleQuiz,
+  deleteSingleQuiz,
+  editQuiz,
+  publishQuiz,
+};

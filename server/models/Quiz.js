@@ -24,10 +24,10 @@ const QuizSchema = new mongoose.Schema(
       required: true,
     },
     startDate: {
-      type: Date,
+      type: Date
     },
     endDate: {
-      type: Date,
+      type: Date
     },
     published: {
       type: Boolean,

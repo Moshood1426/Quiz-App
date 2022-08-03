@@ -116,7 +116,8 @@ interface SingleQuiz {
   quizTitle: string;
   quizCode: string;
   quizType: string;
-  startDate?: Date;
+  startDate: Date;
+  endDate: Date;
   noOfQuestions: number;
   privacy: boolean;
   noOfSubmissions: number;

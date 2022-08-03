@@ -5,7 +5,7 @@ const {
   deleteSingleQuiz,
   getSingleQuiz,
   editQuiz,
-  addParticipant,
+  publishQuiz,
 } = require("../controllers/quizController");
 const router = express.Router();
 const authenticateUser = require("../middleware/authMiddleware");
@@ -14,6 +14,8 @@ router
   .route("/")
   .post(authenticateUser, createQuiz)
   .get(authenticateUser, getAllQuiz);
+
+router.route("/publish/:quizId").patch(authenticateUser, publishQuiz);
 
 router
   .route("/:quizId")
