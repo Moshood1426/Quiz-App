@@ -121,6 +121,7 @@ interface SingleQuiz {
   privacy: boolean;
   noOfSubmissions: number;
   allowNonParticipants: boolean;
+  published: boolean;
   participants: Participants[];
   createdBy: object;
   _id: object;

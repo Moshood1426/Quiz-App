@@ -69,7 +69,6 @@ const Register: React.FC = () => {
       reqObj = { email, password };
       login(reqObj);
     }
-    setFormData(initialState);
   };
 
   const handleForgotPassword = (event: React.FormEvent<HTMLFormElement>) => {

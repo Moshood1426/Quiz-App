@@ -3,11 +3,12 @@ import Wrapper from "../assets/wrappers/FormItem";
 
 interface FormItemProps {
   name: string;
-  placeholder: string;
+  placeholder?: string;
   type: string;
   value: string;
   label?: boolean;
   labelText?: string;
+  disabled?:boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -18,6 +19,7 @@ const FormItem: React.FC<FormItemProps> = ({
   placeholder,
   type,
   value,
+  disabled,
   onChange,
 }) => {
   return (
@@ -34,6 +36,7 @@ const FormItem: React.FC<FormItemProps> = ({
         onChange={onChange}
         className="formInput"
         placeholder={placeholder ? placeholder : name}
+        disabled={disabled ? true : false}
       />
     </Wrapper>
   );

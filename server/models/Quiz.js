@@ -26,6 +26,13 @@ const QuizSchema = new mongoose.Schema(
     startDate: {
       type: Date,
     },
+    endDate: {
+      type: Date,
+    },
+    published: {
+      type: Boolean,
+      default: false
+    },
     noOfQuestions: {
       type: Number,
       default: 0,
