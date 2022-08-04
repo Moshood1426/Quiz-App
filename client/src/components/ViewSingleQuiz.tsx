@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../assets/wrappers/ViewSingleQuiz";
 import SingleQuiz from "./SingleQuiz";
 import useAppContext from "../store/appContext";
@@ -6,6 +6,7 @@ import QuizActivities from "./QuizActivities";
 import AllQuestions from "./AllQuestions";
 import Loading from "./Loading";
 import moment from "moment";
+import { FcInfo } from "react-icons/fc";
 import FormItem from "./FormItem";
 import Alert from "./Alert";
 
@@ -17,6 +18,7 @@ const initialState = {
 
 const ViewSingleQuiz: React.FC = () => {
   const [formData, setFormData] = useState(initialState);
+  const [publishing, setPublishing] = useState(false);
   const [publishQuiz, setPublishQuiz] = useState(false);
   const {
     validateInput,
@@ -24,31 +26,53 @@ const ViewSingleQuiz: React.FC = () => {
     singleQuizDetails,
     isLoading,
     endManageQuiz,
+    startManageQuiz,
+    publishQuiz: runPublishQuiz,
   } = useAppContext();
 
   const handleTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
 
-    setFormData((item) => ({
-      ...item,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    if (type === "checkbox") {
+      setFormData({ anytime: checked, startDate: "", endDate: "" });
+    } else {
+      setFormData((item) => ({ ...item, [name]: value }));
+    }
   };
 
-  const executePublishQuiz = () => {
+  const executePublishQuiz = async () => {
     const currentTime = moment().format().slice(0, 16);
+
     if (formData.startDate && formData.startDate < currentTime) {
-      validateInput();
+      validateInput("Start date cannot be less than current date");
+      return;
     }
-    if (formData.startDate > formData.endDate) {
-      validateInput();
+    if (formData.startDate && formData.endDate) {
+      if (formData.startDate > formData.endDate) {
+        validateInput("Start date cannot be greater than current date");
+        return;
+      }
+    }
+    if (JSON.stringify(formData) === JSON.stringify(initialState)) {
+      validateInput("All input cannot be empty");
+      return;
+    }
+    if (singleQuizDetails) {
+      setPublishing(true);
+      const result = await runPublishQuiz(singleQuizDetails?._id, formData);
+      if (result) {
+        startManageQuiz(singleQuizDetails?._id);
+      }
+      setPublishing(false);
     }
   };
 
   return (
     <Wrapper>
       {isLoading || !singleQuizDetails ? (
-        <Loading />
+        <div className="loading-container">
+          <Loading />
+        </div>
       ) : (
         <>
           <span className="cancel-btn" onClick={() => endManageQuiz()}>
@@ -58,21 +82,23 @@ const ViewSingleQuiz: React.FC = () => {
             <div className="content">
               <div className="content-main">
                 {singleQuizDetails.published ? (
-                  <p className="alert alert-success">
+                  <p className="content-status">
+                    <FcInfo className="status-icon" />
                     This quiz has been published.{" "}
                     <span
                       className="publish-start"
-                      onClick={() => setPublishQuiz(item => !item)}
+                      onClick={() => setPublishQuiz((item) => !item)}
                     >
                       Edit publish details?
                     </span>
                   </p>
                 ) : (
-                  <p className="alert alert-danger">
+                  <p className="content-status">
+                    <FcInfo className="status-icon" />
                     This quiz has not been published. click{" "}
                     <span
                       className="publish-start"
-                      onClick={() => setPublishQuiz(item => !item)}
+                      onClick={() => setPublishQuiz((item) => !item)}
                     >
                       here
                     </span>{" "}
@@ -111,7 +137,11 @@ const ViewSingleQuiz: React.FC = () => {
                         labelText="End Date"
                         disabled={formData.anytime ? true : false}
                       />
-                      <button className="btn" onClick={executePublishQuiz}>
+                      <button
+                        className="btn"
+                        onClick={executePublishQuiz}
+                        disabled={publishing}
+                      >
                         Publish
                       </button>
                     </div>

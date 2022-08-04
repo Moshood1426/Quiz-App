@@ -37,7 +37,7 @@ export interface ContextType extends InitialState {
   register: (reqObj: registerArgs) => Promise<void>;
   login: (reqObj: registerArgs) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
-  validateInput: () => void;
+  validateInput: (arg?: string) => void;
   getAllQuiz: (reqObj: GetAllQuizArgs) => Promise<void>;
   startManageQuiz: (quizId: object) => void;
   endManageQuiz: () => void;
@@ -47,11 +47,15 @@ export interface ContextType extends InitialState {
   ) => void;
   deleteQuiz: (quizId: object) => Promise<void>;
   executeEditQuiz: (quizId: object, quizObj: editQuizArg) => Promise<boolean>;
-  setEditQuestion: (questionObj: questionEdit, edit?: boolean) => void
-  cancelEditQuestion: () => void
-  createQuestion: () => Promise<boolean>
-  editQuestion: () => Promise<boolean>
-  deleteQuestion: (quizId: object) => Promise<void>
+  setEditQuestion: (questionObj: questionEdit, edit?: boolean) => void;
+  cancelEditQuestion: () => void;
+  createQuestion: () => Promise<boolean>;
+  editQuestion: () => Promise<boolean>;
+  deleteQuestion: (quizId: object) => Promise<void>;
+  publishQuiz: (
+    quizId: object,
+    publishQuizDetails: PublishQuizDetails
+  ) => Promise<boolean>;
 }
 
 export interface editQuizArg {
@@ -132,10 +136,10 @@ interface SingleQuiz {
 }
 
 export interface SingleParticipant {
-  _id: object
-  startedTest: string
-  submitted: string
-  identifier: string
+  _id: object;
+  startedTest: string;
+  submitted: string;
+  identifier: string;
 }
 
 interface Activity {
@@ -154,8 +158,14 @@ interface Participants {
   submitted: string;
 }
 
+export interface PublishQuizDetails {
+  anytime: boolean;
+  startDate: Date | string;
+  endDate: Date | string;
+}
+
 export interface SingleQuestion {
-  type:  "multiple-choice" | "true-false" | "fill-in-gap";
+  type: "multiple-choice" | "true-false" | "fill-in-gap";
   question: string;
   options: string[];
   correctAnswer: string;

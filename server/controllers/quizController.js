@@ -123,8 +123,9 @@ const publishQuiz = async (req, res) => {
   const { anytime, startDate, endDate } = req.body;
   const { quizId } = req.params;
 
+  console.log(req.body)
   if (!anytime) {
-    if (!startDate || !endDate) {
+    if (!startDate && !endDate) {
       throw new BadRequestError(
         "One of start date or end date should be provided"
       );
@@ -138,6 +139,8 @@ const publishQuiz = async (req, res) => {
 
   if (anytime) {
     quiz.published = true;
+    quiz.startDate = "";
+    quiz.endDate = "";
     await quiz.save();
   } else {
     startDate && (quiz.startDate = startDate);

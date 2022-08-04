@@ -9,7 +9,9 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       ...state,
       showAlert: true,
       alertType: "danger",
-      alertText: "Kindly input necesary values",
+      alertText: action.payload.text
+        ? action.payload.text
+        : "Kindly input necesary values",
     };
   }
   if (action.type === ActionType.CLEAR_ALERT) {
@@ -259,17 +261,26 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       alertText: action.payload.message.msg,
     };
   }
-  if(action.type === ActionType.DELETE_QUESTION_BEGIN) {
+  if (action.type === ActionType.DELETE_QUESTION_BEGIN) {
     return {
       ...state,
-      isLoading: true
-    }
+      isLoading: true,
+    };
   }
-  if(action.type === ActionType.DELETE_QUESTION_SUCCESS) {
+  if (action.type === ActionType.DELETE_QUESTION_SUCCESS) {
     return {
       ...state,
-      isLoading: false
-    }
+      isLoading: false,
+    };
+  }
+  if (action.type === ActionType.PUBLISH_QUIZ_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.message,
+    };
   }
   throw new Error(`no such action : ${action.type}`);
 };

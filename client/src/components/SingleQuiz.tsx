@@ -76,13 +76,12 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
         </div>
         <div className="single-quiz-footer">
           <div className="single-quiz-date">
-            <p>
+            
               {quiz.published ? (
-                getTime(quiz.startDate, quiz.endDate)
+                <div>{getTime(quiz.startDate, quiz.endDate)}</div>
               ) : (
                 <p className="single-quiz-date-time">⏰ not published</p>
               )}
-            </p>
           </div>
           <div>
             {extraDetails ? (

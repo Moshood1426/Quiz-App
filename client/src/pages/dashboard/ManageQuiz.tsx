@@ -125,7 +125,7 @@ const ManageQuiz = () => {
         />
       </div>
       <div className="manage-quiz-content-container">
-        {isLoading ? (
+        {!manageSingleQuiz && isLoading ? (
           <Loading />
         ) : (
           <>

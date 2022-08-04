@@ -15,6 +15,7 @@ import {
   GetSingleQuizResponse,
   editQuizArg,
   questionEdit,
+  PublishQuizDetails,
 } from "./@types/context";
 import ActionType from "./actions";
 
@@ -77,8 +78,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   );
 
-  const validateInput = () => {
-    dispatch({ type: ActionType.VALIDATE_INPUT });
+  const validateInput = (text?: string) => {
+    dispatch({ type: ActionType.VALIDATE_INPUT, payload: { text: text } });
     clearAlert();
   };
 
@@ -347,6 +348,32 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  const publishQuiz = async (
+    quizId: object,
+    publishQuizDetails: PublishQuizDetails
+  ) => {
+
+    try {
+      await axios.patch(`/api/v1/quiz/publish/${quizId}`, {
+        ...publishQuizDetails,
+      });
+      return true
+    } catch (error) {
+      let message: any;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({
+        type: ActionType.PUBLISH_QUIZ_FAILED,
+        payload: { message },
+      });
+    }
+    clearAlert();
+    return false
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -367,6 +394,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         createQuestion,
         editQuestion,
         deleteQuestion,
+        publishQuiz,
       }}
     >
       {children}
