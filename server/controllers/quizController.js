@@ -1,8 +1,10 @@
 const { BadRequestError, NotFoundError } = require("../errors");
 const Quiz = require("../models/Quiz");
 const Activities = require("../models/Activities");
+const Participant = require("../models/Participant");
 const Question = require("../models/Questions");
 const { StatusCodes } = require("http-status-codes");
+const Questions = require("../models/Questions");
 
 const createQuiz = async (req, res) => {
   const { quizCode, quizTitle, quizType } = req.body;
@@ -66,7 +68,16 @@ const getAllQuiz = async (req, res) => {
 };
 
 const getSingleQuiz = async (req, res) => {
+  const { quizCode } = req.query;
   const { quizId } = req.params;
+
+  if (quizCode) {
+    const quiz = await Quiz.findOne({ quizCode: quizCode });
+    if (!quiz) {
+      throw new NotFoundError("Quiz cannot be found");
+    }
+    res.status(StatusCodes.OK).json({ quiz });
+  }
 
   if (!quizId) {
     throw new BadRequestError("Kindly input a valid quizId");
@@ -123,7 +134,7 @@ const publishQuiz = async (req, res) => {
   const { anytime, startDate, endDate } = req.body;
   const { quizId } = req.params;
 
-  console.log(req.body)
+  console.log(req.body);
   if (!anytime) {
     if (!startDate && !endDate) {
       throw new BadRequestError(

@@ -99,5 +99,11 @@ const Wrapper = styled.div`
   .log-in {
     color: var(--primary-200);
   }
+
+  .forgot-pass-text {
+    font-size: 1rem;
+    margin-bottom: 1em;
+    text-align: center;
+  }
 `;
 export default Wrapper;
