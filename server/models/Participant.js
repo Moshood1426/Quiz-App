@@ -16,12 +16,14 @@ const ParticipantSchema = new mongoose.Schema({
   firstName: {
     type: String,
     trim: true,
+    required: true,
     minlength: [3, "Name cannot be less than 3 characters"],
     maxlength: [20, "Name cannot be more than 3 characters"],
   },
   lastName: {
     type: String,
     trim: true,
+    required: true,
     minlength: [3, "Name cannot be less than 3 characters"],
     maxlength: [20, "Name cannot be more than 3 characters"],
   },
@@ -45,5 +47,7 @@ const ParticipantSchema = new mongoose.Schema({
     default: false,
   },
 });
+
+ParticipantSchema.index({identifier: 1}, {unique: true})
 
 module.exports = mongoose.model("participant", ParticipantSchema);

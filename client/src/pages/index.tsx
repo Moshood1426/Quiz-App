@@ -11,6 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Register from "./Register";
 import ResetPassword from "./ResetPassword";
 import StartTest from "./StartTest";
+import TakeTest from "./TakeTest";
 
 export {
   Landing,
@@ -25,5 +26,6 @@ export {
   EditQuiz,
   Profile,
   NotFound,
-  StartTest
+  StartTest,
+  TakeTest
 };

@@ -10,10 +10,10 @@ const { attachCookiesToRes } = require("../utils/jwt");
 const validator = require("validator");
 
 const createParticipant = async (req, res) => {
-  const { identifier } = req.body;
+  const { identifier, firstName, lastName } = req.body;
   const { quizId } = req.params;
 
-  if (!identifier) {
+  if (!identifier || !firstName || !lastName) {
     throw new BadRequestError("An identifier should be added");
   }
 
@@ -23,20 +23,21 @@ const createParticipant = async (req, res) => {
     throw new NotFoundError("quiz with id not found");
   }
 
-  await Participant.create({ identifier, quizId });
+  await Participant.create({ identifier, quizId, firstName, lastName });
 
   res.status(StatusCodes.CREATED).json({ msg: "Created" });
 };
 
 const validateParticipant = async (req, res) => {
-  const { quizId, privacy, identifier, firstName, lastName } = req.query;
+  const { quizId, privacy, identifier, firstName, lastName } = req.body;
 
-  if (!quizId || !privacy) {
-    throw new BadRequestError(`Quiz with ${quizId} not found`);
+  if (!quizId || typeof privacy !== "boolean") {
+    throw new BadRequestError(`Quiz ID and privacy should to be provided`);
   }
 
-  if (privacy === "true") {
-    const participant = await Participant.findOne({
+  let participant;
+  if (privacy === true) {
+    participant = await Participant.findOne({
       quizId,
       identifier,
     });
@@ -48,20 +49,26 @@ const validateParticipant = async (req, res) => {
     }
   }
 
-  if (privacy === "false") {
+  if (privacy === false) {
+    if (!identifier || !firstName || !lastName) {
+      throw new BadRequestError("Please input all necessary details");
+    }
     const identifierIsEmail = validator.isEmail(identifier);
     if (!identifierIsEmail) {
       throw new BadRequestError("Please provide a valid email");
     }
-    const participant = await Participant.create({
+    participant = await Participant.create({
       identifier,
       firstName,
       lastName,
+      quizId,
     });
   }
 
-  const userObj = { participantId: participant._id, quizId: quiz._id };
+  const userObj = { participantId: participant._id, quizId: quizId };
   attachCookiesToRes({ res, user: userObj });
+
+  res.status(StatusCodes.OK).json({ user: userObj });
 };
 
 module.exports = { createParticipant, validateParticipant };

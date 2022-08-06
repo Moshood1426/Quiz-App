@@ -20,6 +20,7 @@ import {
 import ActionType from "./actions";
 
 const user = localStorage.getItem("user");
+const authorizeParticipant = localStorage.getItem("participant");
 
 const initialState: InitialState = {
   showAlert: false,
@@ -44,6 +45,9 @@ const initialState: InitialState = {
     options: [],
     points: 1,
   },
+  validateParticipant: authorizeParticipant
+    ? JSON.parse(authorizeParticipant)
+    : null,
 };
 
 const AppContext = createContext<ContextType | null>(null);
@@ -352,12 +356,11 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     quizId: object,
     publishQuizDetails: PublishQuizDetails
   ) => {
-
     try {
       await axios.patch(`/api/v1/quiz/publish/${quizId}`, {
         ...publishQuizDetails,
       });
-      return true
+      return true;
     } catch (error) {
       let message: any;
       if (axios.isAxiosError(error)) {
@@ -371,7 +374,64 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       });
     }
     clearAlert();
-    return false
+    return false;
+  };
+
+  const getTestBegin = async (quizCode: string) => {
+    dispatch({ type: ActionType.GET_TEST_BEGIN });
+
+    try {
+      const { data } = await axios.get<GetSingleQuizResponse>(
+        `/api/v1/quiz/null?quizCode=${quizCode}`
+      );
+      dispatch({
+        type: ActionType.GET_SINGLE_QUIZ_SUCCESS,
+        payload: data.quiz,
+      });
+    } catch (error) {
+      let message: any;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({
+        type: ActionType.GET_TEST_FAILED,
+        payload: message,
+      });
+      clearAlert();
+    }
+  };
+
+  const authorizeParticipant = async (reqObj: {
+    quizId: object;
+    privacy: boolean;
+    identifier: string;
+    firstName?: string;
+    lastName?: string;
+  }) => {
+    dispatch({ type: ActionType.AUTHORIZE_PARTICIPANT_BEGIN });
+
+    try {
+      const { data } = await axios.post("/api/v1/participant", { ...reqObj });
+      dispatch({
+        type: ActionType.AUTHORIZE_PARTICIPANT_SUCCESS,
+        payload: data.user,
+      });
+      localStorage.setItem("participant", JSON.stringify(data.user));
+    } catch (error) {
+      let message;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({
+        type: ActionType.AUTHORIZE_PARTICIPANT_FAILED,
+        payload: message ,
+      });
+      clearAlert();
+    }
   };
 
   return (
@@ -395,6 +455,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         editQuestion,
         deleteQuestion,
         publishQuiz,
+        getTestBegin,
+        authorizeParticipant,
       }}
     >
       {children}

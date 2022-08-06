@@ -31,6 +31,12 @@ export interface InitialState {
     options: string[];
     points: 1;
   };
+  validateParticipant: AuthorizeParticipant | null;
+}
+
+export interface AuthorizeParticipant {
+  quizId: object;
+  participantId: object;
 }
 
 export interface ContextType extends InitialState {
@@ -56,6 +62,14 @@ export interface ContextType extends InitialState {
     quizId: object,
     publishQuizDetails: PublishQuizDetails
   ) => Promise<boolean>;
+  getTestBegin: (quizCode: string) => Promise<void>;
+  authorizeParticipant: (reqObj: {
+    quizId: object;
+    privacy: boolean;
+    identifier: string;
+    firstName?: string;
+    lastName?: string;
+  }) => Promise<void>;
 }
 
 export interface editQuizArg {

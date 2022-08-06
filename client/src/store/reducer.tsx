@@ -282,6 +282,43 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       alertText: action.payload.message,
     };
   }
+  if (action.type === ActionType.GET_TEST_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === ActionType.GET_TEST_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
+  if (action.type === ActionType.AUTHORIZE_PARTICIPANT_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === ActionType.AUTHORIZE_PARTICIPANT_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      validateParticipant: action.payload,
+    };
+  }
+  if (action.type === ActionType.AUTHORIZE_PARTICIPANT_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+    };
+  }
   throw new Error(`no such action : ${action.type}`);
 };
 
