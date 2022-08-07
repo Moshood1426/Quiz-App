@@ -8,6 +8,7 @@ const Quiz = require("../models/Quiz");
 const Participant = require("../models/Participant");
 const { attachCookiesToRes } = require("../utils/jwt");
 const validator = require("validator");
+const Questions = require("../models/Questions");
 
 const createParticipant = async (req, res) => {
   const { identifier, firstName, lastName } = req.body;
@@ -71,4 +72,37 @@ const validateParticipant = async (req, res) => {
   res.status(StatusCodes.OK).json({ user: userObj });
 };
 
-module.exports = { createParticipant, validateParticipant };
+const getParticipantQuestions = async (req, res) => {
+  const { quizId, participantId } = req.participant
+  
+  const participant = await Participant.findOne({_id: participantId, quizId: quizId})
+  if(!participant) {
+    throw new UnauthenticatedError("User not allowed to take this test")
+  }
+  const quiz = await Quiz.findOne({_id: quizId})
+  if(!quiz) {
+    throw new NotFoundError("quiz cannot be found" )
+  }
+
+  let result = Questions.find({forQuiz: quiz._id})
+  
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  result = result.skip(skip).limit(limit);
+  const questions = await result;
+
+  const totalQuestions = await Questions.countDocuments({ forQuiz: quizId })
+  if(!questions) {
+    throw new NotFoundError("questions not allocated to this quiz")
+  }
+
+  res.status(StatusCodes.OK).json({totalQuestions, quiz, questions})
+};
+
+module.exports = {
+  createParticipant,
+  validateParticipant,
+  getParticipantQuestions,
+};

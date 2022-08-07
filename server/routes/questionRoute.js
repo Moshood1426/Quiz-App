@@ -6,7 +6,7 @@ const {
   editQuestion,
   deleteQuestion,
 } = require("../controllers/questionController");
-const authenticateUser = require("../middleware/authMiddleware");
+const { authenticateUser } = require("../middleware/authMiddleware");
 
 router.route("/").post(authenticateUser, createQuestion);
 router

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   border-bottom: solid 1px var(--grey-200);
- //padding-bottom: 1em;
+  //padding-bottom: 1em;
   padding-top: 1.3em;
 
   p {
@@ -13,14 +13,14 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
   }
-  
+
   .question-tag {
     background-color: #fce7ff;
     color: #400a45;
     width: fit-content;
     padding: 0.3em 0.6em;
     border-radius: 10px;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
 
   .question-edit-btn {
@@ -65,7 +65,7 @@ const Wrapper = styled.div`
   }
 
   .question-footer {
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
     color: var(--primary-brown);
     text-transform: uppercase;
     font-size: 0.85rem;
@@ -80,7 +80,6 @@ const Wrapper = styled.div`
     color: var(--primary-brown);
     text-transform: uppercase;
     font-size: 0.85rem;
-    
   }
 
   @media (min-width: 550px) {

@@ -32,6 +32,8 @@ export interface InitialState {
     points: 1;
   };
   validateParticipant: AuthorizeParticipant | null;
+  limit: number;
+  page: number;
 }
 
 export interface AuthorizeParticipant {
@@ -70,6 +72,7 @@ export interface ContextType extends InitialState {
     firstName?: string;
     lastName?: string;
   }) => Promise<void>;
+  getParticipantQuizInfo: () => Promise<void>;
 }
 
 export interface editQuizArg {

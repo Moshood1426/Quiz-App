@@ -8,7 +8,7 @@ const {
   publishQuiz,
 } = require("../controllers/quizController");
 const router = express.Router();
-const authenticateUser = require("../middleware/authMiddleware");
+const { authenticateUser } = require("../middleware/authMiddleware");
 
 router
   .route("/")

@@ -23,7 +23,7 @@ const EditQuiz = () => {
     executeEditQuiz,
     editQuizDetails: { details },
     validateInput,
-    editingQuestion
+    editingQuestion,
   } = useAppContext();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -89,8 +89,8 @@ const EditQuiz = () => {
       quizCode,
     };
     const result = await executeEditQuiz(quizId, quizObj);
-    if(result) {
-      navigate("/manage-quiz")
+    if (result) {
+      navigate("/manage-quiz");
     }
   };
 
@@ -118,7 +118,11 @@ const EditQuiz = () => {
       </div>
       <div className="edit-quiz-content">
         <EditQuizDetails formData={formData} handleChange={handleChange} />
-        <AllQuestions startAddingQuestion={startAddingQuestions} extraDetails={true}/>
+        <AllQuestions
+          startAddingQuestion={startAddingQuestions}
+          extraDetails={true}
+          addQuestion={addQuestion}
+        />
       </div>
       {(addQuestion || editingQuestion) && (
         <AddQuestionsModal startAddingQuestion={startAddingQuestions} />

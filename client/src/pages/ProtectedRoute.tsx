@@ -17,7 +17,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ client, children }) => 
       navigate("/landing");
     }
     //eslint-disable-next-line
-  }, [user]);
+  }, [user, validateParticipant]);
 
   return <>{children}</>;
 };

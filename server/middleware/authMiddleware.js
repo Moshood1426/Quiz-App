@@ -38,4 +38,4 @@ const authenticateParticipant = (req, res, next) => {
   }
 };
 
-module.exports = authenticateUser;
+module.exports = { authenticateUser, authenticateParticipant}

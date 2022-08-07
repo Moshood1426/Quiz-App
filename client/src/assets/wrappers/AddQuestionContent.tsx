@@ -109,5 +109,10 @@ const Wrapper = styled.div`
     font-weight: bold;
     cursor: pointer;
   }
+
+  .disabled-save {
+    cursor: not-allowed;
+    opacity: .7;
+  }
 `;
 export default Wrapper;

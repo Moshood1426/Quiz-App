@@ -319,6 +319,20 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       alertText: action.payload.msg,
     };
   }
+  if (action.type === ActionType.GET_PARTICIPANT_QUIZ_INFO_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === ActionType.GET_PARTICIPANT_QUIZ_INFO_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      singleQuizDetails: action.payload.quiz,
+      numOfQuestions: action.payload.numOfQuestions,
+    };
+  }
   throw new Error(`no such action : ${action.type}`);
 };
 

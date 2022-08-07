@@ -2,6 +2,7 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const Question = require("../models/Questions");
 const Quiz = require("../models/Quiz");
 const { StatusCodes } = require("http-status-codes");
+const Questions = require("../models/Questions");
 
 const createQuestion = async (req, res) => {
   const { type, question, options, correctAnswer, forQuiz } = req.body;

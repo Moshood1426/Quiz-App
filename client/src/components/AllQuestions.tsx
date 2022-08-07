@@ -8,11 +8,13 @@ import SingleQuestion from "./SingleQuestions";
 interface AllQuestionsProps {
   startAddingQuestion?: (arg: boolean) => void;
   extraDetails?: boolean;
+  addQuestion?: boolean
 }
 
 const AllQuestions: React.FC<AllQuestionsProps> = ({
   startAddingQuestion,
   extraDetails,
+  addQuestion
 }) => {
   const {
     singleQuizQuestions,
@@ -20,6 +22,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
     editCurrentQuiz,
     editQuizDetails,
     isLoading,
+    editingQuestion,
   } = useAppContext();
 
   const calculateTotalPoints = (arg: SingleQuestionType[]) => {
@@ -61,7 +64,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
         )}
       </div>
       <div className="questions-container">
-        {isLoading ? (
+        {isLoading && !editingQuestion && addQuestion === (false || undefined) ? (
           <Loading />
         ) : quizDetails.length < 1 ? (
           <p className="no-questions">

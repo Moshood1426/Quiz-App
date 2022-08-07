@@ -48,6 +48,8 @@ const initialState: InitialState = {
   validateParticipant: authorizeParticipant
     ? JSON.parse(authorizeParticipant)
     : null,
+  limit: 5,
+  page: 1,
 };
 
 const AppContext = createContext<ContextType | null>(null);
@@ -428,9 +430,28 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       }
       dispatch({
         type: ActionType.AUTHORIZE_PARTICIPANT_FAILED,
-        payload: message ,
+        payload: message,
       });
       clearAlert();
+    }
+  };
+
+  const getParticipantQuizInfo = async () => {
+    const limit = state.limit;
+    const page = state.page;
+    dispatch({type: ActionType.GET_PARTICIPANT_QUIZ_INFO_BEGIN})
+    try {
+      const { data } = await authFetch.get(
+        `/participant/take-test?limit=${limit}&page=${page}`
+      );
+      const { quiz, questions, totalQuestions } = data;
+      dispatch({
+        type: ActionType.GET_PARTICIPANT_QUIZ_INFO_SUCCESS,
+        payload: { numOfQuestions: totalQuestions, quiz, questions },
+      });
+    } catch (error) {
+      console.log(error);
+      //logoutUser()
     }
   };
 
@@ -457,6 +478,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         publishQuiz,
         getTestBegin,
         authorizeParticipant,
+        getParticipantQuizInfo
       }}
     >
       {children}
