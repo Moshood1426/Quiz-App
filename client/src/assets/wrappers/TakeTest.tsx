@@ -7,6 +7,12 @@ const Wrapper = styled.div`
   .take-test-container {
     width: 90%;
     margin: 0 auto;
+    max-width: 1200px;
+  }
+
+  .quiz-content {
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .img-div {
@@ -34,7 +40,8 @@ const Wrapper = styled.div`
   .quiz-details {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 1em;
+    column-gap: 2em;
+    padding-bottom: 2em;
   }
 
   .quiz-details-title {
@@ -42,6 +49,23 @@ const Wrapper = styled.div`
     display: flex;
     font-size: 0.9rem;
     margin-bottom: .5em;
+  }
+
+  @media(min-width: 850px) {
+    .quiz-content {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 2em;
+    }
+
+    .quiz-details {
+      order: 2;
+      grid-template-columns: 1fr;
+    }
+
+    .quiz-questions { 
+      order: 1;
+    }
   }
 `;
 export default Wrapper;

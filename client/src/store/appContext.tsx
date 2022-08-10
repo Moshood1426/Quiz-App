@@ -48,6 +48,7 @@ const initialState: InitialState = {
   validateParticipant: authorizeParticipant
     ? JSON.parse(authorizeParticipant)
     : null,
+  participantInfo: null,
   limit: 5,
   page: 1,
 };
@@ -439,15 +440,20 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   const getParticipantQuizInfo = async () => {
     const limit = state.limit;
     const page = state.page;
-    dispatch({type: ActionType.GET_PARTICIPANT_QUIZ_INFO_BEGIN})
+    dispatch({ type: ActionType.GET_PARTICIPANT_QUIZ_INFO_BEGIN });
     try {
       const { data } = await authFetch.get(
         `/participant/take-test?limit=${limit}&page=${page}`
       );
-      const { quiz, questions, totalQuestions } = data;
+      const { quiz, questions, totalQuestions, participant } = data;
       dispatch({
         type: ActionType.GET_PARTICIPANT_QUIZ_INFO_SUCCESS,
-        payload: { numOfQuestions: totalQuestions, quiz, questions },
+        payload: {
+          numOfQuestions: totalQuestions,
+          quiz,
+          questions,
+          participant,
+        },
       });
     } catch (error) {
       console.log(error);
@@ -478,7 +484,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         publishQuiz,
         getTestBegin,
         authorizeParticipant,
-        getParticipantQuizInfo
+        getParticipantQuizInfo,
       }}
     >
       {children}

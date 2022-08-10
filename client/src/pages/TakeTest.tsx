@@ -4,6 +4,7 @@ import Logo from "../components/Logo";
 import useAppContext from "../store/appContext";
 import SingleQuiz from "../components/SingleQuiz";
 import Loading from "../components/Loading";
+import { TestQuestions } from "../components";
 
 const TakeTest = () => {
   const { singleQuizDetails, isLoading, getParticipantQuizInfo } =
@@ -22,8 +23,10 @@ const TakeTest = () => {
           <div className="img-div">
             <Logo />
           </div>
-          <div className="take-test-welcome">Welcome to today's quiz, Moshood.</div>
-          <div>
+          <div className="take-test-welcome">
+            Welcome to today's quiz, Moshood.
+          </div>
+          <div className="quiz-content">
             <div className="quiz-details">
               <div>
                 <span className="quiz-details-title">Student name:</span>
@@ -50,9 +53,10 @@ const TakeTest = () => {
                 <h4>Moshood Abdullahi</h4>
               </div>
             </div>
-            <div></div>
+            <div className="quiz-questions">
+              <TestQuestions />
+            </div>
           </div>
-          Take Test
         </div>
       )}
     </Wrapper>

@@ -331,6 +331,8 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       isLoading: false,
       singleQuizDetails: action.payload.quiz,
       numOfQuestions: action.payload.numOfQuestions,
+      singleQuizQuestions: action.payload.questions,
+      participantInfo: action.payload.participant
     };
   }
   throw new Error(`no such action : ${action.type}`);

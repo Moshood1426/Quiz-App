@@ -32,6 +32,7 @@ export interface InitialState {
     points: 1;
   };
   validateParticipant: AuthorizeParticipant | null;
+  participantInfo: SingleParticipant | null;
   limit: number;
   page: number;
 }
@@ -154,9 +155,13 @@ interface SingleQuiz {
 
 export interface SingleParticipant {
   _id: object;
-  startedTest: string;
-  submitted: string;
+  firstName: string;
+  lastName: string;
+  quizId: object;
+  startedTest: boolean;
+  submitted: boolean;
   identifier: string;
+  answers: {_id: object, questionId: object}[],
 }
 
 interface Activity {
@@ -170,9 +175,10 @@ interface Activity {
 }
 
 interface Participants {
-  email: string;
-  startedtTest: string;
-  submitted: string;
+  identifier: string;
+  startedTest: boolean;
+  submitted: boolean;
+  _id: object;
 }
 
 export interface PublishQuizDetails {
