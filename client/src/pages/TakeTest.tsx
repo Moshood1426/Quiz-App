@@ -6,11 +6,15 @@ import Loading from "../components/Loading";
 import { TestQuestions } from "../components";
 
 const TakeTest = () => {
-  const { isLoading, numOfQuestions,page, limit, getParticipantQuizInfo } =
-    useAppContext();
+  const {
+    isLoading,
+    endTest,
+    getParticipantQuizInfo,
+  } = useAppContext();
 
   useEffect(() => {
     getParticipantQuizInfo();
+    //eslint-disable-next-line
   }, []);
 
   return (
@@ -21,6 +25,9 @@ const TakeTest = () => {
         <div className="take-test-container">
           <div className="img-div">
             <Logo />
+            <button className="btn" onClick={endTest}>
+              End Test
+            </button>
           </div>
           <div className="take-test-welcome">
             Welcome to today's quiz, Moshood.
@@ -29,27 +36,27 @@ const TakeTest = () => {
             <div className="quiz-details">
               <div>
                 <span className="quiz-details-title">Student name:</span>
-                <h4>Steven Wagner</h4>
+                <h5>Steven Wagner</h5>
               </div>
               <div>
                 <span className="quiz-details-title">identifier:</span>
-                <h4>2003012013</h4>
+                <h5>2003012013</h5>
               </div>
               <div>
                 <span className="quiz-details-title">Quiz title</span>
-                <h4>Biology 2021/2022</h4>
+                <h5>Biology 2021/2022</h5>
               </div>
               <div>
                 <span className="quiz-details-title">Duration</span>
-                <h4>20 mins</h4>
+                <h5>20 mins</h5>
               </div>
               <div>
                 <span className="quiz-details-title">Start Date</span>
-                <h4>Moshood Abdullahi</h4>
+                <h5>Moshood Abdullahi</h5>
               </div>
               <div>
                 <span className="quiz-details-title">End Date</span>
-                <h4>Moshood Abdullahi</h4>
+                <h5>Moshood Abdullahi</h5>
               </div>
             </div>
             <div className="quiz-questions">

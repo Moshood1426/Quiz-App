@@ -337,23 +337,29 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     };
   }
   if (action.type === ActionType.SET_FILL_GAP_ANSWER) {
-    
     return {
       ...state,
       participantQuestions: action.payload,
     };
   }
-  if(action.type === ActionType.CHANGE_PAGE_BEGIN) {
-    return {
-      ...state,
-      page: action.payload
-    }
-  }
-  if(action.type === ActionType.CHANGE_PAGE_SUCCESS) {
+  if (action.type === ActionType.CHANGE_PAGE_SUCCESS) {
     return {
       ...state,
       participantQuestions: action.payload.participantQuestions,
-    }
+      page: action.payload.page,
+    };
+  }
+  if (action.type === ActionType.LOGOUT_PARTICIPANT) {
+    return {
+      ...state,
+      singleQuizDetails: null,
+      numOfQuestions: 0,
+      validateParticipant: null,
+      participantInfo: null,
+      participantQuestions: null,
+      limit: 5,
+      page: 1,
+    };
   }
   throw new Error(`no such action : ${action.type}`);
 };

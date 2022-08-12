@@ -473,24 +473,31 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
-  const setQuestionAnswer = (questionId: object, answer: string) => {
+  const setQuestionAnswer = async (questionId: object, answer: string) => {
     const result = state.participantQuestions?.map((item) => {
-      console.log(item._id);
       if (item._id == questionId) {
         return { ...item, answer };
       }
       return { ...item };
     });
 
-    dispatch({
-      type: ActionType.SET_FILL_GAP_ANSWER,
-      payload: result,
-    });
+    try {
+      await axios.post("/api/v1//participant/take-test", {
+        answers: { questionId, answer },
+      });
+      dispatch({
+        type: ActionType.SET_FILL_GAP_ANSWER,
+        payload: result,
+      });
+    } catch (error) {
+      console.log(error);
+      //logoutUser()
+    }
   };
 
   const changeQuestionPage = async (page: number) => {
     if (page === state.page) return;
-    dispatch({ type: ActionType.CHANGE_PAGE_BEGIN, payload: page });
+   // dispatch({ type: ActionType.CHANGE_PAGE_BEGIN, payload: page });
     try {
       const { data } = await authFetch.get(
         `/participant/take-test?limit=${state.limit}&page=${page}&result=questions`
@@ -509,10 +516,19 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         type: ActionType.CHANGE_PAGE_SUCCESS,
         payload: {
           participantQuestions,
+          page: page
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      //logoutUser()
+    }
   };
+
+  const endTest = () => {
+    localStorage.removeItem("participant")
+    dispatch({type: ActionType.LOGOUT_PARTICIPANT})
+  }
 
   return (
     <AppContext.Provider
@@ -540,6 +556,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         getParticipantQuizInfo,
         setQuestionAnswer,
         changeQuestionPage,
+        endTest
       }}
     >
       {children}

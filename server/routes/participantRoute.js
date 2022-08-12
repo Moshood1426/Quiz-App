@@ -7,12 +7,15 @@ const {
 const {
   createParticipant,
   validateParticipant,
-  getParticipantQuestions
+  getParticipantQuestions,
+  addParticipantAnswers,
 } = require("../controllers/participantController");
 
 router.route("/").post(validateParticipant);
-router.route("/:quizId").post(authenticateUser, createParticipant)
-router.route("/take-test").get(authenticateParticipant, getParticipantQuestions)
+router
+  .route("/take-test")
+  .get(authenticateParticipant, getParticipantQuestions)
+  .post(authenticateParticipant, addParticipantAnswers);
+router.route("/:quizId").post(authenticateUser, createParticipant);
 
 module.exports = router;
- 

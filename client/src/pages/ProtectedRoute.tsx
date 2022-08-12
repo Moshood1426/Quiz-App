@@ -17,7 +17,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ client, children }) => 
       navigate("/landing");
     }
     //eslint-disable-next-line
-  }, [user, validateParticipant]);
+  }, [user]);
+
+  useEffect(() => {
+    if (!client) {
+      navigate("/start-test");
+    }
+    //eslint-disable-next-line
+  }, [validateParticipant]);
 
   return <>{children}</>;
 };
