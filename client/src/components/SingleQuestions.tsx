@@ -1,13 +1,16 @@
 import React from "react";
-import { SingleQuestion as SingleQuestionInterface } from "../store/@types/context";
+import { ParticipantQuestion, SingleQuestion as SingleQuestionInterface } from "../store/@types/context";
 import Wrapper from "../assets/wrappers/SingleQuestion";
 import useAppContext from "../store/appContext";
 
 interface SingleQuestionProps {
-  question: SingleQuestionInterface;
+  question: SingleQuestionInterface | ParticipantQuestion;
   index: number;
   id: object;
   extraDetails?: boolean;
+  setAnswer?: boolean;
+  answer?: string,
+  number?: number
 }
 
 const SingleQuestion: React.FC<SingleQuestionProps> = ({
@@ -15,12 +18,16 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
   question,
   index,
   extraDetails,
+  setAnswer,
+  answer,
+  number
 }) => {
   const {
     editQuizDetails: { questions, details },
     setEditQuestion,
     deleteQuestion,
-    editQuiz
+    editQuiz,
+    setQuestionAnswer
   } = useAppContext();
 
   const editQuestion = (id: object) => {
@@ -38,7 +45,7 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
   return (
     <Wrapper>
       <div className="question-header">
-        <p className="question-tag">Question {index + 1}</p>
+        <p className="question-tag">Question {number ? number : index + 1}</p>
         {extraDetails && (
           <div>
             <button
@@ -69,8 +76,9 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
             <li
               key={index}
               className={`question-options-item ${
-                question.correctAnswer === item && "correct-answer"
+                (question.correctAnswer || answer === item) && "correct-answer"
               }`}
+             onClick={() => setAnswer && setQuestionAnswer(id, item)}
             >
               {item}
             </li>

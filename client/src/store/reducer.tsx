@@ -1,8 +1,9 @@
 import ActionType from "./actions";
 import { initialState } from "./appContext";
+import { InitialState } from "./@types/context";
 import { Action } from "./@types/context";
 
-const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
+const reducer: React.Reducer<InitialState, Action> = (state, action) => {
   //return {...state}
   if (action.type === ActionType.VALIDATE_INPUT) {
     return {
@@ -331,9 +332,28 @@ const reducer: React.Reducer<typeof initialState, Action> = (state, action) => {
       isLoading: false,
       singleQuizDetails: action.payload.quiz,
       numOfQuestions: action.payload.numOfQuestions,
-      singleQuizQuestions: action.payload.questions,
-      participantInfo: action.payload.participant
+      participantQuestions: action.payload.participantQuestions,
+      participantInfo: action.payload.participant,
     };
+  }
+  if (action.type === ActionType.SET_FILL_GAP_ANSWER) {
+    
+    return {
+      ...state,
+      participantQuestions: action.payload,
+    };
+  }
+  if(action.type === ActionType.CHANGE_PAGE_BEGIN) {
+    return {
+      ...state,
+      page: action.payload
+    }
+  }
+  if(action.type === ActionType.CHANGE_PAGE_SUCCESS) {
+    return {
+      ...state,
+      participantQuestions: action.payload.participantQuestions,
+    }
   }
   throw new Error(`no such action : ${action.type}`);
 };

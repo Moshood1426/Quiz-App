@@ -33,6 +33,7 @@ export interface InitialState {
   };
   validateParticipant: AuthorizeParticipant | null;
   participantInfo: SingleParticipant | null;
+  participantQuestions: ParticipantQuestion[] | null;
   limit: number;
   page: number;
 }
@@ -74,6 +75,8 @@ export interface ContextType extends InitialState {
     lastName?: string;
   }) => Promise<void>;
   getParticipantQuizInfo: () => Promise<void>;
+  setQuestionAnswer: (questionId: object, answer: string) => void
+  changeQuestionPage: (page: number) => void
 }
 
 export interface editQuizArg {
@@ -161,7 +164,7 @@ export interface SingleParticipant {
   startedTest: boolean;
   submitted: boolean;
   identifier: string;
-  answers: {_id: object, questionId: object}[],
+  answers: { _id: object; questionId: object; answer: string }[];
 }
 
 interface Activity {
@@ -192,6 +195,21 @@ export interface SingleQuestion {
   question: string;
   options: string[];
   correctAnswer: string;
+  points: number;
+  forQuiz: object;
+  createdBy: object;
+  _id: object;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}
+
+interface ParticipantQuestion {
+  type: "multiple-choice" | "true-false" | "fill-in-gap";
+  question: string;
+  options: string[];
+  answer: string;
+  correctAnswer?: string;
   points: number;
   forQuiz: object;
   createdBy: object;

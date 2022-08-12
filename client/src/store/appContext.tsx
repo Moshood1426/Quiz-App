@@ -16,6 +16,7 @@ import {
   editQuizArg,
   questionEdit,
   PublishQuizDetails,
+  SingleQuestion,
 } from "./@types/context";
 import ActionType from "./actions";
 
@@ -49,6 +50,7 @@ const initialState: InitialState = {
     ? JSON.parse(authorizeParticipant)
     : null,
   participantInfo: null,
+  participantQuestions: null,
   limit: 5,
   page: 1,
 };
@@ -233,6 +235,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       const { data } = await authFetch.get<GetQuizQuestionsResponse>(
         `/question/${quizId}`
       );
+
       dispatch({
         type: ActionType.EDIT_QUIZ_SUCCESS,
         payload: { questions: data.questions, details: quiz.quiz },
@@ -443,15 +446,24 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.GET_PARTICIPANT_QUIZ_INFO_BEGIN });
     try {
       const { data } = await authFetch.get(
-        `/participant/take-test?limit=${limit}&page=${page}`
+        `/participant/take-test?limit=${limit}&page=${page}&result=all`
       );
       const { quiz, questions, totalQuestions, participant } = data;
+      const participantQuestions = questions.map((item: SingleQuestion) => {
+        if (participant.answers.length < 1) return { ...item, answer: "" };
+        const result = participant.answers.find(
+          (answer: { questionId: object; _id: object; answer: string }) =>
+            answer.questionId === item._id
+        );
+        if (!result) return { ...item, answer: "" };
+        return { ...item, answer: result.answer };
+      });
       dispatch({
         type: ActionType.GET_PARTICIPANT_QUIZ_INFO_SUCCESS,
         payload: {
           numOfQuestions: totalQuestions,
           quiz,
-          questions,
+          participantQuestions,
           participant,
         },
       });
@@ -459,6 +471,47 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       console.log(error);
       //logoutUser()
     }
+  };
+
+  const setQuestionAnswer = (questionId: object, answer: string) => {
+    const result = state.participantQuestions?.map((item) => {
+      console.log(item._id);
+      if (item._id == questionId) {
+        return { ...item, answer };
+      }
+      return { ...item };
+    });
+
+    dispatch({
+      type: ActionType.SET_FILL_GAP_ANSWER,
+      payload: result,
+    });
+  };
+
+  const changeQuestionPage = async (page: number) => {
+    if (page === state.page) return;
+    dispatch({ type: ActionType.CHANGE_PAGE_BEGIN, payload: page });
+    try {
+      const { data } = await authFetch.get(
+        `/participant/take-test?limit=${state.limit}&page=${page}&result=questions`
+      );
+      const { questions, participant } = data;
+      const participantQuestions = questions.map((item: SingleQuestion) => {
+        if (participant.answers.length < 1) return { ...item, answer: "" };
+        const result = participant.answers.find(
+          (answer: { questionId: object; _id: object; answer: string }) =>
+            answer.questionId === item._id
+        );
+        if (!result) return { ...item, answer: "" };
+        return { ...item, answer: result.answer };
+      });
+      dispatch({
+        type: ActionType.CHANGE_PAGE_SUCCESS,
+        payload: {
+          participantQuestions,
+        },
+      });
+    } catch (error) {}
   };
 
   return (
@@ -485,6 +538,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         getTestBegin,
         authorizeParticipant,
         getParticipantQuizInfo,
+        setQuestionAnswer,
+        changeQuestionPage,
       }}
     >
       {children}

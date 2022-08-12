@@ -28,9 +28,9 @@ const Wrapper = styled.div`
   }
 
   .take-test-welcome {
-    background-color: var(--primary-200);
-    color: var(--white);
-    padding: .5em;
+    background-color: var(--primary-400);
+    color: var(--primary-300);
+    padding: 0.5em;
     font-size: 1.2rem;
     border-radius: 10px;
     text-align: center;
@@ -42,16 +42,17 @@ const Wrapper = styled.div`
     grid-template-columns: 1fr 1fr;
     column-gap: 2em;
     padding-bottom: 2em;
+    place-content: start;
   }
 
   .quiz-details-title {
     border-bottom: solid 1px var(--primary-200);
     display: flex;
     font-size: 0.9rem;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
 
-  @media(min-width: 850px) {
+  @media (min-width: 850px) {
     .quiz-content {
       display: grid;
       grid-template-columns: 1fr 300px;
@@ -63,7 +64,7 @@ const Wrapper = styled.div`
       grid-template-columns: 1fr;
     }
 
-    .quiz-questions { 
+    .quiz-questions {
       order: 1;
     }
   }

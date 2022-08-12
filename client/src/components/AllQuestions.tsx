@@ -37,6 +37,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
     ? editQuizDetails.questions!
     : singleQuizQuestions;
 
+    console.log(isLoading, editingQuestion, addQuestion, quizDetails)
   return (
     <Wrapper>
       <div className="all-questions-header">
@@ -64,7 +65,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
         )}
       </div>
       <div className="questions-container">
-        {isLoading && !editingQuestion && addQuestion === (false || undefined) ? (
+        {isLoading /*!editingQuestion || addQuestion === (false || undefined)*/ ? (
           <Loading />
         ) : quizDetails.length < 1 ? (
           <p className="no-questions">
@@ -84,7 +85,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
             );
           })
         )}
-      </div>
+        </div>
     </Wrapper>
   );
 };

@@ -2,12 +2,11 @@ import React, { useEffect } from "react";
 import Wrapper from "../assets/wrappers/TakeTest";
 import Logo from "../components/Logo";
 import useAppContext from "../store/appContext";
-import SingleQuiz from "../components/SingleQuiz";
 import Loading from "../components/Loading";
 import { TestQuestions } from "../components";
 
 const TakeTest = () => {
-  const { singleQuizDetails, isLoading, getParticipantQuizInfo } =
+  const { isLoading, numOfQuestions,page, limit, getParticipantQuizInfo } =
     useAppContext();
 
   useEffect(() => {

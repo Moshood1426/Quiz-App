@@ -87,13 +87,13 @@ const getParticipantQuestions = async (req, res) => {
     throw new NotFoundError("quiz cannot be found");
   }
 
-  let result = Questions.find({ forQuiz: quiz._id });
+  let result = Questions.find({ forQuiz: quiz._id }).select("-correctAnswer")
 
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
   const skip = (page - 1) * limit;
 
-  result = result.skip(skip).limit(limit);
+  result = result.skip(skip).limit(limit)
   const questions = await result;
 
   const totalQuestions = await Questions.countDocuments({ forQuiz: quizId });
@@ -105,6 +105,10 @@ const getParticipantQuestions = async (req, res) => {
     .status(StatusCodes.OK)
     .json({ totalQuestions, quiz, questions, participant });
 };
+
+const addParticipantAnswers = (req, res) => {
+   
+}
 
 module.exports = {
   createParticipant,
