@@ -36,6 +36,7 @@ export interface InitialState {
   participantQuestions: ParticipantQuestion[] | null;
   limit: number;
   page: number;
+  quizWithSubmission: QuizWithSubmission[];
 }
 
 export interface AuthorizeParticipant {
@@ -75,9 +76,10 @@ export interface ContextType extends InitialState {
     lastName?: string;
   }) => Promise<void>;
   getParticipantQuizInfo: () => Promise<void>;
-  setQuestionAnswer: (questionId: object, answer: string) => void
-  changeQuestionPage: (page: number) => void
-  endTest: () => void
+  setQuestionAnswer: (questionId: object, answer: string) => void;
+  changeQuestionPage: (page: number) => void;
+  endTest: () => void;
+  getQuizWithSubmission: () => void;
 }
 
 export interface editQuizArg {
@@ -127,6 +129,15 @@ export interface GetAllQuizResponse {
   numOfQuiz: number;
   quiz: SingleQuiz[];
   activities: Activity[];
+}
+
+export interface QuizWithSubmission {
+  _id: object;
+  startDate: Date;
+  endDate: Date;
+  quizTitle: string;
+  quizCode: string;
+  noOfSubmissions: number;
 }
 
 export interface GetSingleQuizResponse {

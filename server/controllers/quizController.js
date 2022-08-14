@@ -28,11 +28,22 @@ const createQuiz = async (req, res) => {
 };
 
 const getAllQuiz = async (req, res) => {
-  const { title, sort, code, type, privacy } = req.query;
+  const { title, sort, code, type, privacy, forSubmission } = req.query;
   const queryObj = {
     createdBy: req.user.userId,
   };
 
+  //get all quiz that has submissions
+  if (forSubmission === "true") {
+    const quiz = await Quiz.find({
+      ...queryObj,
+      noOfSubmissions: { $gte: 1 },
+    }).select("_id quizTitle quizCode startDate endDate noOfSubmissions");
+    res.status(StatusCodes.OK).json({ quiz });
+    return;
+  }
+
+  //apply filter options
   if (title) {
     queryObj.quizTitle = { $regex: title, $options: "i" };
   }
@@ -61,6 +72,7 @@ const getAllQuiz = async (req, res) => {
     result = result.sort("-quizTitle");
   }
 
+  //await quiz result
   const quiz = await result;
   const activities = await Activities.find({ createdBy: req.user.userId });
 

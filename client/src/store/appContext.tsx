@@ -53,6 +53,7 @@ const initialState: InitialState = {
   participantQuestions: null,
   limit: 5,
   page: 1,
+  quizWithSubmission: []
 };
 
 const AppContext = createContext<ContextType | null>(null);
@@ -491,13 +492,13 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       });
     } catch (error) {
       console.log(error);
-      //logoutUser()
+      //endTest()
     }
   };
 
   const changeQuestionPage = async (page: number) => {
     if (page === state.page) return;
-   // dispatch({ type: ActionType.CHANGE_PAGE_BEGIN, payload: page });
+    // dispatch({ type: ActionType.CHANGE_PAGE_BEGIN, payload: page });
     try {
       const { data } = await authFetch.get(
         `/participant/take-test?limit=${state.limit}&page=${page}&result=questions`
@@ -516,19 +517,39 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         type: ActionType.CHANGE_PAGE_SUCCESS,
         payload: {
           participantQuestions,
-          page: page
+          page: page,
         },
+      });
+    } catch (error) {
+      console.log(error);
+      //endTest()
+    }
+  };
+
+  const endTest = async () => {
+    try {
+      await axios.patch("/api/v1/participant/take-test");
+    } catch (error) {
+      console.log(error);
+    }
+    localStorage.removeItem("participant");
+    dispatch({ type: ActionType.LOGOUT_PARTICIPANT });
+  };
+
+  const getQuizWithSubmission = async () => {
+    dispatch({ type: ActionType.GET_QUIZ_WITH_SUBMISSION_BEGIN });
+
+    try {
+      const { data } = await authFetch.get(`/quiz?forSubmission=true`);
+      dispatch({
+        type: ActionType.GET_QUIZ_WITH_SUBMISSION_SUCCESS,
+        payload: { quiz: data.quiz },
       });
     } catch (error) {
       console.log(error);
       //logoutUser()
     }
   };
-
-  const endTest = () => {
-    localStorage.removeItem("participant")
-    dispatch({type: ActionType.LOGOUT_PARTICIPANT})
-  }
 
   return (
     <AppContext.Provider
@@ -556,7 +577,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         getParticipantQuizInfo,
         setQuestionAnswer,
         changeQuestionPage,
-        endTest
+        endTest,
+        getQuizWithSubmission,
       }}
     >
       {children}

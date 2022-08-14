@@ -25,8 +25,7 @@ const ManageQuiz = () => {
   const [isActive, setIsActive] = useState<"all" | "moderated" | "quick">(
     "all"
   );
-  const { getAllQuiz, isLoading, manageSingleQuiz } =
-    useAppContext();
+  const { getAllQuiz, isLoading, manageSingleQuiz } = useAppContext();
 
   useEffect(() => {
     const reqObj: GetAllQuizArgs = {
@@ -62,9 +61,7 @@ const ManageQuiz = () => {
     setIsActive(isActive);
   };
 
-  const clearFilters = () => {
-    setFormData(initialState);
-  };
+  const clearFilters = () => setFormData(initialState);
 
   return (
     <Wrapper>
@@ -134,9 +131,7 @@ const ManageQuiz = () => {
           </>
         )}
       </div>
-      {manageSingleQuiz && (
-        <ViewSingleQuiz />
-      )}
+      {manageSingleQuiz && <ViewSingleQuiz />}
     </Wrapper>
   );
 };

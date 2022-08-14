@@ -114,7 +114,7 @@ const getParticipantQuestions = async (req, res) => {
 const addParticipantAnswers = async (req, res) => {
   const { answers } = req.body;
   const { participantId } = req.participant;
-
+  //stil check if participant submitted && if time is not elapsed
   if (!answers.questionId || !answers.answer) {
     throw new NotFoundError("Answer cannot be empty");
   }
@@ -148,9 +148,28 @@ const addParticipantAnswers = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Successful" });
 };
 
+const submitParticipantAnswers = async (req, res) => {
+  const { participantId, quizId } = req.participant;
+
+  const participant = await Participant.findOne({ _id: participantId, quizId });
+  if (!participant) {
+    throw new NotFoundError("participant cannot be found");
+  }
+
+  const quiz = await Quiz.findOne({ _id: quizId });
+
+  participant.submitted = true;
+  await participant.save();
+  quiz.noOfSubmissions = quiz.noOfSubmissions + 1; 
+  await quiz.save();
+
+  res.status(StatusCodes.OK).json({ msg: "Submission succesful" });
+};
+
 module.exports = {
   createParticipant,
   validateParticipant,
   getParticipantQuestions,
   addParticipantAnswers,
+  submitParticipantAnswers,
 };

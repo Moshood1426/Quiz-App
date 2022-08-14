@@ -20,6 +20,7 @@ const authRoute = require("./routes/authRoute")
 const quizRoute = require("./routes/quizRoute")
 const questionRoute = require("./routes/questionRoute")
 const participantRoute = require("./routes/participantRoute")
+const submissionRoute = require("./routes/submissionRoute")
 
 app.get("/api/v1", (req, res) => {
     res.status(200).json({msg: "connection succesful"})
@@ -29,6 +30,7 @@ app.use('/api/v1/auth', authRoute)
 app.use('/api/v1/quiz', quizRoute)
 app.use('/api/v1/question', questionRoute)
 app.use("/api/v1/participant", participantRoute)
+app.use('/api/v1/submission', submissionRoute)
 
 //setting up error handlers and invoking them
 const errorHandlerMiddleware = require("./middleware/error-handler")
