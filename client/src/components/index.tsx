@@ -16,6 +16,7 @@ import ViewSingleQuiz from "./ViewSingleQuiz";
 import EditQuizDetails from "./EditQuizDetails";
 import AddQuestionsModal from "./AddQuestionsModal";
 import TestQuestions from "./TestQuestions";
+import AllSubmission from "./AllSubmission";
 
 export {
   Navbar,
@@ -36,4 +37,5 @@ export {
   EditQuizDetails,
   AddQuestionsModal,
   TestQuestions,
+  AllSubmission
 };
