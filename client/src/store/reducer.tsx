@@ -374,6 +374,31 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       quizWithSubmission: action.payload.quiz,
     };
   }
+  if (action.type === ActionType.GET_SUBMISSION_PARTICIPANT_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === ActionType.GET_SUBMISSION_PARTICIPANT_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      submissionParticipant: {
+        quizId: action.payload.quizId,
+        submissionParticipant: action.payload.participant,
+      },
+    };
+  }
+  if(action.type ===ActionType.RESET_SUBMISSION_PARTICIPANT) {
+    return {
+      ...state,
+      submissionParticipant: {
+        quizId: null,
+        submissionParticipant: []
+      }
+    }
+  }
   throw new Error(`no such action : ${action.type}`);
 };
 

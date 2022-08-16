@@ -7,12 +7,67 @@ const Wrapper = styled.div`
     margin-bottom: 0.5em;
   }
 
+  .submission-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .submission-header > span {
+    color: var(--primary-brown);
+    text-transform: uppercase;
+    font-size: 1rem;
+    cursor: pointer;
+    padding-left: 2em;
+    padding-right: 1em;
+    font-weight: bold;
+  }
+
   .no-submission {
     background-color: var(--primary-400);
     color: var(--green-dark);
     border-radius: 15px;
-    padding: .75em 2em;
+    padding: 0.75em 2em;
     text-align: center;
+  }
+
+  .single-participant {
+    display: grid;
+    grid-template-columns: 20px 1fr 2fr 1fr;
+    gap: 1em;
+    padding: 0.5em 0;
+    border-bottom: solid 1px var(--grey-200);
+  }
+
+  .single-participant-title {
+    border-top: solid 2px var(--grey-200);
+    border-bottom: solid 2px var(--grey-200);
+    margin-top: 3em;
+  }
+
+  .single-participant-identifier {
+    display: none;
+  }
+
+  .single-participant > p {
+    margin: 0;
+  }
+
+  .view-details {
+    color: var(--primary-brown);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  @media (min-width: 700px) {
+    .single-participant-identifier {
+      display: block;
+    }
+
+    .single-participant-identifier-small {
+      display: none;
+    }
   }
 `;
 export default Wrapper;

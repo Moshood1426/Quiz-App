@@ -1,13 +1,18 @@
 import React from "react";
 import moment from "moment";
 import { QuizWithSubmission } from "../store/@types/context";
-import Wrapper from "../assets/wrappers/SingleSubmission"
+import Wrapper from "../assets/wrappers/SingleSubmission";
+import useAppContext from "../store/appContext";
 
 interface SingleSubmissionProps {
-    item: QuizWithSubmission
+  item: QuizWithSubmission;
 }
 
-const SingleSubmission: React.FC<SingleSubmissionProps> = ({item}) => {
+const SingleSubmission: React.FC<SingleSubmissionProps> = ({ item }) => {
+  const { getSubmissionParticipant, submissionParticipant } = useAppContext();
+  const getParticipant = (quizId: object) => {
+    if(submissionParticipant.quizId === null) getSubmissionParticipant(quizId);
+  };
   return (
     <Wrapper>
       <p className="quiz-code">{item.quizCode}</p>
@@ -16,7 +21,12 @@ const SingleSubmission: React.FC<SingleSubmissionProps> = ({item}) => {
         {moment(item.endDate).format("lll")}
       </p>
       <h4 className="quiz-title">{item.quizTitle}</h4>
-      <p className="quiz-submission-num">{item.noOfSubmissions} submission received</p>
+      <p
+        className="quiz-submission-num"
+        onClick={() => getParticipant(item._id)}
+      >
+        {item.noOfSubmissions} submission received
+      </p>
     </Wrapper>
   );
 };

@@ -53,7 +53,8 @@ const initialState: InitialState = {
   participantQuestions: null,
   limit: 5,
   page: 1,
-  quizWithSubmission: []
+  quizWithSubmission: [],
+  submissionParticipant: { quizId: null, submissionParticipant: [] },
 };
 
 const AppContext = createContext<ContextType | null>(null);
@@ -551,6 +552,22 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  const getSubmissionParticipant = async (quizId: object) => {
+    dispatch({ type: ActionType.GET_SUBMISSION_PARTICIPANT_BEGIN });
+
+    try {
+      const { data } = await axios.get(`/api/v1/submission/${quizId}`);
+      dispatch({
+        type: ActionType.GET_SUBMISSION_PARTICIPANT_SUCCESS,
+        payload: { quizId, participant: data.participant },
+      });
+    } catch (error) {}
+  };
+
+  const resetSubmissionParticipant = () => {
+    dispatch({type: ActionType.RESET_SUBMISSION_PARTICIPANT})
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -579,6 +596,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         changeQuestionPage,
         endTest,
         getQuizWithSubmission,
+        getSubmissionParticipant,
+        resetSubmissionParticipant
       }}
     >
       {children}
