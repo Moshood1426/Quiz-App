@@ -22,7 +22,6 @@ const Wrapper = styled.div`
     cursor: pointer;
     font-size: 1.8em;
     right: 2em;
-    
   }
 
   .content-container {

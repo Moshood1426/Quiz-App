@@ -7,12 +7,13 @@ const { StatusCodes } = require("http-status-codes");
 const getAllSubmissions = async (req, res) => {
   const { quizId } = req.params;
 
-  const participant = await Participant.find({
+  let participant = await Participant.find({
     quizId: quizId,
     submitted: true,
   });
 
-  res.status(StatusCodes.OK).json({ participant });
+  const questions = await Questions.find({ forQuiz: quizId });
+  res.status(StatusCodes.OK).json({ participant, questions});
 };
 
 const getSingleSubmission = async (req, res) => {

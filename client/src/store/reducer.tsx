@@ -386,8 +386,9 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       isLoading: false,
       submissionParticipant: {
         quizId: action.payload.quizId,
-        submissionParticipant: action.payload.participant,
+        participants: action.payload.participant,
       },
+      singleQuizQuestions: action.payload.questions
     };
   }
   if(action.type ===ActionType.RESET_SUBMISSION_PARTICIPANT) {
@@ -395,8 +396,15 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       ...state,
       submissionParticipant: {
         quizId: null,
-        submissionParticipant: []
+        participants: []
       }
+    }
+  }
+  if(action.type === ActionType.DISPLAY_RESULT) {
+    return {
+      ...state,
+      displayResult: true,
+      participantQuestions: action.payload.result
     }
   }
   throw new Error(`no such action : ${action.type}`);

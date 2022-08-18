@@ -39,8 +39,9 @@ export interface InitialState {
   quizWithSubmission: QuizWithSubmission[];
   submissionParticipant: {
     quizId: object | null;
-    submissionParticipant: SingleParticipant[];
+    participants: SingleParticipant[];
   };
+  displayResult: boolean;
 }
 
 export interface AuthorizeParticipant {
@@ -85,7 +86,8 @@ export interface ContextType extends InitialState {
   endTest: () => void;
   getQuizWithSubmission: () => void;
   getSubmissionParticipant: (quizId: object) => Promise<void>;
-  resetSubmissionParticipant: () => void
+  resetSubmissionParticipant: () => void;
+  getResults: (participantId: object) => void;
 }
 
 export interface editQuizArg {

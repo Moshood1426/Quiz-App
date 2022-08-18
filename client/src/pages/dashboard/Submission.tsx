@@ -4,6 +4,7 @@ import Loading from "../../components/Loading";
 import useAppContext from "../../store/appContext";
 import { AllSubmission } from "../../components";
 import SingleSubmission from "../../components/SingleSubmission";
+import AllQuestions from "../../components/AllQuestions";
 
 const Submission = () => {
   const {
@@ -11,13 +12,55 @@ const Submission = () => {
     isLoading,
     submissionParticipant,
     getQuizWithSubmission,
-    resetSubmissionParticipant
+    resetSubmissionParticipant,
+    getResults,
+    displayResult
   } = useAppContext();
 
   useEffect(() => {
     getQuizWithSubmission();
     //eslint-disable-next-line
   }, []);
+
+  if(displayResult) {
+    return (
+      <Wrapper>
+        <div className="take-test-container">
+        <div className="quiz-content">
+            <div className="quiz-details">
+              <div>
+                <span className="quiz-details-title">Student name:</span>
+                <h5>Steven Wagner</h5>
+              </div>
+              <div>
+                <span className="quiz-details-title">identifier:</span>
+                <h5>2003012013</h5>
+              </div>
+              <div>
+                <span className="quiz-details-title">Quiz title</span>
+                <h5>Biology 2021/2022</h5>
+              </div>
+              <div>
+                <span className="quiz-details-title">Duration</span>
+                <h5>20 mins</h5>
+              </div>
+              <div>
+                <span className="quiz-details-title">Start Date</span>
+                <h5>Moshood Abdullahi</h5>
+              </div>
+              <div>
+                <span className="quiz-details-title">End Date</span>
+                <h5>Moshood Abdullahi</h5>
+              </div>
+            </div>
+            <div className="quiz-questions">
+              <AllQuestions />
+            </div>
+            </div>
+        </div>
+      </Wrapper>
+    )
+  }
 
   if (submissionParticipant.quizId !== null) {
     const singleSubmission = quizWithSubmission.find(
@@ -42,9 +85,9 @@ const Submission = () => {
             No submission has been received for any quiz
           </p>
         ) : (
-          submissionParticipant.submissionParticipant.map((item, index) => {
+          submissionParticipant.participants.map((item, index) => {
             return (
-              <div className="single-participant">
+              <div className="single-participant" key={index}>
                 <p>{index + 1}</p>
                 <p>{item.firstName + " " + item.lastName}</p>
                 <p className="single-participant-identifier">
@@ -58,7 +101,12 @@ const Submission = () => {
                       item.identifier.length
                     )}
                 </p>
-                <p className="view-details">view details</p>
+                <p
+                  className="view-details"
+                  onClick={() => getResults(item._id)}
+                >
+                  view details
+                </p>
               </div>
             );
           })

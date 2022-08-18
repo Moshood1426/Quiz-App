@@ -54,7 +54,8 @@ const initialState: InitialState = {
   limit: 5,
   page: 1,
   quizWithSubmission: [],
-  submissionParticipant: { quizId: null, submissionParticipant: [] },
+  submissionParticipant: { quizId: null, participants: [] },
+  displayResult: false,
 };
 
 const AppContext = createContext<ContextType | null>(null);
@@ -559,14 +560,39 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       const { data } = await axios.get(`/api/v1/submission/${quizId}`);
       dispatch({
         type: ActionType.GET_SUBMISSION_PARTICIPANT_SUCCESS,
-        payload: { quizId, participant: data.participant },
+        payload: {
+          quizId,
+          participant: data.participant,
+          questions: data.questions,
+        },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getResults = (participantId: object) => {
+    const participant = state.submissionParticipant.participants.find(
+      (item) => (item._id = participantId)
+    );
+
+    const result = state.participantQuestions?.map((item) => {
+      const test = participant?.answers.find(
+        (answer) => answer.questionId === item._id
+      );
+      if (test) {
+        return { ...item, answer: test.answer };
+      } else {
+        return { ...item, answer: "" };
+      }
+    });
+
+    dispatch({ type: ActionType.DISPLAY_RESULT, payload: { result } });
   };
 
   const resetSubmissionParticipant = () => {
-    dispatch({type: ActionType.RESET_SUBMISSION_PARTICIPANT})
-  }
+    dispatch({ type: ActionType.RESET_SUBMISSION_PARTICIPANT });
+  };
 
   return (
     <AppContext.Provider
@@ -597,7 +623,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         endTest,
         getQuizWithSubmission,
         getSubmissionParticipant,
-        resetSubmissionParticipant
+        resetSubmissionParticipant,
+        getResults,
       }}
     >
       {children}
