@@ -391,7 +391,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
 
     try {
       const { data } = await axios.get<GetSingleQuizResponse>(
-        `/api/v1/quiz/null?quizCode=${quizCode}`
+        `/api/v1/participant?quizCode=${quizCode}`
       );
       dispatch({
         type: ActionType.GET_SINGLE_QUIZ_SUCCESS,
@@ -571,12 +571,18 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  const resetSubmissionParticipant = () => {
+    dispatch({ type: ActionType.RESET_SUBMISSION_PARTICIPANT});
+  };
+
   const getResults = (participantId: object) => {
+    //checking for the current participant in the participant state
     const participant = state.submissionParticipant.participants.find(
       (item) => (item._id = participantId)
     );
 
-    const result = state.participantQuestions?.map((item) => {
+    //mapping the quiz questions to add client answers
+    const result = state.singleQuizQuestions?.map((item) => {
       const test = participant?.answers.find(
         (answer) => answer.questionId === item._id
       );
@@ -587,12 +593,13 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       }
     });
 
+    //dispatching client answers to be added to singleQuizQuestions
     dispatch({ type: ActionType.DISPLAY_RESULT, payload: { result } });
   };
 
-  const resetSubmissionParticipant = () => {
-    dispatch({ type: ActionType.RESET_SUBMISSION_PARTICIPANT });
-  };
+  const resetDisplayResult = () => {
+    dispatch({type: ActionType.RESET_DISPLAY_RESULT})
+  }
 
   return (
     <AppContext.Provider
@@ -625,6 +632,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         getSubmissionParticipant,
         resetSubmissionParticipant,
         getResults,
+        resetDisplayResult
       }}
     >
       {children}

@@ -82,6 +82,14 @@ const Wrapper = styled.div`
     font-size: 0.85rem;
   }
 
+  .client-answer-correct {
+    background-color: var(--green-light)
+  }
+
+  .client-answer-wrong {
+    background-color: var(--red-light)
+  }
+
   @media (min-width: 550px) {
     .question-options {
       display: flex;

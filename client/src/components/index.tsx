@@ -17,6 +17,8 @@ import EditQuizDetails from "./EditQuizDetails";
 import AddQuestionsModal from "./AddQuestionsModal";
 import TestQuestions from "./TestQuestions";
 import AllSubmission from "./AllSubmission";
+import ParticipantDetails from "./ParticipantDetails";
+import AllQuestions from "./AllQuestions";
 
 export {
   Navbar,
@@ -37,5 +39,7 @@ export {
   EditQuizDetails,
   AddQuestionsModal,
   TestQuestions,
-  AllSubmission
+  AllSubmission,
+  ParticipantDetails,
+  AllQuestions
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Wrapper from "../assets/wrappers/ViewSingleQuiz";
 import SingleQuiz from "./SingleQuiz";
 import useAppContext from "../store/appContext";

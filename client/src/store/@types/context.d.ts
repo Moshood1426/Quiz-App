@@ -88,6 +88,7 @@ export interface ContextType extends InitialState {
   getSubmissionParticipant: (quizId: object) => Promise<void>;
   resetSubmissionParticipant: () => void;
   getResults: (participantId: object) => void;
+  resetDisplayResult: () => void
 }
 
 export interface editQuizArg {
@@ -215,6 +216,7 @@ export interface SingleQuestion {
   question: string;
   options: string[];
   correctAnswer: string;
+  answer? : string;
   points: number;
   forQuiz: object;
   createdBy: object;

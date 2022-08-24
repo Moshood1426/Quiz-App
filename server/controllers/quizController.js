@@ -84,6 +84,7 @@ const getSingleQuiz = async (req, res) => {
   const { quizId } = req.params;
 
   if (quizCode) {
+    console.log(quizCode);
     const quiz = await Quiz.findOne({ quizCode: quizCode });
     if (!quiz) {
       throw new NotFoundError("Quiz cannot be found");

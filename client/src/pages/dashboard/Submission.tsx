@@ -5,6 +5,7 @@ import useAppContext from "../../store/appContext";
 import { AllSubmission } from "../../components";
 import SingleSubmission from "../../components/SingleSubmission";
 import AllQuestions from "../../components/AllQuestions";
+import { ParticipantDetails } from "../../components";
 
 const Submission = () => {
   const {
@@ -13,8 +14,9 @@ const Submission = () => {
     submissionParticipant,
     getQuizWithSubmission,
     resetSubmissionParticipant,
+    displayResult,
     getResults,
-    displayResult
+    participantQuestions,
   } = useAppContext();
 
   useEffect(() => {
@@ -22,46 +24,26 @@ const Submission = () => {
     //eslint-disable-next-line
   }, []);
 
-  if(displayResult) {
+  //renders a single participant result alongside their answers
+  if (displayResult) {
     return (
       <Wrapper>
         <div className="take-test-container">
-        <div className="quiz-content">
-            <div className="quiz-details">
-              <div>
-                <span className="quiz-details-title">Student name:</span>
-                <h5>Steven Wagner</h5>
-              </div>
-              <div>
-                <span className="quiz-details-title">identifier:</span>
-                <h5>2003012013</h5>
-              </div>
-              <div>
-                <span className="quiz-details-title">Quiz title</span>
-                <h5>Biology 2021/2022</h5>
-              </div>
-              <div>
-                <span className="quiz-details-title">Duration</span>
-                <h5>20 mins</h5>
-              </div>
-              <div>
-                <span className="quiz-details-title">Start Date</span>
-                <h5>Moshood Abdullahi</h5>
-              </div>
-              <div>
-                <span className="quiz-details-title">End Date</span>
-                <h5>Moshood Abdullahi</h5>
-              </div>
-            </div>
+          <div className="submission-header">
+            <span onClick={resetSubmissionParticipant}>{"<<"} go back</span>
+          </div>
+          <div className="quiz-content">
+            <ParticipantDetails />
             <div className="quiz-questions">
               <AllQuestions />
             </div>
-            </div>
+          </div>
         </div>
       </Wrapper>
-    )
+    );
   }
 
+  //renders all participant result in tabular format
   if (submissionParticipant.quizId !== null) {
     const singleSubmission = quizWithSubmission.find(
       (item) => item._id === submissionParticipant.quizId
@@ -115,6 +97,7 @@ const Submission = () => {
     );
   }
 
+  //renders all quiz with submissions
   return (
     <Wrapper>
       <h3 className="title">Submission</h3>

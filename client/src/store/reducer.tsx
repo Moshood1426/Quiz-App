@@ -1,5 +1,4 @@
 import ActionType from "./actions";
-import { initialState } from "./appContext";
 import { InitialState } from "./@types/context";
 import { Action } from "./@types/context";
 
@@ -404,7 +403,13 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     return {
       ...state,
       displayResult: true,
-      participantQuestions: action.payload.result
+      singleQuizQuestions: action.payload.result
+    }
+  }
+  if(action.type === ActionType.RESET_DISPLAY_RESULT) {
+    return {
+      ...state,
+      displayResult: false,
     }
   }
   throw new Error(`no such action : ${action.type}`);

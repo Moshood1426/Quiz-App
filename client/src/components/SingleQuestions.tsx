@@ -1,5 +1,8 @@
 import React from "react";
-import { ParticipantQuestion, SingleQuestion as SingleQuestionInterface } from "../store/@types/context";
+import {
+  ParticipantQuestion,
+  SingleQuestion as SingleQuestionInterface,
+} from "../store/@types/context";
 import Wrapper from "../assets/wrappers/SingleQuestion";
 import useAppContext from "../store/appContext";
 
@@ -9,8 +12,8 @@ interface SingleQuestionProps {
   id: object;
   extraDetails?: boolean;
   setAnswer?: boolean;
-  answer?: string,
-  number?: number
+  answer?: string;
+  number?: number;
 }
 
 const SingleQuestion: React.FC<SingleQuestionProps> = ({
@@ -20,14 +23,16 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
   extraDetails,
   setAnswer,
   answer,
-  number
+  number,
 }) => {
   const {
     editQuizDetails: { questions, details },
     setEditQuestion,
     deleteQuestion,
     editQuiz,
-    setQuestionAnswer
+    setQuestionAnswer,
+    user,
+    participantQuestions,
   } = useAppContext();
 
   const editQuestion = (id: object) => {
@@ -76,9 +81,21 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
             <li
               key={index}
               className={`question-options-item ${
-                (question.correctAnswer || answer === item) && "correct-answer"
+                (item === question.correctAnswer || answer === item) &&
+                "correct-answer"
+              } ${
+                user &&
+                (question.answer
+                  ? question.answer === question.correctAnswer &&
+                    item === question.answer
+                    ? "client-answer-correct"
+                    : question.answer !== question.correctAnswer &&
+                      item === question.answer
+                    ? "client-answer-wrong"
+                    : ""
+                  : "")
               }`}
-             onClick={() => setAnswer && setQuestionAnswer(id, item)}
+              onClick={() => setAnswer && setQuestionAnswer(id, item)}
             >
               {item}
             </li>

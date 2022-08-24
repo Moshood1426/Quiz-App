@@ -23,6 +23,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
     editQuizDetails,
     isLoading,
     editingQuestion,
+    participantQuestions
   } = useAppContext();
 
   const calculateTotalPoints = (arg: SingleQuestionType[]) => {
@@ -33,11 +34,10 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
 
   const totalPoints = calculateTotalPoints(singleQuizQuestions);
 
-  const quizDetails = editCurrentQuiz
+  const quizDetails = participantQuestions ? participantQuestions : editCurrentQuiz
     ? editQuizDetails.questions!
     : singleQuizQuestions;
 
-    console.log(isLoading, editingQuestion, addQuestion, quizDetails)
   return (
     <Wrapper>
       <div className="all-questions-header">
@@ -78,6 +78,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
               <SingleQuestion
                 key={item._id.toString()}
                 question={item}
+                
                 index={index}
                 extraDetails={extraDetails}
                 id={item._id}

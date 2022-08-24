@@ -69,5 +69,22 @@ const Wrapper = styled.div`
       display: none;
     }
   }
+
+  @media (min-width: 900px) {
+    .quiz-content {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 2em;
+    }
+
+    .quiz-details {
+      order: 2;
+      grid-template-columns: 1fr;
+    }
+
+    .quiz-questions {
+      order: 1;
+    }
+  }
 `;
 export default Wrapper;
