@@ -35,6 +35,8 @@ const Wrapper = styled.div`
   .actions {
     background-color: var(--white);
     box-shadow: var(--shadow-1);
+    position: relative;
+    z-index: 1;
   }
 
   .actions-container {

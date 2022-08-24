@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 const Wrapper = styled.nav`
   background-color: var(--primary-100);
+  position: relative;
+  z-index: 1;
+
   .nav-container {
     display: flex;
     align-items: center;
