@@ -17,7 +17,13 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({ toggleDisplay }) => {
   const [formData, setFormData] = useState(initialState);
   // const [ quizType, setQuizType ] = useState("moderated-quiz")
 
-  const handleChange = () => {};
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setFormData(() => ({ ...formData, [name]: value }));
+  };
 
   return (
     <Wrapper>
@@ -44,15 +50,6 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({ toggleDisplay }) => {
             placeholder={"enter your unique quiz code"}
             type={"text"}
             value={formData.quizCode}
-            onChange={handleChange}
-          />
-          <FormItem
-            label={true}
-            labelText="Quiz Title"
-            name={"quizTitle"}
-            placeholder={"enter your quiz title"}
-            type={"text"}
-            value={formData.quizTitle}
             onChange={handleChange}
           />
           <button className="btn submitBtn">Submit</button>

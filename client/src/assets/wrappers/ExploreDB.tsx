@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
+  padding-bottom: 2em;
+  
   .explore-title {
     color: var(--primary-200);
     font-weight: bold;
@@ -65,7 +67,8 @@ const Wrapper = styled.div`
   }
 
   .btn {
-    padding: .75em;
+    padding: 0.75em;
+    width: 100%;
   }
 
   @media (min-width: 800px) {

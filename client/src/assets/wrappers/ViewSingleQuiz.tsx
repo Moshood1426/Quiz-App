@@ -10,6 +10,7 @@ const Wrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.7);
   overflow: auto;
   transition: var(--transition);
+  z-index: 2;
 
   .publish-quiz {
     display: grid;
