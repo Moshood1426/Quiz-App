@@ -17,6 +17,7 @@ import {
   questionEdit,
   PublishQuizDetails,
   SingleQuestion,
+  SingleQuiz,
 } from "./@types/context";
 import ActionType from "./actions";
 
@@ -572,7 +573,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   const resetSubmissionParticipant = () => {
-    dispatch({ type: ActionType.RESET_SUBMISSION_PARTICIPANT});
+    dispatch({ type: ActionType.RESET_SUBMISSION_PARTICIPANT });
   };
 
   const getResults = (participantId: object) => {
@@ -598,8 +599,92 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   const resetDisplayResult = () => {
-    dispatch({type: ActionType.RESET_DISPLAY_RESULT})
+    dispatch({ type: ActionType.RESET_DISPLAY_RESULT });
+  };
+
+  function shuffleArray(array: (string | number)[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
   }
+
+  const exploreQuizAPI = async (data: {
+    quizCode: string;
+    quizTitle: string;
+    type: string;
+    difficulty: string;
+    category: number;
+    amount: number;
+  }) => {
+    const { quizCode, quizTitle, type, difficulty, category, amount } = data;
+
+    //conjuring the URL together
+    let url = `https://opentdb.com/api.php?encode=url3986&amount=${amount}`;
+    if (category > 8) {
+      url = url + `&category=${category}`;
+    }
+    if (type !== "any type") {
+      const result = type === "Multiple Choice" ? "multiple" : "boolean";
+      url += `&type=${result}`;
+    }
+    if (difficulty !== "any difficulty") {
+      url += `&difficulty=${difficulty}`;
+    }
+
+    try {
+      //creating quiz from DB
+
+      interface CreateQuizResponse {
+        msg: string;
+        quiz: SingleQuiz;
+      }
+      const { data: quiz } = await axios.post<CreateQuizResponse>(
+        "/api/v1/quiz",
+        {
+          quizCode,
+          quizTitle,
+          quizType: "quick",
+        }
+      );
+      const quizId = quiz.quiz._id;
+
+      //creating quiz questions
+      interface GetQuestionsResponse {
+        response_code: number;
+        results: {
+          category: string;
+          type: string;
+          difficulty: string;
+          question: string;
+          correct_answer: string;
+          incorrect_answers: string[];
+        }[];
+      }
+      const { data } = await axios.get<GetQuestionsResponse>(url);
+
+      //formatting result from DB to fit questions Schema request on backend
+      const result = data.results.map((item) => {
+        const options = item.incorrect_answers.map((item) =>
+          decodeURIComponent(item)
+        );
+        const correctAnswer = decodeURIComponent(item.correct_answer);
+        let result = {
+          correctAnswer: correctAnswer,
+          options: shuffleArray([...options, correctAnswer]),
+          points: 1,
+          question: decodeURIComponent(item.question),
+          type: item.type === "multiple" ? "multiple-choice" : "true-false",
+        };
+        return result;
+      });
+
+      //creating questions for test with result
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <AppContext.Provider
@@ -632,7 +717,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         getSubmissionParticipant,
         resetSubmissionParticipant,
         getResults,
-        resetDisplayResult
+        resetDisplayResult,
+        exploreQuizAPI,
       }}
     >
       {children}

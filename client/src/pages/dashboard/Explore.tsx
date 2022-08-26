@@ -44,7 +44,7 @@ const Explore = () => {
   const [formPage, setFormPage] = useState(1);
   const [formData, setFormData] = useState(initialState);
 
-  const { showAlert, validateInput } = useAppContext();
+  const { showAlert, validateInput, exploreQuizAPI } = useAppContext();
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -60,7 +60,11 @@ const Explore = () => {
       validateInput("Please input necessary credentials");
       return;
     }
-    console.log("ready");
+    console.log("here");
+    const category = formData.categoryOptions.indexOf(formData.category) + 8;
+    const { quizCode, quizTitle, type, difficulty, numOfQuestions } = formData;
+    const data = { quizCode, quizTitle, type, difficulty, category, amount: numOfQuestions };
+    exploreQuizAPI(data);
   };
 
   return (
@@ -71,7 +75,7 @@ const Explore = () => {
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ve
       </p>
-      <form className="form-card">
+      <form className="form-card" onSubmit={(event) => handleSubmit(event)}>
         {formPage === 1 ? (
           <>
             <h4 className="form-title">Let's start with Quiz Details</h4>
@@ -143,7 +147,7 @@ const Explore = () => {
                 value={formData.quizCode}
                 onChange={handleChange}
               />
-              <button className="btn" onClick={(event) => handleSubmit(event)}>
+              <button type="submit" className="btn">
                 Submit
               </button>
             </div>
