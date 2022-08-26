@@ -636,7 +636,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     try {
       //creating quiz from DB
 
-      interface CreateQuizResponse {
+      /*interface CreateQuizResponse {
         msg: string;
         quiz: SingleQuiz;
       }
@@ -648,7 +648,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
           quizType: "quick",
         }
       );
-      const quizId = quiz.quiz._id;
+      const quizId = quiz.quiz._id; */
 
       //creating quiz questions
       interface GetQuestionsResponse {
@@ -679,7 +679,17 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         };
         return result;
       });
+      console.log(result);
 
+      /* 
+      {
+        "correctAnswer": "Michael Emerson"
+        "options": "['Kevin Chapman', 'Michael Emerson', 'Jim Caviezel', 'Taraji P. Henson']"
+        "points": 1 
+        "question": "In the TV series \"Person of Interest\", who plays the character \"Harold Finch\"?"
+        "type": "multiple-choice"
+      }
+      */
       //creating questions for test with result
     } catch (error) {
       console.log(error);

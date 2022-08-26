@@ -5,15 +5,39 @@ const { StatusCodes } = require("http-status-codes");
 const Questions = require("../models/Questions");
 
 const createQuestion = async (req, res) => {
-  const { type, question, options, correctAnswer, forQuiz } = req.body;
+  //if multiple question is to be added, multipleData will be an array of the questions
+  const { type, question, options, correctAnswer, forQuiz, multipleData } =
+    req.body;
+  const createdBy = req.user.userId;
 
+  if (multipleData) {
+    //add multiple questions to quiz schema
+    let data = multipleData.map((item) => ({ ...item, createdBy, forQuiz }));
+    const setQuestion = await Question.insertMany(data);
+    console.log(data.length)
+    const quiz = await Quiz.findOne({ _id: setQuestion.forQuiz });
+    console.log(quiz.noOfQuestions)
+    quiz.noOfQuestions = data.length;
+    await quiz.save();
+
+    res
+      .status(StatusCodes.CREATED)
+      .json({ msg: "Question succesfully created", question: setQuestion });
+  }
+
+  //add single question to quiz schema
   if (!type || !question || !correctAnswer || !forQuiz || !options) {
     throw new BadRequestError("Kindly fill required fields");
   }
 
-  const createdBy = req.user.userId;
-
-  const setQuestion = await Question.create({ ...req.body, createdBy });
+  const setQuestion = await Question.create({
+    type,
+    question,
+    options,
+    correctAnswer,
+    forQuiz,
+    createdBy,
+  });
   const quiz = await Quiz.findOne({ _id: setQuestion.forQuiz });
   quiz.noOfQuestions = quiz.noOfQuestions + 1;
   await quiz.save();

@@ -67,12 +67,12 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
               quiz.noOfSubmissions > 1 ? "s" : ""
             }`}
           </p>
-          <p>
+         {/* <p>
             📓{" "}
             {`${quiz.participants.length} participants${
-              quiz.participants.length > 1 ? "s" : ""
+             quiz.participants.length > 1 ? "s" : ""
             }`}
-          </p>
+          </p> */}
         </div>
         <div className="single-quiz-footer">
           <div className="single-quiz-date">
