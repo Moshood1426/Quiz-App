@@ -635,8 +635,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
 
     try {
       //creating quiz from DB
-
-      /*interface CreateQuizResponse {
+      interface CreateQuizResponse {
         msg: string;
         quiz: SingleQuiz;
       }
@@ -648,7 +647,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
           quizType: "quick",
         }
       );
-      const quizId = quiz.quiz._id; */
+      const quizId = quiz.quiz._id;
 
       //creating quiz questions
       interface GetQuestionsResponse {
@@ -662,10 +661,10 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
           incorrect_answers: string[];
         }[];
       }
-      const { data } = await axios.get<GetQuestionsResponse>(url);
+      const { data: questions } = await axios.get<GetQuestionsResponse>(url);
 
       //formatting result from DB to fit questions Schema request on backend
-      const result = data.results.map((item) => {
+      const result = questions.results.map((item) => {
         const options = item.incorrect_answers.map((item) =>
           decodeURIComponent(item)
         );
@@ -679,18 +678,12 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         };
         return result;
       });
-      console.log(result);
 
-      /* 
-      {
-        "correctAnswer": "Michael Emerson"
-        "options": "['Kevin Chapman', 'Michael Emerson', 'Jim Caviezel', 'Taraji P. Henson']"
-        "points": 1 
-        "question": "In the TV series \"Person of Interest\", who plays the character \"Harold Finch\"?"
-        "type": "multiple-choice"
-      }
-      */
       //creating questions for test with result
+      const { data } = await axios.post("api/v1/question", {
+        forQuiz: quizId,
+        multipleData: result,
+      });
     } catch (error) {
       console.log(error);
     }

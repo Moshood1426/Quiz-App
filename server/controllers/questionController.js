@@ -14,9 +14,9 @@ const createQuestion = async (req, res) => {
     //add multiple questions to quiz schema
     let data = multipleData.map((item) => ({ ...item, createdBy, forQuiz }));
     const setQuestion = await Question.insertMany(data);
-    console.log(data.length)
+
     const quiz = await Quiz.findOne({ _id: setQuestion.forQuiz });
-    console.log(quiz.noOfQuestions)
+
     quiz.noOfQuestions = data.length;
     await quiz.save();
 
