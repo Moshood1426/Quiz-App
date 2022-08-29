@@ -1,18 +1,20 @@
 import React, { useEffect } from "react";
 import Wrapper from "../assets/wrappers/TakeTest";
+import { Navigate } from "react-router-dom";
 import Logo from "../components/Logo";
 import useAppContext from "../store/appContext";
 import Loading from "../components/Loading";
 import { TestQuestions } from "../components";
 
 const TakeTest = () => {
-  const {
-    isLoading,
-    endTest,
-    getParticipantQuizInfo,
-  } = useAppContext();
+  const { isLoading, validateParticipant, endTest, getParticipantQuizInfo } =
+    useAppContext();
 
   useEffect(() => {
+    if (!validateParticipant) {
+      <Navigate to="/start-test" />;
+      return;
+    }
     getParticipantQuizInfo();
     //eslint-disable-next-line
   }, []);

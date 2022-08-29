@@ -60,10 +60,17 @@ const Explore = () => {
       validateInput("Please input necessary credentials");
       return;
     }
-    console.log("here");
+
     const category = formData.categoryOptions.indexOf(formData.category) + 8;
     const { quizCode, quizTitle, type, difficulty, numOfQuestions } = formData;
-    const data = { quizCode, quizTitle, type, difficulty, category, amount: numOfQuestions };
+    const data = {
+      quizCode,
+      quizTitle,
+      type,
+      difficulty,
+      category,
+      amount: numOfQuestions,
+    };
     exploreQuizAPI(data);
   };
 

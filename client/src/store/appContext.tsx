@@ -685,7 +685,17 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         multipleData: result,
       });
     } catch (error) {
-      console.log(error);
+      let message: any;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({
+        type: ActionType.CREATE_QUESTION_FAILED,
+        payload: { message },
+      });
+      clearAlert();
     }
   };
 
