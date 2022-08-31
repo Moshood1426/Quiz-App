@@ -34,9 +34,6 @@ const CreateQuiz = () => {
             >
               Start Now
             </button>
-            <button className="btn create-quiz-btn quick-quiz-learn-btn">
-              Learn More
-            </button>
           </div>
         </div>
 
@@ -61,9 +58,6 @@ const CreateQuiz = () => {
               }}
             >
               Start Now
-            </button>
-            <button className="btn create-quiz-btn moderated-quiz-learn">
-              Learn More
             </button>
           </div>
         </div>

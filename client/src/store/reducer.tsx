@@ -44,6 +44,31 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       alertType: "danger",
     };
   }
+  if (action.type === ActionType.CREATE_QUIZ_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === ActionType.CREATE_QUIZ_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      manageSingleQuiz: true,
+      editCurrentQuiz: false,
+      editQuizDetails: { details: null, questions: null },
+      singleQuizDetails: action.payload
+    };
+  }
+  if (action.type === ActionType.CREATE_QUIZ_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload,
+    };
+  }
   if (action.type === ActionType.GET_QUIZ_BEGIN) {
     return {
       ...state,
@@ -387,44 +412,44 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
         quizId: action.payload.quizId,
         participants: action.payload.participant,
       },
-      singleQuizQuestions: action.payload.questions
+      singleQuizQuestions: action.payload.questions,
     };
   }
-  if(action.type ===ActionType.RESET_SUBMISSION_PARTICIPANT) {
+  if (action.type === ActionType.RESET_SUBMISSION_PARTICIPANT) {
     return {
       ...state,
       submissionParticipant: {
         quizId: null,
-        participants: []
-      }
-    }
+        participants: [],
+      },
+    };
   }
-  if(action.type === ActionType.DISPLAY_RESULT) {
+  if (action.type === ActionType.DISPLAY_RESULT) {
     return {
       ...state,
       displayResult: true,
-      singleQuizQuestions: action.payload.result
-    }
+      singleQuizQuestions: action.payload.result,
+    };
   }
-  if(action.type === ActionType.RESET_DISPLAY_RESULT) {
+  if (action.type === ActionType.RESET_DISPLAY_RESULT) {
     return {
       ...state,
       displayResult: false,
-    }
+    };
   }
-  if(action.type === ActionType.EXPLORE_QUIZ_API_BEGIN) {
+  if (action.type === ActionType.EXPLORE_QUIZ_API_BEGIN) {
     return {
       ...state,
-      isLoading: true
-    }
+      isLoading: true,
+    };
   }
-  if(action.type === ActionType.EXPLORE_QUIZ_API_SUCCESS) {
+  if (action.type === ActionType.EXPLORE_QUIZ_API_SUCCESS) {
     return {
       ...state,
-      isLoading: false
-    }
+      isLoading: false,
+    };
   }
-  
+
   throw new Error(`no such action : ${action.type}`);
 };
 

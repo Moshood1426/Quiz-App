@@ -3,7 +3,9 @@ import Card from "./Card";
 import FormItem from "./FormItem";
 import Wrapper from "../assets/wrappers/CreateQuizModal";
 import Logo from "./Logo";
+import Alert from "./Alert";
 import { useNavigate } from "react-router-dom";
+import useAppContext from "../store/appContext";
 
 interface CreateQuizModalProps {
   toggleDisplay: () => void;
@@ -20,7 +22,7 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({
   type,
 }) => {
   const [formData, setFormData] = useState(initialState);
-
+  const { showAlert, validateInput, createQuiz } = useAppContext();
   const navigate = useNavigate();
 
   const handleChange = (
@@ -29,6 +31,19 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({
     const name = event.target.name;
     const value = event.target.value;
     setFormData(() => ({ ...formData, [name]: value }));
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const { quizCode, quizTitle } = formData;
+    if (!quizCode || !quizTitle) {
+      validateInput("Kindly enter all essential details");
+      return;
+    }
+    const result = await createQuiz(quizTitle, quizCode);
+    if (result) {
+      navigate("/");
+    }
   };
 
   if (type === "quick") {
@@ -71,7 +86,8 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({
       <p className="sub-title">Some description if needed</p>
       <Card>
         <h4 className="form-title">Create Moderated Quiz</h4>
-        <form>
+        <form onSubmit={handleSubmit}>
+          {showAlert && <Alert />}
           <FormItem
             label={true}
             labelText="Quiz Title"
@@ -90,7 +106,9 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({
             value={formData.quizCode}
             onChange={handleChange}
           />
-          <button className="btn submitBtn">Submit</button>
+          <button className="btn submitBtn" type="submit">
+            Submit
+          </button>
           <span
             className="go-back"
             onClick={() => {

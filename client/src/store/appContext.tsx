@@ -155,6 +155,32 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     console.log(email);
   };
 
+  //create quiz functionality
+  const createQuiz = async (quizTitle: string, quizCode: string) => {
+    dispatch({ type: ActionType.CREATE_QUIZ_BEGIN });
+    const reqObj = { quizCode, quizTitle, quizType: "moderated" };
+    console.log(reqObj);
+    try {
+      const { data } = await axios.post("/api/v1/quiz", reqObj);
+      dispatch({ type: ActionType.CREATE_QUIZ_SUCCESS, payload: data.quiz });
+      return true;
+    } catch (error) {
+      let message: any;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      console.log(message.msg);
+      dispatch({
+        type: ActionType.CREATE_QUIZ_FAILED,
+        payload: message.msg,
+      });
+      clearAlert();
+      return false;
+    }
+  };
+
   //get-all-quiz functionality
   const getAllQuiz = async (reqObj: GetAllQuizArgs) => {
     const { title, code, type, sort, privacy } = reqObj;
@@ -618,7 +644,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     category: number;
     amount: number;
   }) => {
-    dispatch({type: ActionType.EXPLORE_QUIZ_API_BEGIN})
+    dispatch({ type: ActionType.EXPLORE_QUIZ_API_BEGIN });
     const { quizCode, quizTitle, type, difficulty, category, amount } = data;
 
     //conjuring the URL together
@@ -685,8 +711,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         forQuiz: quizId,
         multipleData: result,
       });
-      startManageQuiz(quizId)
-      dispatch({type: ActionType.EXPLORE_QUIZ_API_SUCCESS})
+      startManageQuiz(quizId);
+      dispatch({ type: ActionType.EXPLORE_QUIZ_API_SUCCESS });
       return true;
     } catch (error) {
       let message: any;
@@ -712,6 +738,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         validateInput,
         login,
         forgotPassword,
+        createQuiz,
         getAllQuiz,
         startManageQuiz,
         endManageQuiz,

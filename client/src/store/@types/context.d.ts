@@ -54,6 +54,7 @@ export interface ContextType extends InitialState {
   login: (reqObj: registerArgs) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   validateInput: (arg?: string) => void;
+  createQuiz: (quizTitle, quizCode) => Promise<boolean>
   getAllQuiz: (reqObj: GetAllQuizArgs) => Promise<void>;
   startManageQuiz: (quizId: object) => void;
   endManageQuiz: () => void;

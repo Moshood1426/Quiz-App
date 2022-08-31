@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
+  padding-bottom: 3em;
+
   .title {
     font-weight: bold;
     color: var(--grey-700);
@@ -10,6 +12,10 @@ const Wrapper = styled.div`
   .create-quiz-div {
     padding: 1em;
     margin-bottom: 3em;
+  }
+
+  .create-quiz-div:last-child {
+    margin-bottom: 0em;
   }
 
   .create-quiz-img-div {
@@ -37,7 +43,7 @@ const Wrapper = styled.div`
   }
 
   .create-quiz-btn:hover {
-    opacity: .6;
+    opacity: 0.6;
   }
 
   .quick-quiz {
@@ -85,6 +91,10 @@ const Wrapper = styled.div`
       display: flex;
       gap: 2em;
       max-width: var(--max-width);
+    }
+
+    .create-quiz-div:last-child {
+      margin-bottom: 3em;
     }
   }
 `;

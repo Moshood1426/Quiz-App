@@ -22,7 +22,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
   const deleteSingleQuiz = () => {
     const alert = window.confirm("Are you sure you want to delete quiz?");
     if (alert) {
-      navigate("/manage-quiz");
+      navigate("/");
       if (singleQuizDetails) deleteQuiz(singleQuizDetails._id);
     }
   };
