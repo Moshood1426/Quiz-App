@@ -618,6 +618,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     category: number;
     amount: number;
   }) => {
+    dispatch({type: ActionType.EXPLORE_QUIZ_API_BEGIN})
     const { quizCode, quizTitle, type, difficulty, category, amount } = data;
 
     //conjuring the URL together
@@ -684,6 +685,9 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         forQuiz: quizId,
         multipleData: result,
       });
+      startManageQuiz(quizId)
+      dispatch({type: ActionType.EXPLORE_QUIZ_API_SUCCESS})
+      return true;
     } catch (error) {
       let message: any;
       if (axios.isAxiosError(error)) {
@@ -696,6 +700,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         payload: { message },
       });
       clearAlert();
+      return false;
     }
   };
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FormSelectItem, FormItem, Alert } from "../../components";
 import Wrapper from "../../assets/wrappers/ExploreDB";
 import useAppContext from "../../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   numOfQuestions: 20,
@@ -44,7 +45,9 @@ const Explore = () => {
   const [formPage, setFormPage] = useState(1);
   const [formData, setFormData] = useState(initialState);
 
-  const { showAlert, validateInput, exploreQuizAPI } = useAppContext();
+  const { showAlert, isLoading, validateInput, exploreQuizAPI } = useAppContext();
+
+  const navigate = useNavigate();
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -54,7 +57,7 @@ const Explore = () => {
     setFormData(() => ({ ...formData, [name]: value }));
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!formData.quizTitle || !formData.quizCode) {
       validateInput("Please input necessary credentials");
@@ -63,6 +66,7 @@ const Explore = () => {
 
     const category = formData.categoryOptions.indexOf(formData.category) + 8;
     const { quizCode, quizTitle, type, difficulty, numOfQuestions } = formData;
+
     const data = {
       quizCode,
       quizTitle,
@@ -71,7 +75,10 @@ const Explore = () => {
       category,
       amount: numOfQuestions,
     };
-    exploreQuizAPI(data);
+    const result = await exploreQuizAPI(data);
+    if (result) {
+      navigate("/manage-quiz");
+    }
   };
 
   return (
@@ -85,6 +92,7 @@ const Explore = () => {
       <form className="form-card" onSubmit={(event) => handleSubmit(event)}>
         {formPage === 1 ? (
           <>
+            {showAlert && <Alert />}
             <h4 className="form-title">Let's start with Quiz Details</h4>
             <p className="form-sub-title">
               Kindly fill the form to suite your taste
@@ -97,7 +105,7 @@ const Explore = () => {
                 </label>
                 <input
                   type="number"
-                  min="20"
+                  min="10"
                   max="50"
                   name="numOfQuestions"
                   value={formData.numOfQuestions}
@@ -123,7 +131,21 @@ const Explore = () => {
                 onChange={(event) => handleChange(event)}
                 options={formData.difficultyOptions}
               />
-              <button className="btn" onClick={() => setFormPage(2)}>
+              <button
+                className="btn"
+                onClick={() => {
+                  if (
+                    formData.numOfQuestions > 50 ||
+                    formData.numOfQuestions < 10
+                  ) {
+                    validateInput(
+                      "Number of questions should be between 10 - 50"
+                    );
+                    return;
+                  }
+                  setFormPage(2);
+                }}
+              >
                 Next 1/2
               </button>
             </div>
@@ -154,8 +176,8 @@ const Explore = () => {
                 value={formData.quizCode}
                 onChange={handleChange}
               />
-              <button type="submit" className="btn">
-                Submit
+              <button type="submit" className="btn" disabled={isLoading}>
+                Submit 2/2
               </button>
             </div>
           </>

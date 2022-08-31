@@ -15,9 +15,9 @@ const createQuestion = async (req, res) => {
     let data = multipleData.map((item) => ({ ...item, createdBy, forQuiz }));
     const setQuestion = await Question.insertMany(data);
 
-    const quiz = await Quiz.findOne({ _id: setQuestion.forQuiz });
-
-    quiz.noOfQuestions = data.length;
+    const quiz = await Quiz.findOne({ _id: forQuiz });
+    console.log(data.length)
+    quiz.noOfQuestions = quiz.noOfQuestions + data.length;
     await quiz.save();
 
     res

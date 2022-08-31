@@ -71,10 +71,11 @@ const Profile = () => {
               type={"text"}
               value={formData.newPassword}
               onChange={handleChange}
+              
             />
             <FormItem
               label={true}
-              labelText="Old Password"
+              labelText="Confirm New Password"
               name={"oldPassword"}
               type={"text"}
               value={formData.oldPassword}

@@ -96,7 +96,7 @@ export interface ContextType extends InitialState {
     difficulty: string;
     category: number;
     amount: number;
-  }) => Promise<void>;
+  }) => Promise<boolean>;
 }
 
 export interface editQuizArg {

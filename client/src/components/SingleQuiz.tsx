@@ -67,7 +67,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
               quiz.noOfSubmissions > 1 ? "s" : ""
             }`}
           </p>
-         {/* <p>
+          {/* <p>
             📓{" "}
             {`${quiz.participants.length} participants${
              quiz.participants.length > 1 ? "s" : ""
@@ -76,12 +76,11 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
         </div>
         <div className="single-quiz-footer">
           <div className="single-quiz-date">
-            
-              {quiz.published ? (
-                <div>{getTime(quiz.startDate, quiz.endDate)}</div>
-              ) : (
-                <p className="single-quiz-date-time">⏰ not published</p>
-              )}
+            {quiz.published ? (
+              <div>{getTime(quiz.startDate, quiz.endDate)}</div>
+            ) : (
+              <p className="single-quiz-date-time">⏰ not published</p>
+            )}
           </div>
           <div>
             {extraDetails ? (

@@ -412,6 +412,19 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       displayResult: false,
     }
   }
+  if(action.type === ActionType.EXPLORE_QUIZ_API_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if(action.type === ActionType.EXPLORE_QUIZ_API_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+  
   throw new Error(`no such action : ${action.type}`);
 };
 
