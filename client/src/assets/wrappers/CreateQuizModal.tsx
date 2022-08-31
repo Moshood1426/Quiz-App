@@ -25,6 +25,10 @@ const Wrapper = styled.div`
     padding: 0 1.5em 0.65em;
   }
 
+  .form-sub-title {
+    text-align: center;
+  }
+
   .submitBtn {
     width: 100%;
     margin-bottom: 0.8em;

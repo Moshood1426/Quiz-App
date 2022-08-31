@@ -3,19 +3,25 @@ import Card from "./Card";
 import FormItem from "./FormItem";
 import Wrapper from "../assets/wrappers/CreateQuizModal";
 import Logo from "./Logo";
+import { useNavigate } from "react-router-dom";
 
 interface CreateQuizModalProps {
   toggleDisplay: () => void;
+  type: "quick" | "moderated";
 }
 
 const initialState = {
   quizTitle: "",
-  quizCode: ""
+  quizCode: "",
 };
 
-const CreateQuizModal: React.FC<CreateQuizModalProps> = ({ toggleDisplay }) => {
+const CreateQuizModal: React.FC<CreateQuizModalProps> = ({
+  toggleDisplay,
+  type,
+}) => {
   const [formData, setFormData] = useState(initialState);
-  // const [ quizType, setQuizType ] = useState("moderated-quiz")
+
+  const navigate = useNavigate();
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -25,6 +31,38 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({ toggleDisplay }) => {
     setFormData(() => ({ ...formData, [name]: value }));
   };
 
+  if (type === "quick") {
+    return (
+      <Wrapper>
+        <div className="img-div">
+          <Logo />
+        </div>
+        <p className="sub-title">Some description if needed</p>
+        <Card>
+          <h4 className="form-title">Create Quick Quiz</h4>
+          <p className="form-sub-title">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua
+          </p>
+          <button
+            className="btn submitBtn"
+            onClick={() => navigate("/explore")}
+          >
+            Start Exploring
+          </button>
+          <span
+            className="go-back"
+            onClick={() => {
+              toggleDisplay();
+            }}
+          >
+            Go back
+          </span>
+        </Card>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
       <div className="img-div">
@@ -32,7 +70,7 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({ toggleDisplay }) => {
       </div>
       <p className="sub-title">Some description if needed</p>
       <Card>
-        <h4 className="form-title">Create Moderated Test</h4>
+        <h4 className="form-title">Create Moderated Quiz</h4>
         <form>
           <FormItem
             label={true}

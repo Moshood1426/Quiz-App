@@ -18,7 +18,6 @@ import Submission from "./pages/dashboard/Submission";
 import useAppContext from "./store/appContext";
 
 function App() {
-
   const { user, validateParticipant } = useAppContext();
   return (
     <Router>
@@ -34,9 +33,9 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Explore />} />
+          <Route index element={<ManageQuiz />} />
+          <Route path="/explore" element={<Explore />} />
           <Route path="/create-quiz" element={<CreateQuiz />} />
-          <Route path="/manage-quiz" element={<ManageQuiz />} />
           <Route path="/submission" element={<Submission />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
@@ -48,7 +47,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/start-test" element={<StartTest />}/>
+        <Route path="/start-test" element={<StartTest />} />
         <Route
           path="/take-test"
           element={
@@ -57,7 +56,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/*" element={<NotFound />}/>
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>
   );

@@ -69,7 +69,7 @@ const EditQuiz = () => {
       "Are you sure you want to leave changes without saving?"
     );
     if (alert) {
-      navigate("/manage-quiz");
+      navigate("/");
     } else {
       console.log("cancelled");
     }
@@ -90,7 +90,7 @@ const EditQuiz = () => {
     };
     const result = await executeEditQuiz(quizId, quizObj);
     if (result) {
-      navigate("/manage-quiz");
+      navigate("/");
     }
   };
 

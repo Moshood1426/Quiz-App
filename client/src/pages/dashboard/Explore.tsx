@@ -45,7 +45,8 @@ const Explore = () => {
   const [formPage, setFormPage] = useState(1);
   const [formData, setFormData] = useState(initialState);
 
-  const { showAlert, isLoading, validateInput, exploreQuizAPI } = useAppContext();
+  const { showAlert, isLoading, validateInput, exploreQuizAPI } =
+    useAppContext();
 
   const navigate = useNavigate();
 
@@ -77,7 +78,7 @@ const Explore = () => {
     };
     const result = await exploreQuizAPI(data);
     if (result) {
-      navigate("/manage-quiz");
+      navigate("/");
     }
   };
 

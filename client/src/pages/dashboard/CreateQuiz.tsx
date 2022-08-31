@@ -6,6 +6,7 @@ import { CreateQuizModal } from "../../components";
 
 const CreateQuiz = () => {
   const [displayModal, setDisplayModal] = useState(false);
+  const [type, setType] = useState<"quick" | "moderated">("quick");
 
   return (
     <Wrapper>
@@ -24,7 +25,13 @@ const CreateQuiz = () => {
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
               enim ad minim ve
             </p>
-            <button className="btn create-quiz-btn quick-quiz-btn">
+            <button
+              className="btn create-quiz-btn quick-quiz-btn"
+              onClick={() => {
+                setType("quick");
+                setDisplayModal(true);
+              }}
+            >
               Start Now
             </button>
             <button className="btn create-quiz-btn quick-quiz-learn-btn">
@@ -48,7 +55,10 @@ const CreateQuiz = () => {
             </p>
             <button
               className="btn create-quiz-btn moderated-quiz-btn"
-              onClick={() => setDisplayModal(true)}
+              onClick={() => {
+                setType("moderated");
+                setDisplayModal(true);
+              }}
             >
               Start Now
             </button>
@@ -59,7 +69,10 @@ const CreateQuiz = () => {
         </div>
       </div>
       {displayModal && (
-        <CreateQuizModal toggleDisplay={() => setDisplayModal(false)} />
+        <CreateQuizModal
+          toggleDisplay={() => setDisplayModal(false)}
+          type={type}
+        />
       )}
     </Wrapper>
   );

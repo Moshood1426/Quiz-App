@@ -1,9 +1,9 @@
 import moment from "moment"
 
 const actions = [
-  { id: 1, title: "Explore", to: "/" },
+  { id: 1, title: "Explore", to: "/explore" },
   { id: 2, title: "Create quiz", to: "/create-quiz" },
-  { id: 3, title: "Manage quiz", to: "/manage-quiz" },
+  { id: 3, title: "Manage quiz", to: "/" },
   { id: 4, title: "Submissions", to: "/submission" },
   { id: 5, title: "Profile", to: "/profile" },
 ];
