@@ -85,8 +85,8 @@ export interface ContextType extends InitialState {
   setQuestionAnswer: (questionId: object, answer: string) => void;
   changeQuestionPage: (page: number) => void;
   endTest: () => void;
-  getQuizWithSubmission: () => void;
-  getSubmissionParticipant: (quizId: object) => Promise<void>;
+  getAllQuizSubmission: () => void;
+  getSingleQuizSubmission: (quizId: object) => Promise<void>;
   resetSubmissionParticipant: () => void;
   getResults: (participantId: object) => void;
   resetDisplayResult: () => void;

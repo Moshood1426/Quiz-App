@@ -565,13 +565,13 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.LOGOUT_PARTICIPANT });
   };
 
-  const getQuizWithSubmission = async () => {
-    dispatch({ type: ActionType.GET_QUIZ_WITH_SUBMISSION_BEGIN });
+  const getAllQuizSubmission = async () => {
+    dispatch({ type: ActionType.GET_ALL_QUIZ_SUBMISSION_BEGIN });
 
     try {
       const { data } = await authFetch.get(`/quiz?forSubmission=true`);
       dispatch({
-        type: ActionType.GET_QUIZ_WITH_SUBMISSION_SUCCESS,
+        type: ActionType.GET_ALL_QUIZ_SUBMISSION_SUCCESS,
         payload: { quiz: data.quiz },
       });
     } catch (error) {
@@ -580,13 +580,13 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
-  const getSubmissionParticipant = async (quizId: object) => {
-    dispatch({ type: ActionType.GET_SUBMISSION_PARTICIPANT_BEGIN });
+  const getSingleQuizSubmission = async (quizId: object) => {
+    dispatch({ type: ActionType.GET_SINGLE_QUIZ_SUBMISSION_BEGIN });
 
     try {
       const { data } = await axios.get(`/api/v1/submission/${quizId}`);
       dispatch({
-        type: ActionType.GET_SUBMISSION_PARTICIPANT_SUCCESS,
+        type: ActionType.GET_SINGLE_QUIZ_SUBMISSION_SUCCESS,
         payload: {
           quizId,
           participant: data.participant,
@@ -603,13 +603,13 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   const getResults = (participantId: object) => {
-    //checking for the current participant in the participant state
+    //checking for the current participant details
     const participant = state.submissionParticipant.participants.find(
       (item) => (item._id = participantId)
     );
 
     //mapping the quiz questions to add client answers
-    const result = state.singleQuizQuestions?.map((item) => {
+    const result = state.participantQuestions?.map((item) => {
       const test = participant?.answers.find(
         (answer) => answer.questionId === item._id
       );
@@ -628,7 +628,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.RESET_DISPLAY_RESULT });
   };
 
-  function shuffleArray(array: (string | number)[]) {
+  const shuffleArray = (array: (string | number)[]) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -758,8 +758,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         setQuestionAnswer,
         changeQuestionPage,
         endTest,
-        getQuizWithSubmission,
-        getSubmissionParticipant,
+        getAllQuizSubmission,
+        getSingleQuizSubmission,
         resetSubmissionParticipant,
         getResults,
         resetDisplayResult,

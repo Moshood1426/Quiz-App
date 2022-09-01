@@ -9,10 +9,15 @@ interface SingleSubmissionProps {
 }
 
 const SingleSubmission: React.FC<SingleSubmissionProps> = ({ item }) => {
-  const { getSubmissionParticipant, submissionParticipant } = useAppContext();
+  const { getSingleQuizSubmission, submissionParticipant } = useAppContext();
+
+  //get single quiz with all submission received
   const getParticipant = (quizId: object) => {
-    if(submissionParticipant.quizId === null) getSubmissionParticipant(quizId);
+    if (submissionParticipant.quizId === null) {
+      getSingleQuizSubmission(quizId);
+    }
   };
+
   return (
     <Wrapper>
       <p className="quiz-code">{item.quizCode}</p>
@@ -25,7 +30,8 @@ const SingleSubmission: React.FC<SingleSubmissionProps> = ({ item }) => {
         className="quiz-submission-num"
         onClick={() => getParticipant(item._id)}
       >
-        {item.noOfSubmissions} submission received
+        {item.noOfSubmissions} submission{item.noOfSubmissions > 1 && "s"}{" "}
+        received
       </p>
     </Wrapper>
   );

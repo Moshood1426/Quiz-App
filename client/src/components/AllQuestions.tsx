@@ -1,20 +1,25 @@
 import React from "react";
 import Wrapper from "../assets/wrappers/AllQuestions";
-import { SingleQuestion as SingleQuestionType } from "../store/@types/context";
+import {
+  ParticipantQuestion,
+  SingleQuestion as SingleQuestionType,
+} from "../store/@types/context";
 import useAppContext from "../store/appContext";
 import Loading from "./Loading";
 import SingleQuestion from "./SingleQuestions";
 
 interface AllQuestionsProps {
   startAddingQuestion?: (arg: boolean) => void;
+  quizDetails: SingleQuestionType[] | ParticipantQuestion[];
   extraDetails?: boolean;
-  addQuestion?: boolean
+  addQuestion?: boolean;
 }
 
 const AllQuestions: React.FC<AllQuestionsProps> = ({
   startAddingQuestion,
+  quizDetails,
   extraDetails,
-  addQuestion
+  addQuestion,
 }) => {
   const {
     singleQuizQuestions,
@@ -23,7 +28,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
     editQuizDetails,
     isLoading,
     editingQuestion,
-    participantQuestions
+    participantQuestions,
   } = useAppContext();
 
   const calculateTotalPoints = (arg: SingleQuestionType[]) => {
@@ -34,9 +39,9 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
 
   const totalPoints = calculateTotalPoints(singleQuizQuestions);
 
-  const quizDetails = participantQuestions ? participantQuestions : editCurrentQuiz
+  /* const quizDetails = participantQuestions ? participantQuestions : editCurrentQuiz
     ? editQuizDetails.questions!
-    : singleQuizQuestions;
+    : singleQuizQuestions; */
 
   return (
     <Wrapper>
@@ -78,7 +83,6 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
               <SingleQuestion
                 key={item._id.toString()}
                 question={item}
-                
                 index={index}
                 extraDetails={extraDetails}
                 id={item._id}
@@ -86,7 +90,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
             );
           })
         )}
-        </div>
+      </div>
     </Wrapper>
   );
 };

@@ -24,6 +24,7 @@ const ViewSingleQuiz: React.FC = () => {
     validateInput,
     showAlert,
     singleQuizDetails,
+    singleQuizQuestions,
     isLoading,
     endManageQuiz,
     startManageQuiz,
@@ -150,7 +151,7 @@ const ViewSingleQuiz: React.FC = () => {
                 {singleQuizDetails && (
                   <SingleQuiz quiz={singleQuizDetails} extraDetails={true} />
                 )}
-                {!isLoading && <AllQuestions />}
+                {!isLoading && <AllQuestions quizDetails={singleQuizQuestions}/>}
               </div>
               <div>
                 <QuizActivities />

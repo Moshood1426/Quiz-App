@@ -12,7 +12,7 @@ const Submission = () => {
     quizWithSubmission,
     isLoading,
     submissionParticipant,
-    getQuizWithSubmission,
+    getAllQuizSubmission,
     resetSubmissionParticipant,
     displayResult,
     getResults,
@@ -20,7 +20,7 @@ const Submission = () => {
   } = useAppContext();
 
   useEffect(() => {
-    getQuizWithSubmission();
+    getAllQuizSubmission();
     //eslint-disable-next-line
   }, []);
 
@@ -35,7 +35,7 @@ const Submission = () => {
           <div className="quiz-content">
             <ParticipantDetails />
             <div className="quiz-questions">
-              <AllQuestions />
+              <AllQuestions quizDetails={participantQuestions!}/>
             </div>
           </div>
         </div>
@@ -43,7 +43,7 @@ const Submission = () => {
     );
   }
 
-  //renders all participant result in tabular format
+  //renders result of all participant for a single quiz in tabular format alongside quiz details
   if (submissionParticipant.quizId !== null) {
     const singleSubmission = quizWithSubmission.find(
       (item) => item._id === submissionParticipant.quizId
@@ -54,12 +54,16 @@ const Submission = () => {
           <h3 className="title">Submission</h3>
           <span onClick={resetSubmissionParticipant}>{"<<"} go back</span>
         </div>
+
         <SingleSubmission item={singleSubmission!} />
+
         <div className="single-participant single-participant-title">
-          <p>S/N</p>
-          <p>Name</p>
-          <p>Identifier</p>
+          <p className="single-participant-text">S/N</p>
+          <p className="single-participant-text">Name</p>
+          <p className="single-participant-text">Identifier</p>
+          <p className="single-participant-text">Details</p>
         </div>
+
         {isLoading ? (
           <Loading />
         ) : quizWithSubmission.length < 1 ? (
@@ -85,7 +89,7 @@ const Submission = () => {
                 </p>
                 <p
                   className="view-details"
-                  onClick={() => getResults(item._id)}
+                  onClick={() => getResults(item._id)} //sets displayResult to true and renders first condition
                 >
                   view details
                 </p>

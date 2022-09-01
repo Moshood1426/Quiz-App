@@ -385,26 +385,26 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       page: 1,
     };
   }
-  if (action.type === ActionType.GET_QUIZ_WITH_SUBMISSION_BEGIN) {
+  if (action.type === ActionType.GET_ALL_QUIZ_SUBMISSION_BEGIN) {
     return {
       ...state,
       isLoading: true,
     };
   }
-  if (action.type === ActionType.GET_QUIZ_WITH_SUBMISSION_SUCCESS) {
+  if (action.type === ActionType.GET_ALL_QUIZ_SUBMISSION_SUCCESS) {
     return {
       ...state,
       isLoading: false,
       quizWithSubmission: action.payload.quiz,
     };
   }
-  if (action.type === ActionType.GET_SUBMISSION_PARTICIPANT_BEGIN) {
+  if (action.type === ActionType.GET_SINGLE_QUIZ_SUBMISSION_BEGIN) {
     return {
       ...state,
       isLoading: true,
     };
   }
-  if (action.type === ActionType.GET_SUBMISSION_PARTICIPANT_SUCCESS) {
+  if (action.type === ActionType.GET_SINGLE_QUIZ_SUBMISSION_SUCCESS) {
     return {
       ...state,
       isLoading: false,
@@ -412,7 +412,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
         quizId: action.payload.quizId,
         participants: action.payload.participant,
       },
-      singleQuizQuestions: action.payload.questions,
+      participantQuestions: action.payload.questions,
     };
   }
   if (action.type === ActionType.RESET_SUBMISSION_PARTICIPANT) {
@@ -428,7 +428,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     return {
       ...state,
       displayResult: true,
-      singleQuizQuestions: action.payload.result,
+      participantQuestions: action.payload.result,
     };
   }
   if (action.type === ActionType.RESET_DISPLAY_RESULT) {

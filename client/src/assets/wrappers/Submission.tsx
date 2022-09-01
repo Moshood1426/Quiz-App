@@ -34,15 +34,20 @@ const Wrapper = styled.div`
   .single-participant {
     display: grid;
     grid-template-columns: 20px 1fr 2fr 1fr;
-    gap: 1em;
+    gap: 2em;
     padding: 0.5em 0;
     border-bottom: solid 1px var(--grey-200);
   }
 
   .single-participant-title {
-    border-top: solid 2px var(--grey-200);
-    border-bottom: solid 2px var(--grey-200);
+    border-top: solid 2px var(--grey-300);
+    border-bottom: solid 2px var(--grey-300);
     margin-top: 3em;
+  }
+
+  .single-participant-text {
+    font-size: 1.2rem;
+    font-weight: bold;
   }
 
   .single-participant-identifier {

@@ -21,7 +21,7 @@ const EditQuiz = () => {
   const {
     editQuiz,
     executeEditQuiz,
-    editQuizDetails: { details },
+    editQuizDetails: { questions, details },
     validateInput,
     editingQuestion,
   } = useAppContext();
@@ -122,6 +122,7 @@ const EditQuiz = () => {
           startAddingQuestion={startAddingQuestions}
           extraDetails={true}
           addQuestion={addQuestion}
+          quizDetails={questions!}
         />
       </div>
       {(addQuestion || editingQuestion) && (
