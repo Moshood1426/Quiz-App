@@ -13,17 +13,26 @@ interface SingleQuizProps {
 
 const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
   const navigate = useNavigate();
-  const { startManageQuiz, deleteQuiz, singleQuizDetails } = useAppContext();
+  const { startManageQuiz, deleteQuiz, getAllQuiz, singleQuizDetails } =
+    useAppContext();
 
   const editQuiz = () => {
     navigate(`/${singleQuizDetails?._id}`);
   };
 
-  const deleteSingleQuiz = () => {
+  const deleteSingleQuiz = async () => {
     const alert = window.confirm("Are you sure you want to delete quiz?");
     if (alert) {
-      navigate("/");
-      if (singleQuizDetails) deleteQuiz(singleQuizDetails._id);
+      if (singleQuizDetails) {
+        await deleteQuiz(singleQuizDetails._id);
+        await getAllQuiz({
+          title: "",
+          code: "",
+          sort: "all",
+          privacy: "all",
+          type: "all",
+        });
+      }
     }
   };
 

@@ -30,15 +30,14 @@ const initialState: InitialState = {
   alertText: "",
   isLoading: false,
   user: user ? JSON.parse(user) : null,
-  quiz: [],
+  quiz: null,
   totalQuizNum: 0,
-  activities: [],
   manageSingleQuiz: false,
   singleQuizDetails: null,
   singleQuizQuestions: [],
   numOfQuestions: 0,
   editCurrentQuiz: false,
-  editQuizDetails: { details: null, questions: null },
+  editSingleQuizDetails: { details: null, questions: null },
   editingQuestion: false,
   questionEdit: {
     type: "",
@@ -194,7 +193,6 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         type: ActionType.GET_QUIZ_SUCCESS,
         payload: {
           quiz: data.quiz,
-          activities: data.activities,
           totalQuizNum: data.numOfQuiz,
         },
       });
@@ -276,11 +274,15 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
-  const executeEditQuiz = async (quizId: object, quizObj: editQuizArg) => {
-    dispatch({ type: ActionType.EXECUTE_EDIT_QUIZ_BEGIN });
+  const endEditQuiz = () => {
+    dispatch({type: ActionType.EDIT_QUIZ_END})
+  }
+
+  const editQuizDetails = async (quizId: object, quizObj: editQuizArg) => {
+    dispatch({ type: ActionType.EDIT_QUIZ_DETAILS_BEGIN });
     try {
       await axios.patch(`api/v1/quiz/${quizId}`, { ...quizObj });
-      dispatch({ type: ActionType.EXECUTE_EDIT_QUIZ_SUCCESS });
+      dispatch({ type: ActionType.EDIT_QUIZ_DETAILS_SUCCESS });
       return true;
     } catch (error) {
       let message;
@@ -290,7 +292,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         message = { msg: "An unexpected error occurred" };
       }
       dispatch({
-        type: ActionType.EXECUTE_EDIT_QUIZ_FAILED,
+        type: ActionType.EDIT_QUIZ_DETAILS_FAILED,
         payload: { message },
       });
       clearAlert();
@@ -330,7 +332,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   const createQuestion = async () => {
     const questionObj = {
       ...state.questionEdit,
-      forQuiz: state.editQuizDetails.details?._id,
+      forQuiz: state.editSingleQuizDetails.details?._id,
     };
     dispatch({ type: ActionType.CREATE_QUESTION_BEGIN });
     try {
@@ -743,9 +745,10 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         startManageQuiz,
         endManageQuiz,
         editQuiz,
+        endEditQuiz,
         setQuestionType,
         deleteQuiz,
-        executeEditQuiz,
+        editQuizDetails,
         setEditQuestion,
         cancelEditQuestion,
         createQuestion,

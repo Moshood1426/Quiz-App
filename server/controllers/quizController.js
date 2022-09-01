@@ -1,6 +1,5 @@
 const { BadRequestError, NotFoundError } = require("../errors");
 const Quiz = require("../models/Quiz");
-const Activities = require("../models/Activities");
 const Participant = require("../models/Participant");
 const Question = require("../models/Questions");
 const { StatusCodes } = require("http-status-codes");
@@ -15,14 +14,6 @@ const createQuiz = async (req, res) => {
   const createdBy = req.user.userId;
 
   const quiz = await Quiz.create({ ...req.body, createdBy: createdBy });
-
-  const activityObj = {
-    action: `New quiz created titled ${quiz.quizTitle}`,
-    for: quiz._id,
-    createdBy: createdBy,
-  };
-
-  const activity = await Activities.create({ ...activityObj });
 
   res.status(StatusCodes.CREATED).json({ msg: "quiz created", quiz });
 };
@@ -74,9 +65,8 @@ const getAllQuiz = async (req, res) => {
 
   //await quiz result
   const quiz = await result;
-  const activities = await Activities.find({ createdBy: req.user.userId });
 
-  res.status(StatusCodes.OK).json({ numOfQuiz: quiz.length, quiz, activities });
+  res.status(StatusCodes.OK).json({ numOfQuiz: quiz.length, quiz });
 };
 
 const getSingleQuiz = async (req, res) => {

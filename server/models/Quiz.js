@@ -58,7 +58,6 @@ QuizSchema.index({ quizCode: 1 }, { unique: true });
 
 QuizSchema.pre("remove", async function () {
   await this.model("question").deleteMany({ forQuiz: this._id });
-  await this.model("activities").deleteMany({ for: this._id });
 });
 
 module.exports = mongoose.model("quiz", QuizSchema);

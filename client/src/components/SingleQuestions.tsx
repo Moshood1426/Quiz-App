@@ -26,13 +26,12 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
   number,
 }) => {
   const {
-    editQuizDetails: { questions, details },
+    editSingleQuizDetails: { questions, details },
     setEditQuestion,
     deleteQuestion,
     editQuiz,
     setQuestionAnswer,
     user,
-    participantQuestions,
   } = useAppContext();
 
   const editQuestion = (id: object) => {

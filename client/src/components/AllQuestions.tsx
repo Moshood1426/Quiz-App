@@ -25,7 +25,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
     singleQuizQuestions,
     numOfQuestions,
     editCurrentQuiz,
-    editQuizDetails,
+    editSingleQuizDetails,
     isLoading,
     editingQuestion,
     participantQuestions,
@@ -50,7 +50,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
           All Questions{" "}
           <span className="num-of-questions">
             {editCurrentQuiz
-              ? editQuizDetails.questions?.length
+              ? editSingleQuizDetails.questions?.length
               : numOfQuestions}
           </span>
         </h3>

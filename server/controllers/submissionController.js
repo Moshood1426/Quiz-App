@@ -13,7 +13,7 @@ const getAllSubmissions = async (req, res) => {
   });
 
   const questions = await Questions.find({ forQuiz: quizId });
-  res.status(StatusCodes.OK).json({ participant, questions});
+  res.status(StatusCodes.OK).json({ participant, questions });
 };
 
 const getSingleSubmission = async (req, res) => {

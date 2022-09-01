@@ -57,7 +57,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       manageSingleQuiz: true,
       editCurrentQuiz: false,
       editQuizDetails: { details: null, questions: null },
-      singleQuizDetails: action.payload
+      singleQuizDetails: action.payload,
     };
   }
   if (action.type === ActionType.CREATE_QUIZ_FAILED) {
@@ -82,7 +82,6 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       ...state,
       isLoading: false,
       quiz: action.payload.quiz,
-      activities: action.payload.activities,
       totalQuizNum: action.payload.totalQuizNum,
     };
   }
@@ -143,24 +142,32 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      editQuizDetails: action.payload,
+      editSingleQuizDetails: action.payload,
     };
   }
-  if (action.type === ActionType.EXECUTE_EDIT_QUIZ_BEGIN) {
+  if (action.type === ActionType.EDIT_QUIZ_END) {
+    return {
+      ...state,
+      isLoading: false,
+      editCurrentQuiz: false,
+      editSingleQuizDetails: { questions: null, details: null },
+    };
+  }
+  if (action.type === ActionType.EDIT_QUIZ_DETAILS_BEGIN) {
     return {
       ...state,
       isLoading: true,
     };
   }
-  if (action.type === ActionType.EXECUTE_EDIT_QUIZ_SUCCESS) {
+  if (action.type === ActionType.EDIT_QUIZ_DETAILS_SUCCESS) {
     return {
       ...state,
       isLoading: false,
       editCurrentQuiz: false,
-      editQuizDetails: { details: null, questions: null },
+      editSingleQuizDetails: { details: null, questions: null },
     };
   }
-  if (action.type === ActionType.EXECUTE_EDIT_QUIZ_FAILED) {
+  if (action.type === ActionType.EDIT_QUIZ_DETAILS_FAILED) {
     return {
       ...state,
       isLoading: false,
@@ -173,16 +180,16 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     return {
       ...state,
       isLoading: true,
+      manageSingleQuiz: false,
+      singleQuizDetails: null,
+      singleQuizQuestions: [],
+      numOfQuestions: 0,
     };
   }
   if (action.type === ActionType.DELETE_QUIZ_SUCCESS) {
     return {
       ...state,
       isLoading: false,
-      manageSingleQuiz: false,
-      singleQuizDetails: null,
-      singleQuizQuestions: [],
-      numOfQuestions: 0,
     };
   }
   if (action.type === ActionType.SET_QUESTION_TYPE) {

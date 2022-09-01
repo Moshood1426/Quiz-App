@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  
   .title {
     font-weight: bold;
     color: var(--grey-700);
@@ -46,6 +45,22 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     gap: 1em;
+  }
+
+  .manage-quiz-actions {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+  }
+
+  .manage-quiz-refresh-btn {
+    background-color: var(--primary-400);
+    font-weight: bold;
+    font-size: 1.6rem;
+    order: 2;
+    color: var(--primary-300);
+    border-radius: 50%;
+    cursor: pointer;
   }
 
   @media (min-width: 500px) {

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-position: relative;
+  position: relative;
   p,
   h3 {
     margin: 0;
@@ -13,13 +13,13 @@ position: relative;
     align-items: flex-end;
     border-bottom: solid 2px var(--grey-200);
     padding-bottom: 0.7em;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
 
   .num-of-questions {
     background: #ffb6b6;
-    padding: 0 0.5em;
-    border-radius: 50%;
+    padding: 0 0.35em;
+    border-radius: 10em;
     font-weight: bold;
   }
 
@@ -61,7 +61,7 @@ position: relative;
 
   .add-new-ques-child {
     background-color: var(--grey-100);
-    padding: .75em;
+    padding: 0.75em;
     cursor: pointer;
   }
 
@@ -75,7 +75,7 @@ position: relative;
     text-align: center;
     color: var(--white);
     font-weight: bold;
-    padding: .25em;
+    padding: 0.25em;
   }
 
   .questions-container > div:last-child {
@@ -84,12 +84,12 @@ position: relative;
 
   @media (min-width: 1050px) {
     .add-new-questions {
-        grid-template-columns: 3fr 1.2fr;
-        gap: 2em;
+      grid-template-columns: 3fr 1.2fr;
+      gap: 2em;
     }
 
     .add-new-questions > div {
-        grid-column: 1/2;
+      grid-column: 1/2;
     }
   }
 `;

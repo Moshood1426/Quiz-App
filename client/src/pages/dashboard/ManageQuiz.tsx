@@ -10,6 +10,7 @@ import {
 import Loading from "../../components/Loading";
 import { GetAllQuizArgs } from "../../store/@types/context";
 import useAppContext from "../../store/appContext";
+import { BiRefresh } from "react-icons/bi";
 
 const initialState: GetAllQuizArgs = {
   title: "",
@@ -25,7 +26,13 @@ const ManageQuiz = () => {
   const [isActive, setIsActive] = useState<"all" | "moderated" | "quick">(
     "all"
   );
-  const { getAllQuiz, isLoading, manageSingleQuiz } = useAppContext();
+
+  const {
+    getAllQuiz,
+    quiz: allQuiz,
+    isLoading,
+    manageSingleQuiz,
+  } = useAppContext();
 
   useEffect(() => {
     const reqObj: GetAllQuizArgs = {
@@ -35,7 +42,8 @@ const ManageQuiz = () => {
       privacy: formData.privacy,
       type: isActive,
     };
-    if (!manageSingleQuiz) {
+    
+    if (!manageSingleQuiz && !allQuiz) {
       getAllQuiz(reqObj);
     }
     //eslint-disable-next-line
@@ -59,6 +67,18 @@ const ManageQuiz = () => {
 
   const setType = (isActive: "all" | "moderated" | "quick") => {
     setIsActive(isActive);
+  };
+
+  const refreshAllQuiz = () => {
+    const reqObj: GetAllQuizArgs = {
+      title: formData.title,
+      code: formData.code,
+      sort: formData.sort,
+      privacy: formData.privacy,
+      type: isActive,
+    };
+
+    getAllQuiz(reqObj)
   };
 
   const clearFilters = () => setFormData(initialState);
@@ -87,9 +107,15 @@ const ManageQuiz = () => {
             Quick
           </li>
         </ul>
-        <span className="manage-quiz-filter-btn" onClick={clearFilters}>
-          ❌ filters
-        </span>
+        <div className="manage-quiz-actions">
+          <BiRefresh
+            className="manage-quiz-refresh-btn"
+            onClick={refreshAllQuiz}
+          />
+          <span className="manage-quiz-filter-btn" onClick={clearFilters}>
+            ❌ filters
+          </span>
+        </div>
       </div>
       <div className="manage-quiz-filter">
         <FormItem

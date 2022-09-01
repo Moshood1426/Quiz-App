@@ -7,7 +7,7 @@ import Loading from "./Loading";
 const AllQuiz: React.FC = () => {
   const { quiz, isLoading } = useAppContext();
 
-  const content = quiz.map((item) => {
+  const content = quiz?.map((item) => {
     return <SingleQuiz key={item._id.toString()} quiz={{ ...item }} />;
   });
 
@@ -17,7 +17,7 @@ const AllQuiz: React.FC = () => {
     </Wrapper>;
   }
 
-  if (quiz.length < 1 && !isLoading) {
+  if (quiz === null || quiz.length < 1 && !isLoading) {
     return (
       <Wrapper>
         <h4>No Jobs To Show</h4>

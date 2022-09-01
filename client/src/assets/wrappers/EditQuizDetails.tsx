@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   order: 2;
+  
   .edit-quiz-details {
     background-color: var(--white);
     padding: 1.5em;

@@ -11,15 +11,14 @@ export interface InitialState {
   alertText: string;
   isLoading: boolean;
   user: User | null;
-  quiz: SingleQuiz[];
+  quiz: SingleQuiz[] | null;
   totalQuizNum: number;
-  activities: Activity[];
   manageSingleQuiz: boolean;
   singleQuizDetails: SingleQuiz | null;
   singleQuizQuestions: SingleQuestion[];
   numOfQuestions: number;
   editCurrentQuiz: boolean;
-  editQuizDetails: {
+  editSingleQuizDetails: {
     questions: SingleQuestion[] | null;
     details: SingleQuiz | null;
   };
@@ -54,16 +53,17 @@ export interface ContextType extends InitialState {
   login: (reqObj: registerArgs) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   validateInput: (arg?: string) => void;
-  createQuiz: (quizTitle, quizCode) => Promise<boolean>
+  createQuiz: (quizTitle, quizCode) => Promise<boolean>;
   getAllQuiz: (reqObj: GetAllQuizArgs) => Promise<void>;
   startManageQuiz: (quizId: object) => void;
   endManageQuiz: () => void;
   editQuiz: (quizId: object) => Promise<void>;
+  endEditQuiz: () => void;
   setQuestionType: (
     type: "true-false" | "multiple-choice" | "fill-in-gap" | ""
   ) => void;
   deleteQuiz: (quizId: object) => Promise<void>;
-  executeEditQuiz: (quizId: object, quizObj: editQuizArg) => Promise<boolean>;
+  editQuizDetails: (quizId: object, quizObj: editQuizArg) => Promise<boolean>;
   setEditQuestion: (questionObj: questionEdit, edit?: boolean) => void;
   cancelEditQuestion: () => void;
   createQuestion: () => Promise<boolean>;

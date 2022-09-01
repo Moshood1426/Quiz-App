@@ -20,11 +20,13 @@ const EditQuiz = () => {
 
   const {
     editQuiz,
-    executeEditQuiz,
-    editQuizDetails: { questions, details },
+    editQuizDetails,
+    editSingleQuizDetails: { questions, details },
     validateInput,
     editingQuestion,
+    endEditQuiz,
   } = useAppContext();
+
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -66,10 +68,11 @@ const EditQuiz = () => {
 
   const cancelEdit = () => {
     const alert = window.confirm(
-      "Are you sure you want to leave changes without saving?"
+      "All unsaved changes will be lost. Do you want to continue?"
     );
     if (alert) {
       navigate("/");
+      endEditQuiz();
     } else {
       console.log("cancelled");
     }
@@ -88,7 +91,7 @@ const EditQuiz = () => {
       quizTitle,
       quizCode,
     };
-    const result = await executeEditQuiz(quizId, quizObj);
+    const result = await editQuizDetails(quizId, quizObj);
     if (result) {
       navigate("/");
     }
@@ -102,27 +105,25 @@ const EditQuiz = () => {
           <h3 className="edit-quiz-header-title">Edit Quiz</h3>
           <div className="edit-quiz-header-button">
             <button
-              className="btn alert-success edit-save-btn"
-              onClick={saveEdit}
-            >
-              Save
-            </button>
-            <button
               className="btn alert-danger edit-cancel-btn"
               onClick={cancelEdit}
             >
-              Cancel
+              Done
             </button>
           </div>
         </div>
       </div>
       <div className="edit-quiz-content">
-        <EditQuizDetails formData={formData} handleChange={handleChange} />
+        <EditQuizDetails
+          formData={formData}
+          handleChange={handleChange}
+          saveChanges={saveEdit}
+        />
         <AllQuestions
           startAddingQuestion={startAddingQuestions}
           extraDetails={true}
           addQuestion={addQuestion}
-          quizDetails={questions!}
+          quizDetails={questions === null ? [] : questions}
         />
       </div>
       {(addQuestion || editingQuestion) && (

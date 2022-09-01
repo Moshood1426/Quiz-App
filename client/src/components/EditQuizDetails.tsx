@@ -17,13 +17,15 @@ interface EditQuizDetailsProps {
   handleChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
+  saveChanges: () => void;
 }
 
 const EditQuizDetails: React.FC<EditQuizDetailsProps> = ({
   formData,
   handleChange,
+  saveChanges,
 }) => {
-  const { showAlert } = useAppContext()
+  const { showAlert } = useAppContext();
 
   return (
     <Wrapper>
@@ -64,6 +66,12 @@ const EditQuizDetails: React.FC<EditQuizDetailsProps> = ({
             options={formData.quizTypeOptions}
             disabled={true}
           />
+          <button
+            className="btn alert-success edit-save-btn"
+            onClick={saveChanges}
+          >
+            Save
+          </button>
         </form>
       </div>
       <div className="add-participants">

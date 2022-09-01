@@ -17,7 +17,7 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
   const {
     showAlert,
     isLoading,
-    editQuizDetails,
+    editSingleQuizDetails,
     questionEdit,
     editingQuestion,
     setEditQuestion,
@@ -68,14 +68,15 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
   };
 
   const saveQuestion = async () => {
-    if(isLoading) return
+    if (isLoading) return;
 
     const result = editingQuestion
       ? await editQuestion()
       : await createQuestion();
     if (result) {
       startAddingQuestion(false);
-      if (editQuizDetails.details) editQuiz(editQuizDetails.details?._id);
+      if (editSingleQuizDetails.details)
+        editQuiz(editSingleQuizDetails.details?._id);
     }
   };
 
@@ -129,7 +130,10 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
           <Options />
         </div>
       </div>
-      <div className={isLoading ? "save disabled-save" : "save"} onClick={saveQuestion}>
+      <div
+        className={isLoading ? "save disabled-save" : "save"}
+        onClick={saveQuestion}
+      >
         <span>💾 Save</span>
       </div>
       <div className="cancel" onClick={cancelAddQuestion}>

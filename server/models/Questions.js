@@ -43,15 +43,5 @@ const QuestionsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-QuestionsSchema.post("save", async function () {
-  const activityObj = {
-    action: `New ${this.type} question added for quiz`,
-    for: this.forQuiz,
-    createdBy: this.createdBy,
-  };
-
-  await this.model("activities").create({ ...activityObj });
-});
-
 module.exports = mongoose.model("question", QuestionsSchema);
  
