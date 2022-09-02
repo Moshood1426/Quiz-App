@@ -1,13 +1,30 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-    display: none;
-    width: 250px;
-    height: 200px;
-    border: red solid 2px;
+  display: none;
+  width: 300px;
+  height: fit-content;
+  margin-bottom: 4em;
+  padding: 2em 1.1em;
+  background-color: var(--primary-400);
+  border-radius: 1em;
 
-    @media(min-width: 900px) {
-        display: block;
-    }
-`
-export default Wrapper
+  .side-bar-title {
+    font-size: 1rem;
+  }
+
+  .side-bar-subtitle, li {
+    font-size: 0.85rem;
+  }
+
+  li {
+    margin-bottom: 1em;
+    list-style: circle;
+    margin-left: 1em;
+  }
+
+  @media (min-width: 900px) {
+    display: block;
+  }
+`;
+export default Wrapper;

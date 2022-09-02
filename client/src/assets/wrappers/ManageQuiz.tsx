@@ -59,8 +59,9 @@ const Wrapper = styled.div`
     font-size: 1.6rem;
     order: 2;
     color: var(--primary-300);
-    border-radius: 50%;
+    border-radius: 5px;
     cursor: pointer;
+    border: solid 1px var(--primary-300);
   }
 
   @media (min-width: 500px) {

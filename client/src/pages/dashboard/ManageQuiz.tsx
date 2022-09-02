@@ -42,12 +42,12 @@ const ManageQuiz = () => {
       privacy: formData.privacy,
       type: isActive,
     };
-    
+
     if (!manageSingleQuiz && !allQuiz) {
       getAllQuiz(reqObj);
     }
     //eslint-disable-next-line
-  }, [isActive, formData, manageSingleQuiz]);
+  }, [isActive, manageSingleQuiz]);
 
   useEffect(() => {
     if (manageSingleQuiz) {
@@ -78,7 +78,7 @@ const ManageQuiz = () => {
       type: isActive,
     };
 
-    getAllQuiz(reqObj)
+    getAllQuiz(reqObj);
   };
 
   const clearFilters = () => setFormData(initialState);
@@ -117,6 +117,7 @@ const ManageQuiz = () => {
           </span>
         </div>
       </div>
+
       <div className="manage-quiz-filter">
         <FormItem
           label={true}
@@ -147,6 +148,7 @@ const ManageQuiz = () => {
           options={formData.sortOptions!}
         />
       </div>
+
       <div className="manage-quiz-content-container">
         {!manageSingleQuiz && isLoading ? (
           <Loading />
