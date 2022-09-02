@@ -38,7 +38,7 @@ const Wrapper = styled.div`
     margin: 0 auto;
     width: 90%;
     margin-top: 50px;
-    display: flex;
+    display: grid;
     gap: 1em;
   }
 
@@ -81,9 +81,28 @@ const Wrapper = styled.div`
     opacity: 0.8;
   }
 
+  .side-bar {
+    display: none;
+  }
+
   @media (min-width: 550px) {
     .publish-quiz {
       grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .content {
+      grid-template-columns: 1fr 250px;
+    }
+
+    .add-participant {
+      border: green solid 2px;
+      display: none;
+    }
+
+    .side-bar {
+      display: block;
     }
   }
 

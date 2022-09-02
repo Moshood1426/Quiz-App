@@ -35,6 +35,7 @@ const initialState: InitialState = {
   manageSingleQuiz: false,
   singleQuizDetails: null,
   singleQuizQuestions: [],
+  singleQuizParticipants: [],
   numOfQuestions: 0,
   editCurrentQuiz: false,
   editSingleQuizDetails: { details: null, questions: null },
@@ -253,6 +254,29 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  const addParticipant = async (reqObj: {
+    firstName: string;
+    lastName: string;
+    identifier: string;
+    quizId: object;
+  }) => {
+    dispatch({type: ActionType.ADD_PARTICIPANT_BEGIN})
+    const { firstName, lastName, identifier, quizId } = reqObj;
+    try {
+      const { data } = await axios.post(`/api/v1/participant/${quizId}`, {
+        firstName,
+        lastName,
+        identifier,
+      });
+
+      
+    } catch (error) {}
+  };
+
+  const deleteParticipant = () => {};
+
+  const getParticipant = () => {};
+
   const editQuiz = async (quizId: object) => {
     dispatch({ type: ActionType.EDIT_QUIZ_BEGIN });
 
@@ -275,8 +299,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   const endEditQuiz = () => {
-    dispatch({type: ActionType.EDIT_QUIZ_END})
-  }
+    dispatch({ type: ActionType.EDIT_QUIZ_END });
+  };
 
   const editQuizDetails = async (quizId: object, quizObj: editQuizArg) => {
     dispatch({ type: ActionType.EDIT_QUIZ_DETAILS_BEGIN });
@@ -636,7 +660,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-  }
+  };
 
   const exploreQuizAPI = async (data: {
     quizCode: string;

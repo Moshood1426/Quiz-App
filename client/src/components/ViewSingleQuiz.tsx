@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import Wrapper from "../assets/wrappers/ViewSingleQuiz";
 import SingleQuiz from "./SingleQuiz";
 import useAppContext from "../store/appContext";
-import QuizActivities from "./QuizActivities";
 import AllQuestions from "./AllQuestions";
 import Loading from "./Loading";
 import moment from "moment";
 import { FcInfo } from "react-icons/fc";
 import FormItem from "./FormItem";
 import Alert from "./Alert";
+import AddParticipant from "./AddParticipant";
 
 const initialState = {
   startDate: "",
@@ -20,6 +20,7 @@ const ViewSingleQuiz: React.FC = () => {
   const [formData, setFormData] = useState(initialState);
   const [publishing, setPublishing] = useState(false);
   const [publishQuiz, setPublishQuiz] = useState(false);
+
   const {
     validateInput,
     showAlert,
@@ -151,12 +152,16 @@ const ViewSingleQuiz: React.FC = () => {
                 {singleQuizDetails && (
                   <SingleQuiz quiz={singleQuizDetails} extraDetails={true} />
                 )}
-                {!isLoading && <AllQuestions quizDetails={singleQuizQuestions}/>}
+                <div className="add-participant">
+                  <AddParticipant />
+                </div>
+                {!isLoading && (
+                  <AllQuestions quizDetails={singleQuizQuestions} />
+                )}
               </div>
-              <div>
-                <QuizActivities />
-                <div></div>
-              </div>
+              <div className="side-bar">
+                  <AddParticipant />
+                </div>
             </div>
           </div>
         </>

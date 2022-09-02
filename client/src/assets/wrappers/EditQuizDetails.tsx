@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   order: 2;
-  
+
   .edit-quiz-details {
     background-color: var(--white);
     padding: 1.5em;
@@ -20,11 +20,11 @@ const Wrapper = styled.div`
   }
 
   .submit-btn {
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
 
   .add-btn {
-    padding: .5em 2em; 
+    padding: 0.5em 2em;
   }
 
   .add-participants {
@@ -40,12 +40,6 @@ const Wrapper = styled.div`
       grid-template-columns: 1fr 1fr;
       column-gap: 1em;
     }
-  }
-
-  @media (min-width: 650px) {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 1em;
   }
 
   @media (min-width: 1050px) {

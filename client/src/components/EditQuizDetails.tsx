@@ -4,6 +4,7 @@ import useAppContext from "../store/appContext";
 import Alert from "./Alert";
 import FormItem from "./FormItem";
 import FormSelectItem from "./FormSelectItem";
+import AddParticipant from "./AddParticipant";
 
 interface EditQuizDetailsProps {
   formData: {
@@ -72,20 +73,6 @@ const EditQuizDetails: React.FC<EditQuizDetailsProps> = ({
           >
             Save
           </button>
-        </form>
-      </div>
-      <div className="add-participants">
-        <form>
-          <FormItem
-            label={true}
-            labelText="Add Participants"
-            name={"quizCode"}
-            placeholder={"enter student no. or gmail"}
-            type={"text"}
-            value={formData.quizCode}
-            onChange={handleChange}
-          />
-          <button className="btn add-btn">Add</button>
         </form>
       </div>
     </Wrapper>

@@ -10,6 +10,7 @@ const {
   getParticipantQuestions,
   addParticipantAnswers,
   submitParticipantAnswers,
+  getAllParticipant,
 } = require("../controllers/participantController");
 const { getSingleQuiz } = require("../controllers/quizController");
 
@@ -19,6 +20,10 @@ router
   .get(authenticateParticipant, getParticipantQuestions)
   .post(authenticateParticipant, addParticipantAnswers)
   .patch(authenticateParticipant, submitParticipantAnswers);
-router.route("/:quizId").post(authenticateUser, createParticipant);
+
+router
+  .route("/:quizId")
+  .post(authenticateUser, createParticipant)
+  .get(authenticateUser, getAllParticipant);
 
 module.exports = router;

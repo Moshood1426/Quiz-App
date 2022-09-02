@@ -16,6 +16,7 @@ export interface InitialState {
   manageSingleQuiz: boolean;
   singleQuizDetails: SingleQuiz | null;
   singleQuizQuestions: SingleQuestion[];
+  singleQuizParticipants: SingleParticipant[];
   numOfQuestions: number;
   editCurrentQuiz: boolean;
   editSingleQuizDetails: {

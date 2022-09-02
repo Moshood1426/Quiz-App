@@ -29,6 +29,12 @@ const createParticipant = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ msg: "Created" });
 };
 
+const getAllParticipant = async (req, res) => {
+  const { quizId } =  req.params
+
+  const quiz = await Participant.find({quizId})
+}
+
 const validateParticipant = async (req, res) => {
   const { quizId, privacy, identifier, firstName, lastName } = req.body;
 
@@ -169,6 +175,7 @@ const submitParticipantAnswers = async (req, res) => {
 module.exports = {
   createParticipant,
   validateParticipant,
+  getAllParticipant,
   getParticipantQuestions,
   addParticipantAnswers,
   submitParticipantAnswers,
