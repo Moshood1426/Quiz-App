@@ -5,6 +5,7 @@ const {
   authenticateParticipant,
 } = require("../middleware/authMiddleware");
 const {
+  deleteParticipant,
   createParticipant,
   validateParticipant,
   getParticipantQuestions,
@@ -24,6 +25,7 @@ router
 router
   .route("/:quizId")
   .post(authenticateUser, createParticipant)
-  .get(authenticateUser, getAllParticipant);
+  .get(authenticateUser, getAllParticipant)
+  .delete(authenticateUser, deleteParticipant);
 
 module.exports = router;

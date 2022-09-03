@@ -160,8 +160,8 @@ const ViewSingleQuiz: React.FC = () => {
                 )}
               </div>
               <div className="side-bar">
-                  <AddParticipant />
-                </div>
+                <AddParticipant />
+              </div>
             </div>
           </div>
         </>

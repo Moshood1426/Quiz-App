@@ -85,6 +85,73 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       totalQuizNum: action.payload.totalQuizNum,
     };
   }
+  if (action.type === ActionType.ADD_PARTICIPANT_BEGIN) {
+    return {
+      ...state,
+      quizParticipantsLoading: true,
+    };
+  }
+  if (action.type === ActionType.ADD_PARTICIPANT_SUCCESS) {
+    return {
+      ...state,
+      quizParticipantsLoading: false,
+    };
+  }
+  if (action.type === ActionType.ADD_PARTICIPANT_FAILED) {
+    return {
+      ...state,
+      quizParticipantsLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload,
+    };
+  }
+  if (action.type === ActionType.DELETE_PARTICIPANT_BEGIN) {
+    return {
+      ...state,
+      quizParticipantsLoading: true,
+    };
+  }
+  if (action.type === ActionType.DELETE_PARTICIPANT_SUCCESS) {
+    return {
+      ...state,
+      quizParticipantsLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload,
+    };
+  }
+  if (action.type === ActionType.DELETE_PARTICIPANT_FAILED) {
+    return {
+      ...state,
+      quizParticipantsLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload,
+    };
+  }
+  if (action.type === ActionType.GET_PARTICIPANT_BEGIN) {
+    return {
+      ...state,
+      quizParticipantsLoading: false,
+    };
+  }
+  if (action.type === ActionType.GET_PARTICIPANT_SUCCESS) {
+    return {
+      ...state,
+      quizParticipantsLoading: false,
+      singleQuizParticipants: action.payload,
+    };
+  }
+  if (action.type === ActionType.GET_PARTICIPANT_FAILED) {
+    return {
+      ...state,
+      quizParticipantsLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload,
+    };
+  }
   if (action.type === ActionType.GET_SINGLE_QUIZ_BEGIN) {
     return {
       ...state,
@@ -125,6 +192,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       manageSingleQuiz: false,
       singleQuizDetails: null,
       singleQuizQuestions: [],
+      singleQuizParticipants: [],
       numOfQuestions: 0,
       showAlert: false,
       alertText: "",

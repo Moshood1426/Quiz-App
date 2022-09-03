@@ -30,10 +30,33 @@ const createParticipant = async (req, res) => {
 };
 
 const getAllParticipant = async (req, res) => {
-  const { quizId } =  req.params
+  const { quizId } = req.params;
 
-  const quiz = await Participant.find({quizId})
-}
+  if (!quizId) {
+    throw new BadRequestError("Kindly input a valid quizId");
+  }
+
+  const participant = await Participant.find({ quizId }).select("-answers");
+  if (!participant) {
+    throw new NotFoundError("Kindly input a valid quizId");
+  }
+
+  res
+    .status(StatusCodes.OK)
+    .json({ totalQuestions: participant.length, participant });
+};
+
+const deleteParticipant = async (req, res) => {
+  const { participantId } = req.query;
+
+  const participant = await Participant.findOne({ _id: participantId });
+  if (!participant) {
+    throw new NotFoundError("Invalid participant selected");
+  }
+  await participant.remove();
+
+  res.status(StatusCodes.OK).json({ msg: "Participant deleted succesfully" });
+};
 
 const validateParticipant = async (req, res) => {
   const { quizId, privacy, identifier, firstName, lastName } = req.body;
@@ -166,7 +189,7 @@ const submitParticipantAnswers = async (req, res) => {
 
   participant.submitted = true;
   await participant.save();
-  quiz.noOfSubmissions = quiz.noOfSubmissions + 1; 
+  quiz.noOfSubmissions = quiz.noOfSubmissions + 1;
   await quiz.save();
 
   res.status(StatusCodes.OK).json({ msg: "Submission succesful" });
@@ -176,6 +199,7 @@ module.exports = {
   createParticipant,
   validateParticipant,
   getAllParticipant,
+  deleteParticipant,
   getParticipantQuestions,
   addParticipantAnswers,
   submitParticipantAnswers,

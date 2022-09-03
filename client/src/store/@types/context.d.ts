@@ -17,6 +17,7 @@ export interface InitialState {
   singleQuizDetails: SingleQuiz | null;
   singleQuizQuestions: SingleQuestion[];
   singleQuizParticipants: SingleParticipant[];
+  quizParticipantsLoading: boolean;
   numOfQuestions: number;
   editCurrentQuiz: boolean;
   editSingleQuizDetails: {
@@ -56,6 +57,14 @@ export interface ContextType extends InitialState {
   validateInput: (arg?: string) => void;
   createQuiz: (quizTitle, quizCode) => Promise<boolean>;
   getAllQuiz: (reqObj: GetAllQuizArgs) => Promise<void>;
+  addParticipant: (reqObj: {
+    firstName: string;
+    lastName: string;
+    identifier: string;
+    quizId: object;
+  }) => Promise<void>;
+  getAllParticipant: (quizId: object) => Promise<void>;
+  deleteParticipant: (quizId: object, participantId: object) => Promise<void>;
   startManageQuiz: (quizId: object) => void;
   endManageQuiz: () => void;
   editQuiz: (quizId: object) => Promise<void>;
