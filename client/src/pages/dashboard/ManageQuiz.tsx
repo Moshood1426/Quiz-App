@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Wrapper from "../../assets/wrappers/ManageQuiz";
 import {
   AllQuiz,
@@ -34,6 +34,9 @@ const ManageQuiz = () => {
     manageSingleQuiz,
   } = useAppContext();
 
+  const firstUpdate = useRef("no render");
+
+  //gets all quiz on first render if all quiz does not exist
   useEffect(() => {
     const reqObj: GetAllQuizArgs = {
       title: formData.title,
@@ -49,6 +52,24 @@ const ManageQuiz = () => {
     //eslint-disable-next-line
   }, [isActive, manageSingleQuiz]);
 
+  //preventing page from reloading on first render when there's existing quiz array
+  //The page only reloads when a filter is added
+  useEffect(() => {
+    if (firstUpdate.current === "no render") {
+      firstUpdate.current = "first render";
+      return;
+    }
+
+    if (firstUpdate.current === "first render") {
+      firstUpdate.current = "second render";
+      return;
+    }
+
+    refreshAllQuiz();
+    //eslint-disable-next-line
+  }, [formData, isActive]);
+
+  //introduces side bar for the single quiz modal
   useEffect(() => {
     if (manageSingleQuiz) {
       document.body.style.overflow = "hidden";

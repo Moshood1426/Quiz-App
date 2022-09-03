@@ -9,9 +9,10 @@ import { useNavigate } from "react-router-dom";
 interface SingleQuizProps {
   quiz: SingleQuizInterface;
   extraDetails?: boolean;
+  viewAddParticipant?: () => void
 }
 
-const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
+const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails, viewAddParticipant }) => {
   const navigate = useNavigate();
   const { startManageQuiz, deleteQuiz, getAllQuiz, singleQuizDetails } =
     useAppContext();
@@ -114,6 +115,11 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails }) => {
             )}
           </div>
         </div>
+        {extraDetails && (
+          <div className="add-participant" onClick={viewAddParticipant}>
+            Click here to view and add participant
+          </div>
+        )}
       </div>
     </Wrapper>
   );

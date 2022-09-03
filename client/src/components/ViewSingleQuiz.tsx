@@ -20,6 +20,7 @@ const ViewSingleQuiz: React.FC = () => {
   const [formData, setFormData] = useState(initialState);
   const [publishing, setPublishing] = useState(false);
   const [publishQuiz, setPublishQuiz] = useState(false);
+  const [addParticipantModal, setAddParticipantModal] = useState(false);
 
   const {
     validateInput,
@@ -82,6 +83,7 @@ const ViewSingleQuiz: React.FC = () => {
           </span>
           <div className="content-container">
             <div className="content">
+              <div className="alert-div">{showAlert && <Alert />}</div>
               <div className="content-main">
                 {singleQuizDetails.published ? (
                   <p className="content-status">
@@ -109,7 +111,6 @@ const ViewSingleQuiz: React.FC = () => {
                 )}
                 {publishQuiz && (
                   <>
-                    {showAlert && <Alert />}
                     <div className="publish-quiz">
                       <div className="publish-quiz-anytime">
                         <input
@@ -150,11 +151,12 @@ const ViewSingleQuiz: React.FC = () => {
                   </>
                 )}
                 {singleQuizDetails && (
-                  <SingleQuiz quiz={singleQuizDetails} extraDetails={true} />
+                  <SingleQuiz
+                    quiz={singleQuizDetails}
+                    extraDetails={true}
+                    viewAddParticipant={() => setAddParticipantModal(true)}
+                  />
                 )}
-                <div className="add-participant">
-                  <AddParticipant />
-                </div>
                 {!isLoading && (
                   <AllQuestions quizDetails={singleQuizQuestions} />
                 )}
@@ -163,6 +165,17 @@ const ViewSingleQuiz: React.FC = () => {
                 <AddParticipant />
               </div>
             </div>
+          </div>
+        </>
+      )}
+      {addParticipantModal && (
+        <>
+          <div
+            className="add-participant-modal"
+            onClick={() => setAddParticipantModal(false)}
+          ></div>
+          <div className="add-participant-card">
+            <AddParticipant />
           </div>
         </>
       )}

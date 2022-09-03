@@ -31,18 +31,19 @@ const AddParticipant = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
     const { firstName, lastName, identifier } = participantData;
-    console.log("here");
     if (!firstName || !lastName || !identifier) {
       validateInput("kindly input all essential fields");
       return;
     }
+
     const { _id: quizId } = singleQuizDetails!;
-    console.log(quizId);
     if (!quizId) {
       validateInput("kindly input all essential fields");
       return;
     }
+
     addParticipant({
       firstName,
       lastName,
@@ -54,6 +55,9 @@ const AddParticipant = () => {
   return (
     <Wrapper>
       <div className="add-participants">
+        <div>
+            {showAlert && <Alert />}
+        </div>
         <form className="add-participant-form" onSubmit={handleSubmit}>
           <h5 className="form-title">Add Participant</h5>
           <FormItem
@@ -77,25 +81,32 @@ const AddParticipant = () => {
             value={participantData.identifier}
             onChange={handleChange}
           />
-          <span className="form-info">
-            Note: identifer may be matric no, email or unique identificator
-          </span>
+          <ul className="form-info">
+            Note:
+            <li className="form-info-item">identifer may be matric no, email or unique identificator</li>
+            <li className="form-info-item">Only participant added can take private quiz</li>
+          </ul>
           <button type="submit" className="btn add-btn">
             Add
           </button>
         </form>
-        {singleQuizParticipants.map((item, index) => {
-          return (
-            <p className="participant-identifier" key={index}>
-              {item.identifier}
-              <MdOutlineCancel
-                onClick={() =>
-                  deleteParticipant(singleQuizDetails?._id!, item._id)
-                }
-              />
-            </p>
-          );
-        })}
+        <div className="participant-info">
+          {singleQuizParticipants.map((item, index) => {
+            return (
+              <p className="participant-identifier" key={index}>
+                {item.identifier}
+                <span
+                  onClick={() =>
+                    deleteParticipant(singleQuizDetails?._id!, item._id)
+                  }
+                  className="delete-participant"
+                >
+                  ❌
+                </span>
+              </p>
+            );
+          })}
+        </div>
       </div>
     </Wrapper>
   );

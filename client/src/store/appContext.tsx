@@ -283,6 +283,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         payload: message.msg,
       });
     }
+    clearAlert();
   };
 
   const getAllParticipant = async (quizId: object) => {
@@ -306,6 +307,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         payload: message.msg,
       });
     }
+    clearAlert();
   };
 
   const deleteParticipant = async (quizId: object, participantId: object) => {
@@ -331,6 +333,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         payload: message.msg,
       });
     }
+    clearAlert();
   };
 
   const editQuiz = async (quizId: object) => {

@@ -2,14 +2,12 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   background-color: var(--primary-400);
-  padding: 2em 1.2em;
+  padding: 2em 2em;
   border-radius: 10px;
   margin-bottom: 2em;
 
   .add-participant-form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 1em;
   }
 
   .form-title {
@@ -29,10 +27,41 @@ const Wrapper = styled.div`
     //grid-column: 1/2;
   }
 
+  ul {
+    margin: 0;
+  }
+
+  .form-info-item {
+    list-style: circle;
+    margin-left: 1em;
+  }
+
   .add-btn {
-   // grid-column: 2/3;
-   // grid-row: 3/4;
+    // grid-column: 2/3;
+    // grid-row: 3/4;
     margin-bottom: 1.2em;
+  }
+
+  .participant-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em;
+  }
+
+  .participant-identifier {
+    font-size: 0.85rem;
+    margin: 0;
+    border: var(--primary-200) solid 1px;
+    width: fit-content;
+    padding: 0.25em 0.5em;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .delete-participant {
+    cursor: pointer;
   }
 
   @media (min-width: 750px) {
@@ -46,6 +75,10 @@ const Wrapper = styled.div`
 
     .add-btn {
     }
+  }
+
+  @media (min-width: 900px) {
+    padding: 2em 1.2em;
   }
 `;
 export default Wrapper;
