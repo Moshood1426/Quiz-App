@@ -50,10 +50,6 @@ const Wrapper = styled.div`
     font-weight: bold;
   }
 
-  .single-participant-identifier {
-    display: none;
-  }
-
   .single-participant > p {
     margin: 0;
   }
@@ -65,14 +61,16 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 
-  @media (min-width: 700px) {
-    .single-participant-identifier {
-      display: block;
-    }
-
-    .single-participant-identifier-small {
-      display: none;
-    }
+  .go-back {
+    color: var(--primary-brown);
+    text-transform: uppercase;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: right;
+    margin: 0;
+    max-width: 100%;
+    margin-bottom: 1em;
   }
 
   @media (min-width: 900px) {

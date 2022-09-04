@@ -14,6 +14,7 @@ const Submission = () => {
     submissionParticipant,
     getAllQuizSubmission,
     resetSubmissionParticipant,
+    resetSingleQuizSubmission,
     displayResult,
     getResults,
     participantQuestions,
@@ -29,13 +30,13 @@ const Submission = () => {
     return (
       <Wrapper>
         <div className="take-test-container">
-          <div className="submission-header">
-            <span onClick={resetSubmissionParticipant}>{"<<"} go back</span>
-          </div>
+          <p className="go-back" onClick={resetSubmissionParticipant}>
+            {"<<"} go back
+          </p>
           <div className="quiz-content">
             <ParticipantDetails />
             <div className="quiz-questions">
-              <AllQuestions quizDetails={participantQuestions!}/>
+              <AllQuestions quizDetails={participantQuestions!} />
             </div>
           </div>
         </div>
@@ -43,7 +44,7 @@ const Submission = () => {
     );
   }
 
-  //renders result of all participant for a single quiz in tabular format alongside quiz details
+  //renders result of all participant for a single quiz in table
   if (submissionParticipant.quizId !== null) {
     const singleSubmission = quizWithSubmission.find(
       (item) => item._id === submissionParticipant.quizId
@@ -52,7 +53,7 @@ const Submission = () => {
       <Wrapper>
         <div className="submission-header">
           <h3 className="title">Submission</h3>
-          <span onClick={resetSubmissionParticipant}>{"<<"} go back</span>
+          <span onClick={resetSingleQuizSubmission}>{"<<"} go back</span>
         </div>
 
         <SingleSubmission item={singleSubmission!} />
@@ -79,14 +80,7 @@ const Submission = () => {
                 <p className="single-participant-identifier">
                   {item.identifier}
                 </p>
-                <p className="single-participant-identifier-small">
-                  {item.identifier.slice(0, 1) +
-                    "..." +
-                    item.identifier.slice(
-                      item.identifier.length - 10,
-                      item.identifier.length
-                    )}
-                </p>
+
                 <p
                   className="view-details"
                   onClick={() => getResults(item._id)} //sets displayResult to true and renders first condition

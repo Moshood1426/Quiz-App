@@ -683,18 +683,33 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  const resetSingleQuizSubmission = () => {
+    dispatch({type: ActionType.RESET_SINGLE_QUIZ_SUBMISSION})
+  }
+
   const resetSubmissionParticipant = () => {
-    dispatch({ type: ActionType.RESET_SUBMISSION_PARTICIPANT });
+    const { participantQuestions } = state;
+    const result = participantQuestions!.map((item) => ({
+      ...item,
+      answer: "",
+    }));
+
+    dispatch({
+      type: ActionType.RESET_SUBMISSION_PARTICIPANT,
+      payload: result,
+    });
   };
 
   const getResults = (participantId: object) => {
+    const { participantQuestions, submissionParticipant } = state;
+
     //checking for the current participant details
     const participant = state.submissionParticipant.participants.find(
       (item) => (item._id = participantId)
     );
 
     //mapping the quiz questions to add client answers
-    const result = state.participantQuestions?.map((item) => {
+    const questions = state.participantQuestions?.map((item) => {
       const test = participant?.answers.find(
         (answer) => answer.questionId === item._id
       );
@@ -705,8 +720,22 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       }
     });
 
+    const pointsObtainable = participantQuestions!.reduce((acc, item) => {
+      return (acc += item.points);
+    }, 0);
+
+    const pointsObtained = questions!.reduce((acc, item) => {
+      return item.answer === item.correctAnswer ? (acc += item.points) : acc;
+    }, 0);
+
     //dispatching client answers to be added to singleQuizQuestions
-    dispatch({ type: ActionType.DISPLAY_RESULT, payload: { result } });
+    dispatch({
+      type: ActionType.DISPLAY_RESULT,
+      payload: {
+        questions,
+        participant: { ...participant, pointsObtainable, pointsObtained },
+      },
+    });
   };
 
   const resetDisplayResult = () => {
@@ -849,6 +878,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         endTest,
         getAllQuizSubmission,
         getSingleQuizSubmission,
+        resetSingleQuizSubmission,
         resetSubmissionParticipant,
         getResults,
         resetDisplayResult,

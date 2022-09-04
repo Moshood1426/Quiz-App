@@ -490,20 +490,31 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       participantQuestions: action.payload.questions,
     };
   }
-  if (action.type === ActionType.RESET_SUBMISSION_PARTICIPANT) {
+  if (action.type === ActionType.RESET_SINGLE_QUIZ_SUBMISSION) {
     return {
       ...state,
+      isLoading: false,
+      displayResult: false,
+      participantQuestions: null,
       submissionParticipant: {
         quizId: null,
         participants: [],
       },
     };
   }
+  if (action.type === ActionType.RESET_SUBMISSION_PARTICIPANT) {
+    return {
+      ...state,
+      displayResult: false,
+      participantQuestions: action.payload,
+    };
+  }
   if (action.type === ActionType.DISPLAY_RESULT) {
     return {
       ...state,
       displayResult: true,
-      participantQuestions: action.payload.result,
+      participantQuestions: action.payload.questions,
+      participantInfo: action.payload.participant,
     };
   }
   if (action.type === ActionType.RESET_DISPLAY_RESULT) {
