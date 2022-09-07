@@ -584,6 +584,17 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       alertText: action.payload.message.msg,
     };
   }
+  if (action.type === ActionType.DELETE_ACCOUNT_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+ /* if (action.type === ActionType.DELETE_ACCOUNT_SUCCESS) {
+    return {
+      
+    }
+  } */
   throw new Error(`no such action : ${action.type}`);
 };
 

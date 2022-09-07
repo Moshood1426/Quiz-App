@@ -166,7 +166,16 @@ const updatePassword = async (req, res) => {
   });
 };
 
-const deleteAccount = () => {};
+const deleteAccount = async (req, res) => {
+  const user = await User.findOne({ _id: req.user.userId });
+
+  if (!user) {
+    throw new NotFoundError(`No user with id : ${req.user.userId}`);
+  }
+
+  await user.remove();
+  res.status(StatusCodes.OK).json({ msg: "user profile deleted." });
+};
 
 module.exports = {
   register,
@@ -175,4 +184,5 @@ module.exports = {
   changePassword,
   changeProfileDetails,
   updatePassword,
+  deleteAccount
 };

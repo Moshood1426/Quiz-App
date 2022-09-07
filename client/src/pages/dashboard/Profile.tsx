@@ -17,8 +17,14 @@ const initialState = {
 const Profile = () => {
   const [formData, setFormData] = useState(initialState);
 
-  const { validateInput, showAlert, user, updateUser, updatePassword } =
-    useAppContext();
+  const {
+    validateInput,
+    showAlert,
+    user,
+    updateUser,
+    updatePassword,
+    deleteAccount:executeDeleteAccount,
+  } = useAppContext();
 
   useEffect(() => {
     if (user) {
@@ -67,6 +73,14 @@ const Profile = () => {
 
   const deleteAccount = (event: React.FormEvent) => {
     event.preventDefault();
+    const { email } = user!; //user cannot be null if logged in
+
+    if (email !== formData.deleteEmail) {
+      validateInput("email should correspond with user email address");
+      return;
+    }
+
+    executeDeleteAccount()
   };
 
   return (

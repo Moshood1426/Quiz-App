@@ -118,6 +118,7 @@ export interface ContextType extends InitialState {
     newPassword: string;
     confirmNewPassword: string;
   }) => Promise<void>;
+  deleteAccount: () => Promise<void>
 }
 
 export interface editQuizArg {

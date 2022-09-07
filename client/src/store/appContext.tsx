@@ -265,7 +265,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.ADD_PARTICIPANT_BEGIN });
     const { firstName, lastName, identifier, quizId } = reqObj;
     try {
-      const { data } = await axios.post(`/api/v1/participant/${quizId}`, {
+      await axios.post(`/api/v1/participant/${quizId}`, {
         firstName,
         lastName,
         identifier,
@@ -821,6 +821,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       });
 
       //creating questions for test with result
+      //eslint-disable-next-line
       const { data } = await axios.post("api/v1/question", {
         forQuiz: quizId,
         multipleData: result,
@@ -894,7 +895,15 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     clearAlert();
   };
 
-  const deleteAccount = async () => {};
+  const deleteAccount = async () => {
+    dispatch({ type: ActionType.DELETE_ACCOUNT_BEGIN });
+    try {
+      await axios.delete("/api/v1/auth/deleteAccount");
+      //logoutUser()
+    } catch (error) {
+      //logoutUser()
+    }
+  };
 
   return (
     <AppContext.Provider
@@ -936,7 +945,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         resetDisplayResult,
         exploreQuizAPI,
         updateUser,
-        updatePassword
+        updatePassword,
+        deleteAccount,
       }}
     >
       {children}
