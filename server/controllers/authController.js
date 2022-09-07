@@ -142,7 +142,29 @@ const changeProfileDetails = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ user: userObj });
 };
 
-const resetPassword = () => {};
+const updatePassword = async (req, res) => {
+  const { newPassword, confirmNewPassword } = req.body;
+
+  if (!newPassword || !confirmNewPassword) {
+    throw new BadRequestError("Kindly input all essential details");
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    throw new BadRequestError("Passwords does not match");
+  }
+
+  const user = await User.findOne({ _id: req.user.userId });
+  if (!user) {
+    throw new NotFoundError("Something went wrong, try again later");
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  res.status(StatusCodes.CREATED).json({
+    msg: "password successfully changed",
+  });
+};
 
 const deleteAccount = () => {};
 
@@ -151,5 +173,6 @@ module.exports = {
   login,
   forgotPassword,
   changePassword,
-  changeProfileDetails
+  changeProfileDetails,
+  updatePassword,
 };

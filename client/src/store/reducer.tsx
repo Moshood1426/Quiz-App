@@ -560,6 +560,30 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       alertText: action.payload.message.msg,
     };
   }
+  if (action.type === ActionType.UPDATE_PASSWORD_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === ActionType.UPDATE_PASSWORD_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "password updated succesfully"
+    };
+  }
+  if (action.type === ActionType.UPDATE_PASSWORD_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.message.msg,
+    };
+  }
   throw new Error(`no such action : ${action.type}`);
 };
 

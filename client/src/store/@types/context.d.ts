@@ -114,6 +114,10 @@ export interface ContextType extends InitialState {
     lastName: string;
     email: string;
   }) => Promise<void>;
+  updatePassword: (reqObj: {
+    newPassword: string;
+    confirmNewPassword: string;
+  }) => Promise<void>;
 }
 
 export interface editQuizArg {

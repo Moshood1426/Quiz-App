@@ -867,10 +867,32 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       }
       dispatch({ type: ActionType.UPDATE_USER_FAILED, payload: { message } });
     }
-    clearAlert()
+    clearAlert();
   };
 
-  const changePassword = async () => {};
+  const updatePassword = async (reqObj: {
+    newPassword: string;
+    confirmNewPassword: string;
+  }) => {
+    dispatch({ type: ActionType.UPDATE_PASSWORD_BEGIN });
+
+    try {
+      const { data } = await axios.patch("/api/v1/auth/updatePassword", reqObj);
+      dispatch({ type: ActionType.UPDATE_PASSWORD_SUCCESS, payload: data.msg });
+    } catch (error) {
+      let message;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({
+        type: ActionType.UPDATE_PASSWORD_FAILED,
+        payload: { message },
+      });
+    }
+    clearAlert();
+  };
 
   const deleteAccount = async () => {};
 
@@ -913,7 +935,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         getResults,
         resetDisplayResult,
         exploreQuizAPI,
-        updateUser
+        updateUser,
+        updatePassword
       }}
     >
       {children}

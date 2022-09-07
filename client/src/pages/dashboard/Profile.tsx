@@ -10,20 +10,22 @@ const initialState = {
   lastName: "",
   email: "",
   deleteEmail: "",
-  newPasswordReEnter: "",
+  confirmNewPassword: "",
   newPassword: "",
 };
 
 const Profile = () => {
   const [formData, setFormData] = useState(initialState);
 
-  const { validateInput, showAlert, user, updateUser } = useAppContext();
+  const { validateInput, showAlert, user, updateUser, updatePassword } =
+    useAppContext();
 
   useEffect(() => {
     if (user) {
       const { firstName, lastName, email } = user;
       setFormData({ ...formData, firstName, lastName, email });
     }
+    //eslint-disable-next-line
   }, []);
 
   const handleChange = (
@@ -48,12 +50,19 @@ const Profile = () => {
 
   const changePassword = (event: React.FormEvent) => {
     event.preventDefault();
-    const { newPassword, newPasswordReEnter } = formData;
+    const { newPassword, confirmNewPassword } = formData;
 
-    if (newPassword !== newPasswordReEnter || newPassword.length < 5) {
+    if (newPassword !== confirmNewPassword) {
       validateInput("Two passwords does not correspond");
       return;
     }
+    if (newPassword.length < 6) {
+      validateInput("Password cannot be less than 6 characters");
+      return;
+    }
+
+    updatePassword({ newPassword, confirmNewPassword });
+    setFormData({ ...formData, newPassword: "", confirmNewPassword: "" });
   };
 
   const deleteAccount = (event: React.FormEvent) => {
@@ -121,10 +130,10 @@ const Profile = () => {
             <FormItem
               label={true}
               labelText="Confirm New Password"
-              name={"newPasswordReEnter"}
+              name={"confirmNewPassword"}
               placeholder={"re-enter new password"}
               type={"text"}
-              value={formData.newPasswordReEnter}
+              value={formData.confirmNewPassword}
               onChange={handleChange}
             />
             <button type="submit" className="btn profile-btn">
