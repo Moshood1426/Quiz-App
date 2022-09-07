@@ -5,6 +5,7 @@ const Wrapper = styled.section`
     max-width: 600px;
     background-color: var(--white);
     padding: 2em 1.3em;
+    position: relative;
   }
   .profile-title {
     color: var(--primary-200);
@@ -29,6 +30,13 @@ const Wrapper = styled.section`
   .profile-card-item-icon {
     margin-right: .5em;
     color: var(--primary-200);
+  }
+
+  .alert-text {
+    position: fixed;
+    max-width: 520px;
+    bottom: 10px;
+    width: 80%;
   }
 
   @media(min-width: 450px) {

@@ -27,8 +27,6 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
     editCurrentQuiz,
     editSingleQuizDetails,
     isLoading,
-    editingQuestion,
-    participantQuestions,
   } = useAppContext();
 
   const calculateTotalPoints = (arg: SingleQuestionType[]) => {
@@ -38,10 +36,6 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
   };
 
   const totalPoints = calculateTotalPoints(singleQuizQuestions);
-
-  /* const quizDetails = participantQuestions ? participantQuestions : editCurrentQuiz
-    ? editQuizDetails.questions!
-    : singleQuizQuestions; */
 
   return (
     <Wrapper>

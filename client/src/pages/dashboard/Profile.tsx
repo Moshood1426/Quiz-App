@@ -1,20 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Wrapper from "../../assets/wrappers/Profile";
-import { FormSelectItem, FormItem, Alert } from "../../components";
+import { FormItem, Alert } from "../../components";
 import { FaUserCircle } from "react-icons/fa";
 import { RiLockPasswordFill, RiDeleteBin6Fill } from "react-icons/ri";
+import useAppContext from "../../store/appContext";
 
 const initialState = {
-  name: "",
+  firstName: "",
+  lastName: "",
   email: "",
-  oldPassword: "",
+  deleteEmail: "",
+  newPasswordReEnter: "",
   newPassword: "",
 };
 
 const Profile = () => {
   const [formData, setFormData] = useState(initialState);
 
-  const handleChange = () => {};
+  const { validateInput, showAlert, user, updateUser } = useAppContext();
+
+  useEffect(() => {
+    if (user) {
+      const { firstName, lastName, email } = user;
+      setFormData({ ...formData, firstName, lastName, email });
+    }
+  }, []);
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setFormData((prevValue) => ({ ...prevValue, [name]: value }));
+  };
+
+  const changeProfileDetails = (event: React.FormEvent) => {
+    event.preventDefault();
+    const { firstName, lastName, email } = formData;
+
+    if (!firstName || !lastName || !email) {
+      validateInput("Kindly input all required details");
+      return;
+    }
+
+    updateUser({ firstName, lastName, email });
+  };
+
+  const changePassword = (event: React.FormEvent) => {
+    event.preventDefault();
+    const { newPassword, newPasswordReEnter } = formData;
+
+    if (newPassword !== newPasswordReEnter || newPassword.length < 5) {
+      validateInput("Two passwords does not correspond");
+      return;
+    }
+  };
+
+  const deleteAccount = (event: React.FormEvent) => {
+    event.preventDefault();
+  };
 
   return (
     <Wrapper>
@@ -25,30 +69,31 @@ const Profile = () => {
             <FaUserCircle className="profile-card-item-icon" />
             Account Settings
           </h5>
-          <form>
+          <div className="alert-text">{showAlert && <Alert />}</div>
+          <form onSubmit={changeProfileDetails}>
             <FormItem
               label={true}
-              labelText="Quiz Title"
-              name={"quizTitle"}
-              placeholder={"enter quiz title"}
+              labelText="First Name"
+              name={"firstName"}
+              placeholder={"enter first name"}
               type={"text"}
-              value={formData.name}
+              value={formData.firstName}
               onChange={handleChange}
             />
             <FormItem
               label={true}
-              labelText="Quiz Title"
-              name={"quizTitle"}
-              placeholder={"enter quiz title"}
+              labelText="Last Name"
+              name={"lastName"}
+              placeholder={"enter last name"}
               type={"text"}
-              value={formData.email}
+              value={formData.lastName}
               onChange={handleChange}
             />
             <FormItem
               label={true}
-              labelText="Quiz Title"
-              name={"quizTitle"}
-              placeholder={"enter quiz title"}
+              labelText="Email"
+              name={"email"}
+              placeholder={"enter email address"}
               type={"text"}
               value={formData.email}
               onChange={handleChange}
@@ -63,22 +108,23 @@ const Profile = () => {
             <RiLockPasswordFill className="profile-card-item-icon" />
             Password Settings
           </h5>
-          <form>
+          <form onSubmit={changePassword}>
             <FormItem
               label={true}
               labelText="New Password"
               name={"newPassword"}
+              placeholder={"enter new password"}
               type={"text"}
               value={formData.newPassword}
               onChange={handleChange}
-              
             />
             <FormItem
               label={true}
               labelText="Confirm New Password"
-              name={"oldPassword"}
+              name={"newPasswordReEnter"}
+              placeholder={"re-enter new password"}
               type={"text"}
-              value={formData.oldPassword}
+              value={formData.newPasswordReEnter}
               onChange={handleChange}
             />
             <button type="submit" className="btn profile-btn">
@@ -88,17 +134,22 @@ const Profile = () => {
         </div>
         <div className="profile-card-item">
           <h5 className="profile-card-item-title">
-            <RiDeleteBin6Fill className="profile-card-item-icon"/>
+            <RiDeleteBin6Fill className="profile-card-item-icon" />
             Delete Account
           </h5>
-          <form>
+          <form onSubmit={deleteAccount}>
+            <p>
+              We're sorry for any form of uncomfortability experienced during
+              usage of this platform. Kindly enter your email to proceed with
+              account deletion
+            </p>
             <FormItem
               label={true}
-              labelText="Quiz Title"
-              name={"quizTitle"}
-              placeholder={"enter quiz title"}
+              labelText="Email address"
+              name={"deleteEmail"}
+              placeholder={"enter email address"}
               type={"text"}
-              value={formData.name}
+              value={formData.deleteEmail}
               onChange={handleChange}
             />
             <button type="submit" className="btn profile-btn">

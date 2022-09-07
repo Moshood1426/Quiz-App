@@ -4,7 +4,7 @@ const {
   UnauthenticatedError,
 } = require("../errors");
 const { attachCookiesToRes, verifyJWT } = require("../utils/jwt");
-const User = require("../models/User")
+const User = require("../models/User");
 const sendForgotPasswordEmail = require("../utils/ForgotPasswordEmail");
 const { StatusCodes } = require("http-status-codes");
 
@@ -26,7 +26,7 @@ const register = async (req, res) => {
     email,
     password,
   });
-  console.log("passed");
+
   const userObj = { id: user._id, email, firstName, lastName };
   attachCookiesToRes({ res: res, user: userObj });
 
@@ -46,7 +46,7 @@ const login = async (req, res) => {
   }
 
   const passwordMatch = await user.comparePassword(password);
-  
+
   if (!passwordMatch) {
     throw new UnauthenticatedError("Invalid credentials");
   }
@@ -112,16 +112,44 @@ const changePassword = async (req, res) => {
   user.password = newPassword;
   await user.save();
 
-  res
-    .status(StatusCodes.CREATED)
-    .json({
-      msg: "Password successfully changed. Proceed to login with new pass",
-    });
+  res.status(StatusCodes.CREATED).json({
+    msg: "Password successfully changed. Proceed to login with new pass",
+  });
 };
+
+const changeProfileDetails = async (req, res) => {
+  const { firstName, lastName, email } = req.body;
+
+  if (!firstName || !lastName || !email) {
+    throw new BadRequestError("Kindly input all necessary details");
+  }
+
+  const oldUser = await User.findOne({ _id: req.user.userId });
+
+  if (!oldUser) {
+    throw new NotFoundError("User not found");
+  }
+
+  oldUser.email = email;
+  oldUser.firstName = firstName;
+  oldUser.lastName = lastName;
+
+  await oldUser.save();
+
+  const userObj = { id: oldUser._id, email, firstName, lastName };
+  attachCookiesToRes({ res: res, user: userObj });
+
+  res.status(StatusCodes.CREATED).json({ user: userObj });
+};
+
+const resetPassword = () => {};
+
+const deleteAccount = () => {};
 
 module.exports = {
   register,
   login,
   forgotPassword,
-  changePassword
+  changePassword,
+  changeProfileDetails
 };

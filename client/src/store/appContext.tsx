@@ -684,8 +684,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   const resetSingleQuizSubmission = () => {
-    dispatch({type: ActionType.RESET_SINGLE_QUIZ_SUBMISSION})
-  }
+    dispatch({ type: ActionType.RESET_SINGLE_QUIZ_SUBMISSION });
+  };
 
   const resetSubmissionParticipant = () => {
     const { participantQuestions } = state;
@@ -704,8 +704,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     const { participantQuestions, submissionParticipant } = state;
 
     //checking for the current participant details
-    const participant = state.submissionParticipant.participants.find(
-      (item) => (item._id = participantId)
+    const participant = submissionParticipant.participants.find(
+      (item) => item._id === participantId
     );
 
     //mapping the quiz questions to add client answers
@@ -844,6 +844,36 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  const updateUser = async (reqObj: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  }) => {
+    dispatch({ type: ActionType.UPDATE_USER_BEGIN });
+
+    try {
+      const { data } = await axios.patch<LoginResponse>(
+        "/api/v1/auth/updateUser",
+        reqObj
+      );
+      dispatch({ type: ActionType.UPDATE_USER_SUCCESS, payload: data.user });
+      addUserToLocalStorage(data.user);
+    } catch (error) {
+      let message;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({ type: ActionType.UPDATE_USER_FAILED, payload: { message } });
+    }
+    clearAlert()
+  };
+
+  const changePassword = async () => {};
+
+  const deleteAccount = async () => {};
+
   return (
     <AppContext.Provider
       value={{
@@ -883,6 +913,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         getResults,
         resetDisplayResult,
         exploreQuizAPI,
+        updateUser
       }}
     >
       {children}

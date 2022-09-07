@@ -109,6 +109,11 @@ export interface ContextType extends InitialState {
     category: number;
     amount: number;
   }) => Promise<boolean>;
+  updateUser: (reqObj: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  }) => Promise<void>;
 }
 
 export interface editQuizArg {

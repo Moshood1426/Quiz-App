@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   box-shadow: var(--shadow-1);
   max-width: 400px;
   border-radius: 6px;
-  width: 90%;
+  //width: 90%;
 
   @media(min-width: 420px) {
     width: 100%;

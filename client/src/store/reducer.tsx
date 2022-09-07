@@ -535,7 +535,31 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       isLoading: false,
     };
   }
-
+  if (action.type === ActionType.UPDATE_USER_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === ActionType.UPDATE_USER_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      user: action.payload,
+      showAlert: true,
+      alertType: "success",
+      alertText: "User profile updated succesfully"
+    };
+  }
+  if (action.type === ActionType.UPDATE_USER_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.message.msg,
+    };
+  }
   throw new Error(`no such action : ${action.type}`);
 };
 
