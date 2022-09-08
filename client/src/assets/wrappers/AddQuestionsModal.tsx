@@ -10,7 +10,7 @@ const Wrapper = styled.div`
     height: 100vh;
     width: 100%;
     background-color: rgba(54, 43, 43, 0.73);
-    z-index: 1;
+    z-index: 2;
   }
 `;
 export default Wrapper;

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1;
+  z-index: 3;
 
   .add-question-logo {
     width: 100px;
