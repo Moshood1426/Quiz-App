@@ -12,10 +12,11 @@ const {
   addParticipantAnswers,
   submitParticipantAnswers,
   getAllParticipant,
+  getParticipantQuiz
 } = require("../controllers/participantController");
-const { getSingleQuiz } = require("../controllers/quizController");
 
-router.route("/").post(validateParticipant).get(getSingleQuiz);
+router.route("/").post(validateParticipant).get(getParticipantQuiz);
+
 router
   .route("/take-test")
   .get(authenticateParticipant, getParticipantQuestions)

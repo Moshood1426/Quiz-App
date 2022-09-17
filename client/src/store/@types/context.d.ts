@@ -1,3 +1,5 @@
+import ActionType from "../actions";
+
 export interface registerArgs {
   firstName?: string;
   lastName?: string;
@@ -33,10 +35,13 @@ export interface InitialState {
     points: 1;
   };
   validateParticipant: AuthorizeParticipant | null;
+  participantQuizDetails: SingleQuiz | null;
   participantInfo: SingleParticipant | null;
   participantQuestions: ParticipantQuestion[] | null;
+  questionsAnswered: 0;
   limit: number;
   page: number;
+  singleAnswerLoading: boolean;
   quizWithSubmission: QuizWithSubmission[];
   submissionParticipant: {
     quizId: object | null;
@@ -118,7 +123,7 @@ export interface ContextType extends InitialState {
     newPassword: string;
     confirmNewPassword: string;
   }) => Promise<void>;
-  deleteAccount: () => Promise<void>
+  deleteAccount: () => Promise<void>;
 }
 
 export interface editQuizArg {

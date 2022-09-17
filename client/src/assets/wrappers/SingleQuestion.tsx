@@ -58,6 +58,14 @@ const Wrapper = styled.div`
     border: none;
   }
 
+  .enabled {
+    cursor: pointer;
+  }
+
+  .disabled {
+    cursor: not-allowed;
+  }
+
   .question-options {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -83,11 +91,11 @@ const Wrapper = styled.div`
   }
 
   .client-answer-correct {
-    background-color: var(--green-light)
+    background-color: var(--green-light);
   }
 
   .client-answer-wrong {
-    background-color: var(--red-light)
+    background-color: var(--red-light);
   }
 
   @media (min-width: 550px) {

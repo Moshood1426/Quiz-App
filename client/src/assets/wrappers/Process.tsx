@@ -13,28 +13,6 @@ const Wrapper = styled.section`
     margin-bottom: 2rem;
   }
 
-  ::before {
-    content: "";
-    background-color: var(--primary-cream);
-    position: absolute;
-    height: 250px;
-    width: 250px;
-    left: -20px;
-    transform: matrix(-0.62, -0.83, 0.74, -0.63, 0, 0);
-    border-radius: 55% 45% 70% 45% / 39% 30% 70% 70%;
-  }
-
-  .avatar {
-    content: "";
-    background-color: var(--primary-cream);
-    position: absolute;
-    height: 250px;
-    width: 250px;
-    right: 0;
-    z-index: -1;
-    border-radius: 31% 69% 21% 79% / 57% 30% 70% 43%;
-  }
-
   .process-img-div {
     width: 130px;
     margin: 0 auto;

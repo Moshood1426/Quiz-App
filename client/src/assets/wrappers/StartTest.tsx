@@ -82,20 +82,7 @@ const Wrapper = styled.div`
     z-index: 0;
   }
 
-  ::after {
-    content: "";
-    background-color: var(--primary-400);
-    position: absolute;
-    height: 250px;
-    width: 250px;
-    top: 50vh;
-    right: -80px;
-    //transform: matrix(-0.62, -0.83, 0.74, -0.63, 0, 0);
-    transform: translateY(50%);
-    border-radius: 55% 45% 70% 45% / 39% 30% 70% 70%;
-    z-index: 0;
-  }
-
+  
   .log-in {
     color: var(--primary-200);
   }

@@ -9,10 +9,14 @@ import { useNavigate } from "react-router-dom";
 interface SingleQuizProps {
   quiz: SingleQuizInterface;
   extraDetails?: boolean;
-  viewAddParticipant?: () => void
+  viewAddParticipant?: () => void;
 }
 
-const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails, viewAddParticipant }) => {
+const SingleQuiz: React.FC<SingleQuizProps> = ({
+  quiz,
+  extraDetails,
+  viewAddParticipant,
+}) => {
   const navigate = useNavigate();
   const { startManageQuiz, deleteQuiz, getAllQuiz, singleQuizDetails } =
     useAppContext();
@@ -77,12 +81,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({ quiz, extraDetails, viewAddPart
               quiz.noOfSubmissions > 1 ? "s" : ""
             }`}
           </p>
-          {/* <p>
-            📓{" "}
-            {`${quiz.participants.length} participants${
-             quiz.participants.length > 1 ? "s" : ""
-            }`}
-          </p> */}
+          {<p>{quiz.privacy ? "🔒 Private" : "🔓 Public"} quiz</p>}
         </div>
         <div className="single-quiz-footer">
           <div className="single-quiz-date">

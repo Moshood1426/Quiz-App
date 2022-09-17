@@ -9,6 +9,7 @@ const Participant = require("../models/Participant");
 const { attachCookiesToRes } = require("../utils/jwt");
 const validator = require("validator");
 const Questions = require("../models/Questions");
+const moment = require("moment");
 
 const createParticipant = async (req, res) => {
   const { identifier, firstName, lastName } = req.body;
@@ -58,6 +59,44 @@ const deleteParticipant = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Participant deleted succesfully" });
 };
 
+const getParticipantQuiz = async (req, res) => {
+  const { quizCode } = req.query;
+
+  if (!quizCode) {
+    throw new BadRequestError("Quiz code should be provided");
+  }
+
+  const quiz = await Quiz.findOne({ quizCode: quizCode }).select(
+    "-__v -createdAt -createdBy -noOfSubmissions -updatedAt"
+  );
+
+  if (!quiz) {
+    throw new NotFoundError("Quiz cannot be found");
+  }
+
+  if (!quiz.published) {
+    throw new BadRequestError("Quiz not available at this moment");
+  }
+
+  const startDate = quiz.startDate ? moment(quiz.startDate).format() : "";
+  const endDate = quiz.endDate ? moment(quiz.endDate).format() : "";
+  const currentDate = moment().format();
+
+  if (endDate && currentDate > endDate) {
+    throw new BadRequestError(
+      `Quiz was scheduled to end at ${moment(endDate).format("lll")}`
+    );
+  }
+
+  if (startDate && currentDate < startDate) {
+    throw new BadRequestError(
+      `Quiz was scheduled for ${moment(startDate).format("lll")}`
+    );
+  }
+
+  res.status(StatusCodes.OK).json({ quiz });
+};
+
 const validateParticipant = async (req, res) => {
   const { quizId, privacy, identifier, firstName, lastName } = req.body;
 
@@ -77,6 +116,10 @@ const validateParticipant = async (req, res) => {
         "Participant is not registered to take this course"
       );
     }
+
+    if (participant.submitted) {
+      throw new BadRequestError("Your submission for this test was received");
+    }
   }
 
   if (privacy === false) {
@@ -84,6 +127,9 @@ const validateParticipant = async (req, res) => {
       throw new BadRequestError("Please input all necessary details");
     }
     const user = await Participant.findOne({ identifier });
+    if (user.submitted) {
+      throw new BadRequestError("Your submission for this test was received");
+    }
     if (user) {
       participant = user;
     } else {
@@ -113,12 +159,34 @@ const getParticipantQuestions = async (req, res) => {
     _id: participantId,
     quizId: quizId,
   });
+  //getting participant details
   if (!participant) {
     throw new UnauthenticatedError("User not allowed to take this test");
   }
+  if (participant.submitted) {
+    throw new BadRequestError("Your submission for this test was received");
+  }
+
+  //getting quiz test
   const quiz = await Quiz.findOne({ _id: quizId });
   if (!quiz) {
     throw new NotFoundError("quiz cannot be found");
+  }
+
+  //validating date of test
+  const startDate = quiz.startDate ? moment(quiz.startDate).format() : "";
+  const endDate = quiz.endDate ? moment(quiz.endDate).format() : "";
+  const currentDate = moment().format();
+
+  if (endDate && currentDate > endDate) {
+    throw new BadRequestError(
+      `Quiz was scheduled to end at ${moment(endDate).format("lll")}`
+    );
+  }
+  if (startDate && currentDate < startDate) {
+    throw new BadRequestError(
+      `Quiz was scheduled for ${moment(startDate).format("lll")}`
+    );
   }
 
   let result = Questions.find({ forQuiz: quiz._id }).select("-correctAnswer");
@@ -137,7 +205,13 @@ const getParticipantQuestions = async (req, res) => {
 
   res
     .status(StatusCodes.OK)
-    .json({ totalQuestions, quiz, questions, participant });
+    .json({
+      totalQuestions,
+      quiz,
+      questions,
+      participant,
+      questionsAnswered: participant.answers.length,
+    });
 };
 
 const addParticipantAnswers = async (req, res) => {
@@ -174,7 +248,9 @@ const addParticipantAnswers = async (req, res) => {
     await participant.save();
   }
 
-  res.status(StatusCodes.OK).json({ msg: "Successful" });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Successful", questionsAnswered: participant.answers.length });
 };
 
 const submitParticipantAnswers = async (req, res) => {
@@ -203,4 +279,5 @@ module.exports = {
   getParticipantQuestions,
   addParticipantAnswers,
   submitParticipantAnswers,
+  getParticipantQuiz,
 };

@@ -70,16 +70,7 @@ const getAllQuiz = async (req, res) => {
 };
 
 const getSingleQuiz = async (req, res) => {
-  const { quizCode } = req.query;
   const { quizId } = req.params;
-
-  if (quizCode) {
-    const quiz = await Quiz.findOne({ quizCode: quizCode });
-    if (!quiz) {
-      throw new NotFoundError("Quiz cannot be found");
-    }
-    res.status(StatusCodes.OK).json({ quiz });
-  }
 
   if (!quizId) {
     throw new BadRequestError("Kindly input a valid quizId");

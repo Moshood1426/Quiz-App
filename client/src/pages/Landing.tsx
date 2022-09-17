@@ -15,7 +15,6 @@ const Landing: React.FC = () => {
       <Navbar />
       <Intro />
       <Process />
-      <Easiness />
       <Explore />
       <TakeTests />
       <Footer />

@@ -388,6 +388,13 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       isLoading: true,
     };
   }
+  if (action.type === ActionType.GET_TEST_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      participantQuizDetails: action.payload,
+    };
+  }
   if (action.type === ActionType.GET_TEST_FAILED) {
     return {
       ...state,
@@ -433,12 +440,21 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       numOfQuestions: action.payload.numOfQuestions,
       participantQuestions: action.payload.participantQuestions,
       participantInfo: action.payload.participant,
+      questionsAnswered: action.payload.questionsAnswered
     };
   }
-  if (action.type === ActionType.SET_FILL_GAP_ANSWER) {
+  if (action.type === ActionType.SET_QUESTION_ANSWER_BEGIN) {
     return {
       ...state,
-      participantQuestions: action.payload,
+      singleAnswerLoading: true,
+    };
+  }
+  if (action.type === ActionType.SET_QUESTION_ANSWER_SUCCESS) {
+    return {
+      ...state,
+      singleAnswerLoading: false,
+      participantQuestions: action.payload.participantQuestions,
+      questionsAnswered: action.payload.questionsAnswered
     };
   }
   if (action.type === ActionType.CHANGE_PAGE_SUCCESS) {
@@ -548,7 +564,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       user: action.payload,
       showAlert: true,
       alertType: "success",
-      alertText: "User profile updated succesfully"
+      alertText: "User profile updated succesfully",
     };
   }
   if (action.type === ActionType.UPDATE_USER_FAILED) {
@@ -572,7 +588,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       isLoading: false,
       showAlert: true,
       alertType: "success",
-      alertText: "password updated succesfully"
+      alertText: "password updated succesfully",
     };
   }
   if (action.type === ActionType.UPDATE_PASSWORD_FAILED) {
@@ -587,10 +603,10 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
   if (action.type === ActionType.DELETE_ACCOUNT_BEGIN) {
     return {
       ...state,
-      isLoading: true
-    }
+      isLoading: true,
+    };
   }
- /* if (action.type === ActionType.DELETE_ACCOUNT_SUCCESS) {
+  /* if (action.type === ActionType.DELETE_ACCOUNT_SUCCESS) {
     return {
       
     }

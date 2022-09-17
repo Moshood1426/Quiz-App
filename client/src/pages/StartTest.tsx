@@ -10,14 +10,14 @@ const initialState = {
   identifier: "",
   firstName: "",
   lastName: "",
-  email: ""
+  email: "",
 };
 
 const StartTest = () => {
   const [formData, setFormData] = useState(initialState);
   const {
     showAlert,
-    singleQuizDetails,
+    participantQuizDetails,
     validateParticipant,
     authorizeParticipant: authParticipant,
     validateInput,
@@ -27,11 +27,11 @@ const StartTest = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(validateParticipant) {
-      navigate("/take-test")
+    if (validateParticipant) {
+      navigate("/take-test");
     }
     //eslint-disable-next-line
-  }, [validateParticipant])
+  }, [validateParticipant]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -50,28 +50,28 @@ const StartTest = () => {
 
   const authorizeParticipant = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
-    if (singleQuizDetails?.privacy === false) {
+
+    if (participantQuizDetails?.privacy === false) {
       if (!formData.firstName || !formData.lastName || !formData.email) {
         validateInput();
         return;
       }
       const reqObj = {
-        quizId: singleQuizDetails._id,
-        privacy: singleQuizDetails.privacy,
+        quizId: participantQuizDetails._id,
+        privacy: participantQuizDetails.privacy,
         identifier: formData.email,
         firstName: formData.firstName,
         lastName: formData.lastName,
       };
       authParticipant(reqObj);
     } else {
-      if(!formData.identifier) {
-        validateInput()
-        return
+      if (!formData.identifier) {
+        validateInput();
+        return;
       }
       const reqObj = {
-        quizId: singleQuizDetails!._id,
-        privacy: singleQuizDetails!.privacy,
+        quizId: participantQuizDetails!._id,
+        privacy: participantQuizDetails!.privacy,
         identifier: formData.identifier,
       };
       authParticipant(reqObj);
@@ -81,7 +81,7 @@ const StartTest = () => {
   //pops up if single quiz details is private
   const privateQuizForm = (
     <form onSubmit={authorizeParticipant}>
-      <h4 className="form-title">Enter Quiz Details</h4>
+      <h4 className="form-title">Verify Your Info</h4>
       {showAlert && <Alert />}
       <p className="forgot-pass-text">
         This quiz is only accesible to certain participant. Kindly enter your
@@ -100,10 +100,10 @@ const StartTest = () => {
     </form>
   );
 
-  //pops up if single quiz details is private
+  //pops up if single quiz details is public
   const publicQuizForm = (
     <form onSubmit={authorizeParticipant}>
-      <h4 className="form-title">Enter Quiz Details</h4>
+      <h4 className="form-title">Enter Your Info</h4>
       {showAlert && <Alert />}
       <p className="forgot-pass-text">
         You are required to enter your details to proceed with this quiz
@@ -142,32 +142,37 @@ const StartTest = () => {
       </div>
       <p className="sub-title">Some description if needed</p>
       <Card>
-        {singleQuizDetails ? (
-          singleQuizDetails.privacy ? (
-            privateQuizForm
-          ) : (
-            publicQuizForm
+        {
+          //if participant entered valid quiz code
+          participantQuizDetails ? (
+            participantQuizDetails.privacy ? (
+              privateQuizForm
+            ) : (
+              publicQuizForm
+            )
+          ) : 
+          //participant proceed to enter quiz code
+          (
+            <form onSubmit={handleSubmit}>
+              <h4 className="form-title">Enter Quiz Details</h4>
+              {showAlert && <Alert />}
+              <p className="forgot-pass-text">
+                Kindly enter the unique quiz code and we fetch the questions for
+                you.
+              </p>
+              <FormItem
+                name={"quizCode"}
+                placeholder={"enter quiz code"}
+                type={"text"}
+                value={formData.quizCode}
+                onChange={handleChange}
+              />
+              <button className="btn" type="submit">
+                Submit
+              </button>
+            </form>
           )
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <h4 className="form-title">Enter Quiz Details</h4>
-            {showAlert && <Alert />}
-            <p className="forgot-pass-text">
-              Kindly enter the unique quiz code and we fetch the questions for
-              you.
-            </p>
-            <FormItem
-              name={"quizCode"}
-              placeholder={"enter quiz code"}
-              type={"text"}
-              value={formData.quizCode}
-              onChange={handleChange}
-            />
-            <button className="btn" type="submit">
-              Submit
-            </button>
-          </form>
-        )}
+        }
       </Card>
       <div className="foot-div">
         <p className="foot-text">

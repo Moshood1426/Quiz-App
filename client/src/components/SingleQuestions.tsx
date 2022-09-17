@@ -27,6 +27,7 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
 }) => {
   const {
     editSingleQuizDetails: { questions, details },
+    singleAnswerLoading,
     setEditQuestion,
     deleteQuestion,
     editQuiz,
@@ -41,6 +42,7 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
       localStorage.setItem("questionId", JSON.stringify(question._id));
     }
   };
+
   const deleteSingleQuestion = (id: object) => {
     deleteQuestion(id);
     if (details) editQuiz(details?._id);
@@ -67,13 +69,16 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
           </div>
         )}
       </div>
+
       <div className="question-footer">
         <span className="question-type">
           📝Question Type: {question.type.split("-").join(" ")}
         </span>
         <span className="question-point">⚪ Point: {question.points}</span>
       </div>
+
       <h5 className="question-content">{question.question}</h5>
+
       <ul className="question-options">
         {question.options.map((item, index) => {
           return (
@@ -93,8 +98,11 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
                     ? "client-answer-wrong"
                     : ""
                   : "")
-              }`}
-              onClick={() => setAnswer && setQuestionAnswer(id, item)}
+              }
+              ${setAnswer ? (singleAnswerLoading ? "disabled" : "enabled") : ""}`}
+              onClick={() =>
+                setAnswer && !singleAnswerLoading && setQuestionAnswer(id, item)
+              }
             >
               {item}
             </li>

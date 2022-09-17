@@ -9,6 +9,7 @@ import { HiChevronDoubleLeft, HiChevronDoubleRight } from "react-icons/hi";
 const TestQuestions = () => {
   const {
     participantQuestions,
+    questionsAnswered,
     changeQuestionPage,
     numOfQuestions,
     limit,
@@ -29,7 +30,7 @@ const TestQuestions = () => {
     <Wrapper>
       <div className="all-questions-header">
         <h3>
-          All Questions <span className="num-of-questions">3</span>
+          All Questions <span>{questionsAnswered + "/" + numOfQuestions}</span>
         </h3>
         <p className="all-questions-points">
           Total points: <span className="total-points">30</span>
@@ -42,7 +43,9 @@ const TestQuestions = () => {
               return (
                 <SingleQuestionWrapper key={item._id.toString()}>
                   <div className="question-header">
-                    <p className="question-tag">Question {limit * (page - 1) + index + 1}</p>
+                    <p className="question-tag">
+                      Question {limit * (page - 1) + index + 1}
+                    </p>
                   </div>
                   <div className="question-footer">
                     <span className="question-type">

@@ -51,8 +51,11 @@ const initialState: InitialState = {
   validateParticipant: authorizeParticipant
     ? JSON.parse(authorizeParticipant)
     : null,
+  participantQuizDetails: null,
   participantInfo: null,
   participantQuestions: null,
+  singleAnswerLoading: false,
+  questionsAnswered: 0,
   limit: 5,
   page: 1,
   quizWithSubmission: [],
@@ -498,158 +501,6 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     return false;
   };
 
-  const getTestBegin = async (quizCode: string) => {
-    dispatch({ type: ActionType.GET_TEST_BEGIN });
-
-    try {
-      const { data } = await axios.get<GetSingleQuizResponse>(
-        `/api/v1/participant?quizCode=${quizCode}`
-      );
-      dispatch({
-        type: ActionType.GET_SINGLE_QUIZ_SUCCESS,
-        payload: data.quiz,
-      });
-    } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
-      dispatch({
-        type: ActionType.GET_TEST_FAILED,
-        payload: message,
-      });
-      clearAlert();
-    }
-  };
-
-  const authorizeParticipant = async (reqObj: {
-    quizId: object;
-    privacy: boolean;
-    identifier: string;
-    firstName?: string;
-    lastName?: string;
-  }) => {
-    dispatch({ type: ActionType.AUTHORIZE_PARTICIPANT_BEGIN });
-
-    try {
-      const { data } = await axios.post("/api/v1/participant", { ...reqObj });
-      dispatch({
-        type: ActionType.AUTHORIZE_PARTICIPANT_SUCCESS,
-        payload: data.user,
-      });
-      localStorage.setItem("participant", JSON.stringify(data.user));
-    } catch (error) {
-      let message;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
-      dispatch({
-        type: ActionType.AUTHORIZE_PARTICIPANT_FAILED,
-        payload: message,
-      });
-      clearAlert();
-    }
-  };
-
-  const getParticipantQuizInfo = async () => {
-    const limit = state.limit;
-    const page = state.page;
-    dispatch({ type: ActionType.GET_PARTICIPANT_QUIZ_INFO_BEGIN });
-    try {
-      const { data } = await authFetch.get(
-        `/participant/take-test?limit=${limit}&page=${page}&result=all`
-      );
-      const { quiz, questions, totalQuestions, participant } = data;
-      const participantQuestions = questions.map((item: SingleQuestion) => {
-        if (participant.answers.length < 1) return { ...item, answer: "" };
-        const result = participant.answers.find(
-          (answer: { questionId: object; _id: object; answer: string }) =>
-            answer.questionId === item._id
-        );
-        if (!result) return { ...item, answer: "" };
-        return { ...item, answer: result.answer };
-      });
-      dispatch({
-        type: ActionType.GET_PARTICIPANT_QUIZ_INFO_SUCCESS,
-        payload: {
-          numOfQuestions: totalQuestions,
-          quiz,
-          participantQuestions,
-          participant,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      //logoutUser()
-    }
-  };
-
-  const setQuestionAnswer = async (questionId: object, answer: string) => {
-    const result = state.participantQuestions?.map((item) => {
-      if (item._id == questionId) {
-        return { ...item, answer };
-      }
-      return { ...item };
-    });
-
-    try {
-      await axios.post("/api/v1//participant/take-test", {
-        answers: { questionId, answer },
-      });
-      dispatch({
-        type: ActionType.SET_FILL_GAP_ANSWER,
-        payload: result,
-      });
-    } catch (error) {
-      console.log(error);
-      //endTest()
-    }
-  };
-
-  const changeQuestionPage = async (page: number) => {
-    if (page === state.page) return;
-    // dispatch({ type: ActionType.CHANGE_PAGE_BEGIN, payload: page });
-    try {
-      const { data } = await authFetch.get(
-        `/participant/take-test?limit=${state.limit}&page=${page}&result=questions`
-      );
-      const { questions, participant } = data;
-      const participantQuestions = questions.map((item: SingleQuestion) => {
-        if (participant.answers.length < 1) return { ...item, answer: "" };
-        const result = participant.answers.find(
-          (answer: { questionId: object; _id: object; answer: string }) =>
-            answer.questionId === item._id
-        );
-        if (!result) return { ...item, answer: "" };
-        return { ...item, answer: result.answer };
-      });
-      dispatch({
-        type: ActionType.CHANGE_PAGE_SUCCESS,
-        payload: {
-          participantQuestions,
-          page: page,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      //endTest()
-    }
-  };
-
-  const endTest = async () => {
-    try {
-      await axios.patch("/api/v1/participant/take-test");
-    } catch (error) {
-      console.log(error);
-    }
-    localStorage.removeItem("participant");
-    dispatch({ type: ActionType.LOGOUT_PARTICIPANT });
-  };
-
   const getAllQuizSubmission = async () => {
     dispatch({ type: ActionType.GET_ALL_QUIZ_SUBMISSION_BEGIN });
 
@@ -903,6 +754,170 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     } catch (error) {
       //logoutUser()
     }
+  };
+
+  /* 
+    -- Participant Take Test Functionalities Begin --
+  */
+
+  const getTestBegin = async (quizCode: string) => {
+    dispatch({ type: ActionType.GET_TEST_BEGIN });
+
+    try {
+      const { data } = await axios.get<GetSingleQuizResponse>(
+        `/api/v1/participant?quizCode=${quizCode}`
+      );
+      dispatch({
+        type: ActionType.GET_TEST_SUCCESS,
+        payload: data.quiz,
+      });
+    } catch (error) {
+      let message: any;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({
+        type: ActionType.GET_TEST_FAILED,
+        payload: message,
+      });
+      clearAlert();
+    }
+  };
+
+  const authorizeParticipant = async (reqObj: {
+    quizId: object;
+    privacy: boolean;
+    identifier: string;
+    firstName?: string;
+    lastName?: string;
+  }) => {
+    dispatch({ type: ActionType.AUTHORIZE_PARTICIPANT_BEGIN });
+
+    try {
+      const { data } = await axios.post("/api/v1/participant", { ...reqObj });
+      dispatch({
+        type: ActionType.AUTHORIZE_PARTICIPANT_SUCCESS,
+        payload: data.user,
+      });
+      localStorage.setItem("participant", JSON.stringify(data.user));
+    } catch (error) {
+      let message;
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data;
+      } else {
+        message = { msg: "An unexpected error occurred" };
+      }
+      dispatch({
+        type: ActionType.AUTHORIZE_PARTICIPANT_FAILED,
+        payload: message,
+      });
+      clearAlert();
+    }
+  };
+
+  const getParticipantQuizInfo = async () => {
+    const limit = state.limit;
+    const page = state.page;
+    dispatch({ type: ActionType.GET_PARTICIPANT_QUIZ_INFO_BEGIN });
+    try {
+      const { data } = await authFetch.get(
+        `/participant/take-test?limit=${limit}&page=${page}&result=all`
+      );
+      const { quiz, questions, totalQuestions, participant } = data;
+      const participantQuestions = questions.map((item: SingleQuestion) => {
+        if (participant.answers.length < 1) return { ...item, answer: "" };
+        const result = participant.answers.find(
+          (answer: { questionId: object; _id: object; answer: string }) =>
+            answer.questionId === item._id
+        );
+        if (!result) return { ...item, answer: "" };
+        return { ...item, answer: result.answer };
+      });
+      dispatch({
+        type: ActionType.GET_PARTICIPANT_QUIZ_INFO_SUCCESS,
+        payload: {
+          numOfQuestions: totalQuestions,
+          quiz,
+          participantQuestions,
+          participant,
+          questionsAnswered: data.questionsAnswered
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      //endTest()
+    }
+  };
+
+  const setQuestionAnswer = async (questionId: object, answer: string) => {
+    dispatch({ type: ActionType.SET_QUESTION_ANSWER_BEGIN });
+
+    //get single question from all questions in state and set its answer
+    const result = state.participantQuestions?.map((item) => {
+      if (item._id === questionId) {
+        return { ...item, answer };
+      }
+      return { ...item };
+    });
+
+    try {
+      const { data } = await axios.post("/api/v1/participant/take-test", {
+        answers: { questionId, answer },
+      });
+
+      dispatch({
+        type: ActionType.SET_QUESTION_ANSWER_SUCCESS,
+        payload: {
+          participantQuestions: result,
+          questionsAnswered: data.questionsAnswered,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      //endTest()
+    }
+  };
+
+  const changeQuestionPage = async (page: number) => {
+    if (page === state.page) return;
+    // dispatch({ type: ActionType.CHANGE_PAGE_BEGIN, payload: page });
+    try {
+      const { data } = await authFetch.get(
+        `/participant/take-test?limit=${state.limit}&page=${page}&result=questions`
+      );
+      const { questions, participant } = data;
+      const participantQuestions = questions.map((item: SingleQuestion) => {
+        if (participant.answers.length < 1) return { ...item, answer: "" };
+        const result = participant.answers.find(
+          (answer: { questionId: object; _id: object; answer: string }) =>
+            answer.questionId === item._id
+        );
+        if (!result) return { ...item, answer: "" };
+        return { ...item, answer: result.answer };
+      });
+      dispatch({
+        type: ActionType.CHANGE_PAGE_SUCCESS,
+        payload: {
+          participantQuestions,
+          page: page,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      //endTest()
+    }
+  };
+
+  const endTest = async () => {
+    try {
+      await axios.patch("/api/v1/participant/take-test");
+    } catch (error) {
+      console.log(error);
+    }
+    localStorage.removeItem("participant");
+    dispatch({ type: ActionType.LOGOUT_PARTICIPANT });
   };
 
   return (
