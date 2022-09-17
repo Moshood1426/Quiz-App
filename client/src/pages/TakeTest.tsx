@@ -31,10 +31,33 @@ const TakeTest = () => {
               End Test
             </button>
           </div>
-          <div className="take-test-welcome">
-            Welcome to today's quiz, Moshood.
-          </div>
+
           <div className="quiz-content">
+            <div className="take-test-welcome">
+              <h5 className="welcome-text-title">
+                Welcome to today's quiz, Moshood.
+              </h5>
+              <p className="welcome-text-subtitle">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim ve
+              </p>
+              <ul className="instruction">
+                Instructions
+                <li className="instruction-item">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt
+                </li>
+                <li className="instruction-item">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt
+                </li>
+                <li className="instruction-item">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt
+                </li>
+              </ul>
+            </div>
             <div className="quiz-details">
               <div>
                 <span className="quiz-details-title">Student name:</span>

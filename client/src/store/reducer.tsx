@@ -436,7 +436,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      singleQuizDetails: action.payload.quiz,
+      participantQuizDetails: action.payload.quiz,
       numOfQuestions: action.payload.numOfQuestions,
       participantQuestions: action.payload.participantQuestions,
       participantInfo: action.payload.participant,

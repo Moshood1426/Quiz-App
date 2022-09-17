@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Wrapper from "../assets/wrappers/TestQuestions";
 import SingleQuestionWrapper from "../assets/wrappers/SingleQuestion";
 import useAppContext from "../store/appContext";
 import SingleQuestion from "./SingleQuestions";
 import FormItem from "./FormItem";
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from "react-icons/hi";
+import moment from "moment";
 
 const TestQuestions = () => {
+  const [duration, setDuration] = useState("0:00");
   const {
+    participantQuizDetails,
     participantQuestions,
     questionsAnswered,
     changeQuestionPage,
@@ -17,11 +20,35 @@ const TestQuestions = () => {
     setQuestionAnswer,
   } = useAppContext();
 
+  useEffect(() => {
+    if (participantQuizDetails) {
+      const currentTime = moment().format();
+      const endTime = participantQuizDetails.endDate
+        ? participantQuizDetails.endDate
+        : null;
+
+      if (endTime) {
+        //const duration = moment(endTime.diff(currentTime)).format("m[m] s[s]");
+      }
+    }
+  }, []);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const questionId = new String(event.target.name);
     const value = event.target.value;
     setQuestionAnswer(questionId, value);
   };
+
+  /*
+  if(participantQuizDetails) {
+    const currentTime = moment().format().slice(0, 16);
+    const endTime = participantQuizDetails.endDate ? participantQuizDetails.endDate : null
+  }
+  moment( (participantQuizDetails?.endDate).diff(
+                participantQuizDetails.startDate
+              )
+            ).format("m[m] s[s]")
+  */
 
   const numOfPages = Math.ceil(numOfQuestions / limit);
   const pages = Array.from({ length: numOfPages }, (v, i) => i + 1);
@@ -33,7 +60,7 @@ const TestQuestions = () => {
           All Questions <span>{questionsAnswered + "/" + numOfQuestions}</span>
         </h3>
         <p className="all-questions-points">
-          Total points: <span className="total-points">30</span>
+          Duration <span className="total-points">{}</span>
         </p>
       </div>
       <div>
@@ -81,7 +108,10 @@ const TestQuestions = () => {
           })}
       </div>
       <div className="quiz-page-list">
-        <button className="prev-btn">
+        <button
+          className="prev-btn"
+          onClick={() => changeQuestionPage(page > 1 ? page - 1 : numOfPages)}
+        >
           <HiChevronDoubleLeft />
           prev
         </button>
@@ -99,7 +129,10 @@ const TestQuestions = () => {
             );
           })}
         </div>
-        <button className="next-btn">
+        <button
+          className="next-btn"
+          onClick={() => changeQuestionPage(page < numOfPages ? page + 1 : 1)}
+        >
           next
           <HiChevronDoubleRight />
         </button>

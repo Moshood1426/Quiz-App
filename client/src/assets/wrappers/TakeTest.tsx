@@ -21,8 +21,9 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1em 2em;
+    padding: 2em 2em;
     border-bottom: var(--grey-200) solid 2px;
+    margin-bottom: 2em;
   }
 
   .img-div img {
@@ -30,14 +31,31 @@ const Wrapper = styled.div`
   }
 
   .take-test-welcome {
-    background-color: var(--primary-400);
+    background-color: #cbecec;
     color: var(--primary-300);
     padding: 0.5em;
     font-size: 1.2rem;
     border-radius: 10px;
-    text-align: center;
     margin-bottom: 1em;
-    margin-top: .75em;
+    padding: 1em 2em;
+  }
+
+  .welcome-text {
+    margin: 0;
+    margin-bottom: 0.5em;
+  }
+
+  .welcome-text-subtitle {
+    font-size: 0.9rem;
+    margin: 0;
+    margin-bottom: 0.5em;
+  }
+
+  .instruction {
+    list-style: circle;
+    list-style-position: inside;
+    font-size: 0.9rem;
+    margin-top: 0;
   }
 
   .quiz-details {
@@ -51,7 +69,8 @@ const Wrapper = styled.div`
     border-radius: 10px;
     height: fit-content;
     margin-bottom: 2em;
-    box-shadow: var(--shadow-2)
+    box-shadow: var(--shadow-2);
+    background-color: var(--primary-400);
   }
 
   .quiz-details-title {
@@ -65,16 +84,22 @@ const Wrapper = styled.div`
     .quiz-content {
       display: grid;
       grid-template-columns: 1fr 300px;
+      grid-template-rows: min-content 1fr;
       gap: 2em;
     }
 
     .quiz-details {
       order: 2;
       grid-template-columns: 1fr;
+      grid-column: 2/3;
+      grid-row: 1/-1;
+      padding-bottom: 3em;
+      padding-top: 3em;
     }
 
     .quiz-questions {
       order: 1;
+      grid-column: 1/2;
     }
   }
 `;
