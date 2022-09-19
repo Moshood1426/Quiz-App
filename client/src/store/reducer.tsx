@@ -1,6 +1,7 @@
 import ActionType from "./actions";
 import { InitialState } from "./@types/context";
 import { Action } from "./@types/context";
+import { initialState } from "./appContext";
 
 const reducer: React.Reducer<InitialState, Action> = (state, action) => {
   //return {...state}
@@ -604,6 +605,11 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     return {
       ...state,
       isLoading: true,
+    };
+  }
+  if (action.type === ActionType.LOGOUT_USER) {
+    return {
+      ...initialState
     };
   }
   /* if (action.type === ActionType.DELETE_ACCOUNT_SUCCESS) {

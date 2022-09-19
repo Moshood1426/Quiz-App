@@ -5,14 +5,21 @@ import Logo from "../components/Logo";
 import useAppContext from "../store/appContext";
 import Loading from "../components/Loading";
 import { TestQuestions } from "../components";
+import moment from "moment";
 
 const TakeTest = () => {
-  const { isLoading, validateParticipant, endTest, getParticipantQuizInfo } =
-    useAppContext();
+  const {
+    isLoading,
+    validateParticipant,
+    participantQuizDetails,
+    participantInfo,
+    endTest,
+    getParticipantQuizInfo,
+  } = useAppContext();
 
   useEffect(() => {
     if (!validateParticipant) {
-      <Navigate to="/start-test" />;
+     // <Navigate to="/start-test" />;
       return;
     }
     getParticipantQuizInfo();
@@ -61,15 +68,17 @@ const TakeTest = () => {
             <div className="quiz-details">
               <div>
                 <span className="quiz-details-title">Student name:</span>
-                <h5>Steven Wagner</h5>
+                <h5>
+                  {participantInfo?.firstName + " " + participantInfo?.lastName}
+                </h5>
               </div>
               <div>
                 <span className="quiz-details-title">identifier:</span>
-                <h5>2003012013</h5>
+                <h5>{participantInfo?.identifier}</h5>
               </div>
               <div>
                 <span className="quiz-details-title">Quiz title</span>
-                <h5>Biology 2021/2022</h5>
+                <h5>{participantQuizDetails?.quizTitle}</h5>
               </div>
               <div>
                 <span className="quiz-details-title">Duration</span>
@@ -77,11 +86,19 @@ const TakeTest = () => {
               </div>
               <div>
                 <span className="quiz-details-title">Start Date</span>
-                <h5>Moshood Abdullahi</h5>
+                <h5>
+                  {participantQuizDetails?.startDate
+                    ? moment(participantQuizDetails?.startDate).format("lll")
+                    : "anytime"}
+                </h5>
               </div>
               <div>
                 <span className="quiz-details-title">End Date</span>
-                <h5>Moshood Abdullahi</h5>
+                <h5>
+                  {participantQuizDetails?.endDate
+                    ? moment(participantQuizDetails?.endDate).format("lll")
+                    : "anytime"}
+                </h5>
               </div>
             </div>
             <div className="quiz-questions">

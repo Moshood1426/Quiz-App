@@ -31,7 +31,7 @@ const Wrapper = styled.section`
   }
 
   @media (min-width: 950px) {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 85%);
+    //clip-path: polygon(0 0, 100% 0, 100% 100%, 0 85%);
     .intro-container {
       flex-direction: row;
       align-items: center;

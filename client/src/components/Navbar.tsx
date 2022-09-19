@@ -3,11 +3,13 @@ import Wrapper from "../assets/wrappers/Navbar";
 import Logo from "./Logo";
 import { AiOutlineMenu } from "react-icons/ai";
 import useAppContext from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const [showLogout, setShowLogout] = useState(false);
+  const navigate = useNavigate();
 
-  const { user } = useAppContext();
+  const { user, logoutUser } = useAppContext();
   const nameTag = user?.firstName[0] || "A";
 
   return (
@@ -18,13 +20,15 @@ const Navbar: React.FC = () => {
         </div>
 
         <ul className="nav-items">
-          <li>Home</li>
-          <li>Take Test</li>
+          <li onClick={() => navigate("/landing")}>Home</li>
+          <li onClick={() => navigate("/start-test")}>Take Test</li>
           <li>Check Results</li>
         </ul>
 
         <div className="btn-div">
-          <button className="btn">Get Started</button>
+          <button className="btn get-started-btn" onClick={() => navigate("/register")}>
+            Get Started
+          </button>
         </div>
 
         <div className="user-container">
@@ -32,13 +36,33 @@ const Navbar: React.FC = () => {
             <span>{nameTag}</span>
           </div>
 
-          <div className={showLogout ? "logout-dropdown" : "hide-logout-dropdown"}>
+          <div
+            className={showLogout ? "logout-dropdown" : "hide-logout-dropdown"}
+          >
             <p className="dropdown-name">{user?.firstName}</p>
             <div className="dropdown-action">
-              <p className="dropdown-action-item">Manage quiz</p>
-              <p className="dropdown-action-item">Settings</p>
+              <p
+                className="dropdown-action-item"
+                onClick={() => {
+                  navigate("/");
+                  setShowLogout(false);
+                }}
+              >
+                Manage quiz
+              </p>
+              <p
+                className="dropdown-action-item"
+                onClick={() => {
+                  navigate("/profile");
+                  setShowLogout(false);
+                }}
+              >
+                Settings
+              </p>
             </div>
-            <span className="dropdown-btn">Sign out</span>
+            <span className="dropdown-btn" onClick={() => logoutUser()}>
+              Sign out
+            </span>
           </div>
         </div>
 

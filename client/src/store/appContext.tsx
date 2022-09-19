@@ -920,6 +920,11 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.LOGOUT_PARTICIPANT });
   };
 
+  const logoutUser = () => {
+    localStorage.removeItem("user")
+    dispatch({type: ActionType.LOGOUT_USER})
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -962,6 +967,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         updateUser,
         updatePassword,
         deleteAccount,
+        logoutUser
       }}
     >
       {children}

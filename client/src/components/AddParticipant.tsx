@@ -50,14 +50,18 @@ const AddParticipant = () => {
       identifier,
       quizId,
     });
+
+    setParticipantData({
+      firstName: "",
+      lastName: "",
+      identifier: "",
+    });
   };
 
   return (
     <Wrapper>
       <div className="add-participants">
-        <div>
-            {showAlert && <Alert />}
-        </div>
+        <div>{showAlert && <Alert />}</div>
         <form className="add-participant-form" onSubmit={handleSubmit}>
           <h5 className="form-title">Add Participant</h5>
           <FormItem
@@ -83,8 +87,12 @@ const AddParticipant = () => {
           />
           <ul className="form-info">
             Note:
-            <li className="form-info-item">identifer may be matric no, email or unique identificator</li>
-            <li className="form-info-item">Only participant added can take private quiz</li>
+            <li className="form-info-item">
+              identifer may be matric no, email or unique identificator
+            </li>
+            <li className="form-info-item">
+              Only participant added can take private quiz
+            </li>
           </ul>
           <button type="submit" className="btn add-btn">
             Add
@@ -93,17 +101,52 @@ const AddParticipant = () => {
         <div className="participant-info">
           {singleQuizParticipants.map((item, index) => {
             return (
-              <p className="participant-identifier" key={index}>
-                {item.identifier}
-                <span
-                  onClick={() =>
-                    deleteParticipant(singleQuizDetails?._id!, item._id)
-                  }
-                  className="delete-participant"
-                >
-                  ❌
-                </span>
-              </p>
+              <>
+                <p className="participant-identifier" key={index}>
+                  {item.identifier}
+                  <span
+                    onClick={() =>
+                      deleteParticipant(singleQuizDetails?._id!, item._id)
+                    }
+                    className="delete-participant"
+                  >
+                    ❌
+                  </span>
+                </p>
+                <p className="participant-identifier" key={index}>
+                  {item.identifier}
+                  <span
+                    onClick={() =>
+                      deleteParticipant(singleQuizDetails?._id!, item._id)
+                    }
+                    className="delete-participant"
+                  >
+                    ❌
+                  </span>
+                </p>
+                <p className="participant-identifier" key={index}>
+                  {item.identifier}
+                  <span
+                    onClick={() =>
+                      deleteParticipant(singleQuizDetails?._id!, item._id)
+                    }
+                    className="delete-participant"
+                  >
+                    ❌
+                  </span>
+                </p>
+                <p className="participant-identifier" key={index}>
+                  {item.identifier}
+                  <span
+                    onClick={() =>
+                      deleteParticipant(singleQuizDetails?._id!, item._id)
+                    }
+                    className="delete-participant"
+                  >
+                    ❌
+                  </span>
+                </p>
+              </>
             );
           })}
         </div>

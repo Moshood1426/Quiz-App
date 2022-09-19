@@ -6,6 +6,12 @@ const Wrapper = styled.div`
   border-radius: 10px;
   margin-bottom: 2em;
 
+  .participant-info {
+    max-height: 200px;
+    height: 200px;
+    overflow: auto;
+  }
+
   .add-participant-form {
     display: grid;
   }
@@ -65,6 +71,7 @@ const Wrapper = styled.div`
   }
 
   @media (min-width: 750px) {
+    
     .add-participant-form {
       grid-template-columns: 1fr;
     }

@@ -8,14 +8,26 @@ const Wrapper = styled.div`
     background-color: var(--white);
   }
 
+  .user-container {
+    display: none;
+  }
+
   .register-container {
-    margin: 0 auto;
     max-width: 400px;
+    margin: 0 auto;
     width: 90%;
     height: calc(100vh - 87.2px);
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  .card {
+    background-color: white;
+    padding: 2em;
+    box-shadow: var(--shadow-1);
+    max-width: 400px;
+    border-radius: 6px;
   }
 
   .toggle-status {
@@ -46,8 +58,8 @@ const Wrapper = styled.div`
 
   .form-title {
     text-align: center;
-    padding-bottom: .55em;
-    margin-bottom: .75em;
+    padding-bottom: 0.55em;
+    margin-bottom: 0.75em;
     border-bottom: 1px solid var(--grey-200);
   }
 
@@ -67,7 +79,7 @@ const Wrapper = styled.div`
     text-align: center;
     box-shadow: var(--shadow-1);
     margin-top: 2em;
-    padding: .85em 0;
+    padding: 0.85em 0;
     border-radius: 6px;
   }
 
@@ -78,7 +90,7 @@ const Wrapper = styled.div`
 
   form > .btn {
     width: 100%;
-    margin-bottom: .75em;
+    margin-bottom: 0.75em;
   }
 
   .log-in {

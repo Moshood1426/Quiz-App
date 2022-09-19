@@ -158,7 +158,7 @@ const Register: React.FC = () => {
             login
           </p>
         </div>
-        <Card>
+        <div className="card">
           <h3 className="form-title">
             {clientIsUser ? "Sign In" : "Register"}
           </h3>
@@ -208,7 +208,7 @@ const Register: React.FC = () => {
               </span>
             )}
           </form>
-        </Card>
+        </div>
         <div className="foot-div">
           <p className="foot-text">
             If you’re here to take tests,{" "}

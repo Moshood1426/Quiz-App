@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.section`
   background-color: var(--primary-cream);
-  padding: 4rem 0;
+  padding: 5rem 0;
   text-align: center;
   position: relative;
 

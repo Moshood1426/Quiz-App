@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 const Wrapper = styled.section`
-  padding: 4rem 0;
+  padding: 5rem 0;
+  
   .explore-img-div {
     display: none;
   }

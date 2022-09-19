@@ -18,6 +18,7 @@ const TestQuestions = () => {
     limit,
     page,
     setQuestionAnswer,
+    singleAnswerLoading
   } = useAppContext();
 
   useEffect(() => {
@@ -123,6 +124,7 @@ const TestQuestions = () => {
                 className={item === page ? "pageBtn active" : "pageBtn"}
                 key={index}
                 onClick={() => changeQuestionPage(item)}
+                disabled={singleAnswerLoading}
               >
                 {item}
               </button>

@@ -22,6 +22,11 @@ const Wrapper = styled.nav`
     margin: 0;
   }
 
+  .nav-items > li {
+    cursor: pointer;
+    color: var(--primary-300);
+  }
+
   .btn-div {
     display: none;
   }
@@ -67,12 +72,23 @@ const Wrapper = styled.nav`
   .dropdown-action-item {
     margin: 0;
     padding: 0.65em 1.2em;
+    cursor: pointer;
   }
 
   .dropdown-btn {
     padding: 0.65em 1.2em;
     border-top: 1px solid var(--grey-100);
     display: flex;
+    cursor: pointer;
+  }
+
+  .get-started-btn {
+    background-color: var(--primary-cream);
+    color: var(--primary-200)
+  }
+
+  .get-started-btn:hover {
+    
   }
 
   @media (min-width: 600px) {
