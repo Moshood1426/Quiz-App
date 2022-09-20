@@ -27,6 +27,10 @@ const Wrapper = styled.nav`
     color: var(--primary-300);
   }
 
+  .nav-items > li:hover {
+    color: var(--primary-brown);
+  }
+
   .btn-div {
     display: none;
   }
@@ -84,11 +88,12 @@ const Wrapper = styled.nav`
 
   .get-started-btn {
     background-color: var(--primary-cream);
-    color: var(--primary-200)
+    color: var(--primary-200);
   }
 
   .get-started-btn:hover {
-    
+    background-color: #f3eaaa;
+    color: var(--primary-300);
   }
 
   @media (min-width: 600px) {

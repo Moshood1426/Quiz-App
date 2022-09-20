@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Wrapper from "../assets/wrappers/AddParticipant";
 import FormItem from "./FormItem";
 import useAppContext from "../store/appContext";
-import { MdOutlineCancel } from "react-icons/md";
 import Alert from "./Alert";
 
 const AddParticipant = () => {

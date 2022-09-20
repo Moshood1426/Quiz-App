@@ -28,7 +28,7 @@ const Wrapper = styled.div`
   }
 
   .edit-quiz-container {
-    background-color: var(--primary-300);
+    background-color: var(--primary-200);
   }
 
   .edit-quiz-header {

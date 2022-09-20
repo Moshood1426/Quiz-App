@@ -8,7 +8,6 @@ const Wrapper = styled.div`
 
   .participant-info {
     max-height: 200px;
-    height: 200px;
     overflow: auto;
   }
 
@@ -71,7 +70,6 @@ const Wrapper = styled.div`
   }
 
   @media (min-width: 750px) {
-    
     .add-participant-form {
       grid-template-columns: 1fr;
     }

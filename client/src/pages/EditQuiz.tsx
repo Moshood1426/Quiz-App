@@ -99,7 +99,7 @@ const EditQuiz = () => {
 
   return (
     <Wrapper>
-      <Navbar />
+      {/*<Navbar />*/}
       <div className="edit-quiz-container">
         <div className="edit-quiz-header">
           <h3 className="edit-quiz-header-title">Edit Quiz</h3>
