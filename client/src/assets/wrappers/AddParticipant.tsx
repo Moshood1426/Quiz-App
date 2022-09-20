@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   margin-bottom: 2em;
 
   .participant-info {
-    max-height: 200px;
+    max-height: 150px;
     overflow: auto;
   }
 

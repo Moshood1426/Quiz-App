@@ -1,12 +1,5 @@
 import ActionType from "../actions";
 
-export interface registerArgs {
-  firstName?: string;
-  lastName?: string;
-  email: string;
-  password: string;
-}
-
 export interface InitialState {
   showAlert: boolean;
   alertType: string;
@@ -48,11 +41,6 @@ export interface InitialState {
     participants: SingleParticipant[];
   };
   displayResult: boolean;
-}
-
-export interface AuthorizeParticipant {
-  quizId: object;
-  participantId: object;
 }
 
 export interface ContextType extends InitialState {
@@ -127,6 +115,13 @@ export interface ContextType extends InitialState {
   logoutUser: () => void;
 }
 
+export interface registerArgs {
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  password: string;
+}
+
 export interface editQuizArg {
   quizTitle: string;
   quizCode: string;
@@ -149,16 +144,6 @@ export interface User {
   email: string;
 }
 
-export type LoginResponse = {
-  user: User;
-};
-
-export type LoginError = {
-  data: {
-    msg: string;
-  };
-};
-
 export interface GetAllQuizArgs {
   title: string;
   sort: "a-z" | "z-a" | "all" | "latest" | "oldest";
@@ -170,12 +155,6 @@ export interface GetAllQuizArgs {
   privacyOptions?: string[];
 }
 
-export interface GetAllQuizResponse {
-  numOfQuiz: number;
-  quiz: SingleQuiz[];
-  activities: Activity[];
-}
-
 export interface QuizWithSubmission {
   _id: object;
   startDate: Date;
@@ -185,27 +164,21 @@ export interface QuizWithSubmission {
   noOfSubmissions: number;
 }
 
-export interface GetSingleQuizResponse {
-  quiz: SingleQuiz[];
+export interface AuthorizeParticipant {
+  quizId: object;
+  participantId: object;
 }
 
-export interface GetQuizQuestionsResponse {
-  totalQuestions: number;
-  questions: SingleQuestion[];
-}
-
-interface SingleQuiz {
+export interface SingleQuiz {
   quizTitle: string;
   quizCode: string;
   quizType: string;
   startDate: Date;
   endDate: Date;
+  published: boolean;
   noOfQuestions: number;
   privacy: boolean;
   noOfSubmissions: number;
-  allowNonParticipants: boolean;
-  published: boolean;
-  participants: Participants[];
   createdBy: object;
   _id: object;
   createdAt: Date;
@@ -217,10 +190,10 @@ export interface SingleParticipant {
   _id: object;
   firstName: string;
   lastName: string;
+  identifier: string;
   quizId: object;
   startedTest: boolean;
   submitted: boolean;
-  identifier: string;
   answers: { _id: object; questionId: object; answer: string }[];
   pointsObtained?: number;
   pointsObtainable?: number;

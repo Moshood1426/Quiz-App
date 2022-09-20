@@ -6,19 +6,23 @@ import {
   registerArgs,
   ContextProps,
   Action,
-  LoginResponse,
   User,
   InitialState,
   GetAllQuizArgs,
-  GetAllQuizResponse,
-  GetQuizQuestionsResponse,
-  GetSingleQuizResponse,
   editQuizArg,
   questionEdit,
   PublishQuizDetails,
   SingleQuestion,
   SingleQuiz,
 } from "./@types/context";
+import {
+  LoginResponse,
+  CreateQuizResponse,
+  GetQuizQuestionsResponse,
+  GetSingleQuizResponse,
+  GetAllQuizResponse,
+  GetAllParticipantResponse,
+} from "./@types/axiosResponse";
 import ActionType from "./actions";
 
 const user = localStorage.getItem("user");
@@ -70,18 +74,22 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     React.Reducer<typeof initialState, Action>
   >(reducer, initialState);
 
+  //setting up axios instance
   const authFetch = axios.create({
-    baseURL: "api/v1",
+    baseURL: "/api/v1",
     withCredentials: true,
   });
 
-  /* authFetch.interceptors.request.use(
-    (request) => {
+  //axios instance interceptors
+  authFetch.interceptors.request.use(
+    (config) => {
+      //config.headers.common["Authorization"] = `Bearer ${state.token}`;
+      return config;
     },
     (error) => {
-      Promise.reject(error);
+      return Promise.reject(error);
     }
-  ); */
+  );
 
   authFetch.interceptors.response.use(
     (response) => {
@@ -89,44 +97,55 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     },
     (error) => {
       if (error.response.status === 401) {
-        //logoutUser()
+        logoutUser();
       }
-      Promise.reject(error);
+      return Promise.reject(error);
     }
   );
 
+  const handleAxiosError = (error: any): { msg: string } => {
+    let message;
+    if (axios.isAxiosError(error)) {
+      interface Response {
+        msg: string;
+      }
+      message = error.response?.data as Response;
+    } else {
+      message = { msg: "An unexpected error occurred" };
+    }
+    return message;
+  };
+
+  //throws error if inputs are poorly filled
   const validateInput = (text?: string) => {
     dispatch({ type: ActionType.VALIDATE_INPUT, payload: { text: text } });
     clearAlert();
   };
 
+  //cleanse alert text after 2 secs
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: ActionType.CLEAR_ALERT });
     }, 2000);
   };
 
+  //adds user to local storage for authentication
   const addUserToLocalStorage = (user: User) => {
     localStorage.setItem("user", JSON.stringify(user));
   };
 
-  //register functionality
+  //register new user
   const register = async (reqObj: registerArgs) => {
     dispatch({ type: ActionType.AUTH_USER_BEGIN });
     try {
-      const { data } = await axios.post<LoginResponse>(
-        "/api/v1/auth/register",
+      const { data } = await authFetch.post<LoginResponse>(
+        "/auth/register",
         reqObj
       );
       dispatch({ type: ActionType.AUTH_USER_SUCCESS, payload: data.user });
       addUserToLocalStorage(data.user);
     } catch (error) {
-      let message;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({ type: ActionType.AUTH_USER_FAILED, payload: { message } });
     }
     clearAlert();
@@ -136,19 +155,14 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   const login = async (reqObj: registerArgs) => {
     dispatch({ type: ActionType.AUTH_USER_BEGIN });
     try {
-      const { data } = await axios.post<LoginResponse>(
-        "/api/v1/auth/login",
+      const { data } = await authFetch.post<LoginResponse>(
+        "/auth/login",
         reqObj
       );
       dispatch({ type: ActionType.AUTH_USER_SUCCESS, payload: data.user });
       addUserToLocalStorage(data.user);
     } catch (error) {
-      let message;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({ type: ActionType.AUTH_USER_FAILED, payload: { message } });
     }
     clearAlert();
@@ -159,23 +173,21 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     console.log(email);
   };
 
-  //create quiz functionality
+  //create moderated quiz functionality
   const createQuiz = async (quizTitle: string, quizCode: string) => {
     dispatch({ type: ActionType.CREATE_QUIZ_BEGIN });
     const reqObj = { quizCode, quizTitle, quizType: "moderated" };
-    console.log(reqObj);
+
     try {
-      const { data } = await axios.post("/api/v1/quiz", reqObj);
+      const { data } = await authFetch.post<CreateQuizResponse>(
+        "/quiz",
+        reqObj
+      );
+
       dispatch({ type: ActionType.CREATE_QUIZ_SUCCESS, payload: data.quiz });
       return true;
     } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
-      console.log(message.msg);
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.CREATE_QUIZ_FAILED,
         payload: message.msg,
@@ -185,7 +197,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
-  //get-all-quiz functionality
+  //get all quiz functionality
   const getAllQuiz = async (reqObj: GetAllQuizArgs) => {
     const { title, code, type, sort, privacy } = reqObj;
 
@@ -202,25 +214,12 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         },
       });
     } catch (error) {
-      let message;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
-      console.log(message);
+      const message = handleAxiosError(error);
+      validateInput(message.msg);
     }
   };
 
-  const startManageQuiz = async (quizId: object) => {
-    await getSingleQuiz(quizId);
-  };
-
-  const endManageQuiz = () => {
-    dispatch({ type: ActionType.MANAGE_SINGLE_QUIZ_END });
-  };
-
-  //get single quiz and its questions functionality
+  //get single quiz and its questions
   const getSingleQuiz = async (quizId: object) => {
     dispatch({ type: ActionType.GET_SINGLE_QUIZ_BEGIN });
 
@@ -246,65 +245,40 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       });
       getAllParticipant(quizId);
     } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.GET_SINGLE_QUIZ_FAILED,
         payload: message.msg,
       });
+      clearAlert();
     }
   };
 
-  const addParticipant = async (reqObj: {
-    firstName: string;
-    lastName: string;
-    identifier: string;
-    quizId: object;
-  }) => {
-    dispatch({ type: ActionType.ADD_PARTICIPANT_BEGIN });
-    const { firstName, lastName, identifier, quizId } = reqObj;
-    try {
-      await axios.post(`/api/v1/participant/${quizId}`, {
-        firstName,
-        lastName,
-        identifier,
-      });
-      getAllParticipant(quizId);
-    } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
-      dispatch({
-        type: ActionType.ADD_PARTICIPANT_FAILED,
-        payload: message.msg,
-      });
-    }
-    clearAlert();
+  //view single quiz details
+  const startManageQuiz = async (quizId: object) => {
+    await getSingleQuiz(quizId);
   };
 
+  //end viewing of single quiz details
+  const endManageQuiz = () => {
+    dispatch({ type: ActionType.MANAGE_SINGLE_QUIZ_END });
+  };
+
+  //get all participant for single quiz
   const getAllParticipant = async (quizId: object) => {
     dispatch({ type: ActionType.GET_PARTICIPANT_BEGIN });
+
     try {
-      const { data } = await axios.get(`/api/v1/participant/${quizId}`);
+      const { data } = await authFetch.get<GetAllParticipantResponse>(
+        `/participant/${quizId}`
+      );
 
       dispatch({
         type: ActionType.GET_PARTICIPANT_SUCCESS,
         payload: data.participant,
       });
     } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.GET_PARTICIPANT_FAILED,
         payload: message.msg,
@@ -313,24 +287,48 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     clearAlert();
   };
 
+  //add participant to quiz
+  const addParticipant = async (reqObj: {
+    firstName: string;
+    lastName: string;
+    identifier: string;
+    quizId: object;
+  }) => {
+    dispatch({ type: ActionType.ADD_PARTICIPANT_BEGIN });
+    const { firstName, lastName, identifier, quizId } = reqObj;
+
+    try {
+      await authFetch.post(`/participant/${quizId}`, {
+        firstName,
+        lastName,
+        identifier,
+      });
+      getAllParticipant(quizId);
+    } catch (error) {
+      const message = handleAxiosError(error);
+      dispatch({
+        type: ActionType.ADD_PARTICIPANT_FAILED,
+        payload: message.msg,
+      });
+    }
+    clearAlert();
+  };
+
+  //delete participant from single quiz
   const deleteParticipant = async (quizId: object, participantId: object) => {
     dispatch({ type: ActionType.DELETE_PARTICIPANT_BEGIN });
+
     try {
-      const { data } = await axios.delete(
-        `/api/v1/participant/${quizId}?participantId=${participantId}`
+      await authFetch.delete(
+        `/participant/${quizId}?participantId=${participantId}`
       );
       getAllParticipant(quizId);
       dispatch({
         type: ActionType.DELETE_PARTICIPANT_SUCCESS,
-        payload: data.msg,
+        payload: "Participant deleted successfully",
       });
     } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.DELETE_PARTICIPANT_FAILED,
         payload: message.msg,
@@ -339,6 +337,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     clearAlert();
   };
 
+  //edit single quiz
   const editQuiz = async (quizId: object) => {
     dispatch({ type: ActionType.EDIT_QUIZ_BEGIN });
 
@@ -355,28 +354,30 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         payload: { questions: data.questions, details: quiz.quiz },
       });
     } catch (error) {
-      console.log(error);
-      //logoutUser()
+      const message = handleAxiosError(error);
+      dispatch({
+        type: ActionType.GET_SINGLE_QUIZ_FAILED,
+        payload: message.msg,
+      });
+      clearAlert();
     }
   };
 
+  //edit quiz completed
   const endEditQuiz = () => {
     dispatch({ type: ActionType.EDIT_QUIZ_END });
   };
 
+  //edit quiz details
   const editQuizDetails = async (quizId: object, quizObj: editQuizArg) => {
     dispatch({ type: ActionType.EDIT_QUIZ_DETAILS_BEGIN });
+
     try {
-      await axios.patch(`api/v1/quiz/${quizId}`, { ...quizObj });
+      await authFetch.patch(`/quiz/${quizId}`, { ...quizObj });
       dispatch({ type: ActionType.EDIT_QUIZ_DETAILS_SUCCESS });
       return true;
     } catch (error) {
-      let message;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.EDIT_QUIZ_DETAILS_FAILED,
         payload: { message },
@@ -386,6 +387,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  //delete single quiz
   const deleteQuiz = async (quizId: object) => {
     dispatch({ type: ActionType.DELETE_QUIZ_BEGIN });
 
@@ -393,17 +395,23 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       await authFetch.delete(`/quiz/${quizId}`);
       dispatch({ type: ActionType.DELETE_QUIZ_SUCCESS });
     } catch (error) {
-      console.log(error);
-      //logoutUser()
+      const message = handleAxiosError(error);
+      dispatch({
+        type: ActionType.EDIT_QUIZ_DETAILS_FAILED,
+        payload: { message },
+      });
+      clearAlert();
     }
   };
 
+  //set type of question to be added
   const setQuestionType = (
     type: "true-false" | "multiple-choice" | "fill-in-gap" | ""
   ) => {
     dispatch({ type: ActionType.SET_QUESTION_TYPE, payload: type });
   };
 
+  //set single question to be edited
   const setEditQuestion = (questionObj: questionEdit, edit?: boolean) => {
     dispatch({
       type: ActionType.SET_EDIT_QUESTION,
@@ -411,27 +419,25 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     });
   };
 
+  //cancel single question edit
   const cancelEditQuestion = () => {
     dispatch({ type: ActionType.CANCEL_EDIT_QUESTION });
   };
 
+  //create single question
   const createQuestion = async () => {
     const questionObj = {
       ...state.questionEdit,
       forQuiz: state.editSingleQuizDetails.details?._id,
     };
     dispatch({ type: ActionType.CREATE_QUESTION_BEGIN });
+
     try {
-      await axios.post("api/v1/question", questionObj);
+      await authFetch.post("/question", questionObj);
       dispatch({ type: ActionType.CREATE_QUESTION_SUCCESS });
       return true;
     } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.CREATE_QUESTION_FAILED,
         payload: { message },
@@ -842,7 +848,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
           quiz,
           participantQuestions,
           participant,
-          questionsAnswered: data.questionsAnswered
+          questionsAnswered: data.questionsAnswered,
         },
       });
     } catch (error) {
@@ -921,9 +927,9 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   const logoutUser = () => {
-    localStorage.removeItem("user")
-    dispatch({type: ActionType.LOGOUT_USER})
-  }
+    localStorage.removeItem("user");
+    dispatch({ type: ActionType.LOGOUT_USER });
+  };
 
   return (
     <AppContext.Provider
@@ -967,7 +973,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         updateUser,
         updatePassword,
         deleteAccount,
-        logoutUser
+        logoutUser,
       }}
     >
       {children}
