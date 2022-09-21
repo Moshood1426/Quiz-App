@@ -61,6 +61,7 @@ const AddParticipant = () => {
     <Wrapper>
       <div className="add-participants">
         <div>{showAlert && <Alert />}</div>
+
         <form className="add-participant-form" onSubmit={handleSubmit}>
           <h5 className="form-title">Add Participant</h5>
           <FormItem
@@ -97,6 +98,7 @@ const AddParticipant = () => {
             Add
           </button>
         </form>
+
         <div className="participant-info">
           {singleQuizParticipants.map((item, index) => {
             return (

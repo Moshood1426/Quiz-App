@@ -31,12 +31,17 @@ const Wrapper = styled.div`
     text-align: center;
   }
 
+  .submission-content {
+    overflow: auto;
+  }
+
   .single-participant {
     display: grid;
     grid-template-columns: 20px 1fr 2fr 1fr;
     gap: 2em;
     padding: 0.5em 0;
     border-bottom: solid 1px var(--grey-200);
+    max-width: 100vw;
   }
 
   .single-participant-title {
@@ -46,7 +51,7 @@ const Wrapper = styled.div`
   }
 
   .single-participant-text {
-    font-size: 1.2rem;
+    font-size: 0.85rem;
     font-weight: bold;
   }
 
@@ -78,6 +83,10 @@ const Wrapper = styled.div`
       display: grid;
       grid-template-columns: 1fr 300px;
       gap: 2em;
+    }
+
+    .single-participant-text {
+      font-size: 1.2rem;
     }
 
     .quiz-details {

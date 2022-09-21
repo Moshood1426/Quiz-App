@@ -85,6 +85,7 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
       <div className="add-question-logo">
         <Logo />
       </div>
+
       <div className="add-ques-container">
         <div className="add-question-sub-header">
           <p className="question-number">Question 6</p>
@@ -111,6 +112,7 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
           </div>
         </div>
       </div>
+
       <div className="ques-content-container">
         {showAlert && <Alert />}
         <div>
@@ -136,6 +138,7 @@ const AddQuestionContent: React.FC<AddQuestionContentProps> = ({
       >
         <span>💾 Save</span>
       </div>
+      
       <div className="cancel" onClick={cancelAddQuestion}>
         <span>❌ Cancel</span>
       </div>

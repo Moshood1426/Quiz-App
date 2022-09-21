@@ -22,8 +22,12 @@ import {
   GetSingleQuizResponse,
   GetAllQuizResponse,
   GetAllParticipantResponse,
+  GetQuizSubmissionResponse,
+  GetSingleQuizSubmissionRes,
+  GetDBQuestionsResponse,
 } from "./@types/axiosResponse";
 import ActionType from "./actions";
+import { shuffleArray } from "../utils/actions";
 
 const user = localStorage.getItem("user");
 const authorizeParticipant = localStorage.getItem("participant");
@@ -447,21 +451,18 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  //edit single question
   const editQuestion = async () => {
     const questionId = JSON.parse(localStorage.getItem("questionId")!);
     const questionObj = { ...state.questionEdit };
     dispatch({ type: ActionType.EDIT_QUESTION_BEGIN });
+
     try {
-      await axios.patch(`/api/v1/question/${questionId}`, { ...questionObj });
+      await authFetch.patch(`/question/${questionId}`, { ...questionObj });
       dispatch({ type: ActionType.EDIT_QUESTION_SUCCESS });
       return true;
     } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.EDIT_QUESTION_FAILED,
         payload: { message },
@@ -471,6 +472,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  //delete single question
   const deleteQuestion = async (quizId: object) => {
     dispatch({ type: ActionType.DELETE_QUESTION_BEGIN });
     try {
@@ -478,26 +480,21 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       dispatch({ type: ActionType.DELETE_QUESTION_SUCCESS });
     } catch (error) {
       console.log(error);
-      //logoutUser()
     }
   };
 
+  //publish single quiz
   const publishQuiz = async (
     quizId: object,
     publishQuizDetails: PublishQuizDetails
   ) => {
     try {
-      await axios.patch(`/api/v1/quiz/publish/${quizId}`, {
+      await authFetch.patch(`/quiz/publish/${quizId}`, {
         ...publishQuizDetails,
       });
       return true;
     } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.PUBLISH_QUIZ_FAILED,
         payload: { message },
@@ -507,26 +504,31 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     return false;
   };
 
+  //get submissions for quiz
   const getAllQuizSubmission = async () => {
     dispatch({ type: ActionType.GET_ALL_QUIZ_SUBMISSION_BEGIN });
 
     try {
-      const { data } = await authFetch.get(`/quiz?forSubmission=true`);
+      const { data } = await authFetch.get<GetQuizSubmissionResponse>(
+        `/quiz?forSubmission=true`
+      );
       dispatch({
         type: ActionType.GET_ALL_QUIZ_SUBMISSION_SUCCESS,
         payload: { quiz: data.quiz },
       });
     } catch (error) {
-      console.log(error);
-      //logoutUser()
+      logoutUser();
     }
   };
 
+  //get submissions for single quiz
   const getSingleQuizSubmission = async (quizId: object) => {
     dispatch({ type: ActionType.GET_SINGLE_QUIZ_SUBMISSION_BEGIN });
 
     try {
-      const { data } = await axios.get(`/api/v1/submission/${quizId}`);
+      const { data } = await authFetch.get<GetSingleQuizSubmissionRes>(
+        `/submission/${quizId}`
+      );
       dispatch({
         type: ActionType.GET_SINGLE_QUIZ_SUBMISSION_SUCCESS,
         payload: {
@@ -536,27 +538,16 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         },
       });
     } catch (error) {
-      console.log(error);
+      logoutUser();
     }
   };
 
+  //go back to all quiz submission
   const resetSingleQuizSubmission = () => {
     dispatch({ type: ActionType.RESET_SINGLE_QUIZ_SUBMISSION });
   };
 
-  const resetSubmissionParticipant = () => {
-    const { participantQuestions } = state;
-    const result = participantQuestions!.map((item) => ({
-      ...item,
-      answer: "",
-    }));
-
-    dispatch({
-      type: ActionType.RESET_SUBMISSION_PARTICIPANT,
-      payload: result,
-    });
-  };
-
+  //get results for single participant
   const getResults = (participantId: object) => {
     const { participantQuestions, submissionParticipant } = state;
 
@@ -595,18 +586,25 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     });
   };
 
+  //go back to all participant submission for single quiz
+  const resetSubmissionParticipant = () => {
+    const { participantQuestions } = state;
+    const result = participantQuestions!.map((item) => ({
+      ...item,
+      answer: "",
+    }));
+
+    dispatch({
+      type: ActionType.RESET_SUBMISSION_PARTICIPANT,
+      payload: result,
+    });
+  };
+
   const resetDisplayResult = () => {
     dispatch({ type: ActionType.RESET_DISPLAY_RESULT });
   };
 
-  const shuffleArray = (array: (string | number)[]) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
-
+  //explore OpenTDI Database for quick quiz
   const exploreQuizAPI = async (data: {
     quizCode: string;
     quizTitle: string;
@@ -633,33 +631,15 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
 
     try {
       //creating quiz from DB
-      interface CreateQuizResponse {
-        msg: string;
-        quiz: SingleQuiz;
-      }
-      const { data: quiz } = await axios.post<CreateQuizResponse>(
-        "/api/v1/quiz",
-        {
-          quizCode,
-          quizTitle,
-          quizType: "quick",
-        }
-      );
+      const { data: quiz } = await authFetch.post<CreateQuizResponse>("/quiz", {
+        quizCode,
+        quizTitle,
+        quizType: "quick",
+      });
       const quizId = quiz.quiz._id;
 
-      //creating quiz questions
-      interface GetQuestionsResponse {
-        response_code: number;
-        results: {
-          category: string;
-          type: string;
-          difficulty: string;
-          question: string;
-          correct_answer: string;
-          incorrect_answers: string[];
-        }[];
-      }
-      const { data: questions } = await axios.get<GetQuestionsResponse>(url);
+      //get quiz questions from DB
+      const { data: questions } = await axios.get<GetDBQuestionsResponse>(url);
 
       //formatting result from DB to fit questions Schema request on backend
       const result = questions.results.map((item) => {
@@ -678,8 +658,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       });
 
       //creating questions for test with result
-      //eslint-disable-next-line
-      const { data } = await axios.post("api/v1/question", {
+      await authFetch.post("/question", {
         forQuiz: quizId,
         multipleData: result,
       });
@@ -687,12 +666,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       dispatch({ type: ActionType.EXPLORE_QUIZ_API_SUCCESS });
       return true;
     } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.CREATE_QUESTION_FAILED,
         payload: { message },
@@ -702,6 +676,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  //update user profile
   const updateUser = async (reqObj: {
     firstName: string;
     lastName: string;
@@ -710,24 +685,20 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.UPDATE_USER_BEGIN });
 
     try {
-      const { data } = await axios.patch<LoginResponse>(
-        "/api/v1/auth/updateUser",
+      const { data } = await authFetch.patch<LoginResponse>(
+        "/auth/updateUser",
         reqObj
       );
       dispatch({ type: ActionType.UPDATE_USER_SUCCESS, payload: data.user });
       addUserToLocalStorage(data.user);
     } catch (error) {
-      let message;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({ type: ActionType.UPDATE_USER_FAILED, payload: { message } });
     }
     clearAlert();
   };
 
+  //update password
   const updatePassword = async (reqObj: {
     newPassword: string;
     confirmNewPassword: string;
@@ -735,15 +706,10 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.UPDATE_PASSWORD_BEGIN });
 
     try {
-      const { data } = await axios.patch("/api/v1/auth/updatePassword", reqObj);
+      const { data } = await authFetch.patch("/auth/updatePassword", reqObj);
       dispatch({ type: ActionType.UPDATE_PASSWORD_SUCCESS, payload: data.msg });
     } catch (error) {
-      let message;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.UPDATE_PASSWORD_FAILED,
         payload: { message },
@@ -755,10 +721,10 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   const deleteAccount = async () => {
     dispatch({ type: ActionType.DELETE_ACCOUNT_BEGIN });
     try {
-      await axios.delete("/api/v1/auth/deleteAccount");
-      //logoutUser()
+      await authFetch.delete("/auth/deleteAccount");
+      logoutUser();
     } catch (error) {
-      //logoutUser()
+      logoutUser();
     }
   };
 

@@ -46,6 +46,7 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({
     }
   };
 
+  //create quick quiz
   if (type === "quick") {
     return (
       <Wrapper>
@@ -53,6 +54,7 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({
           <Logo />
         </div>
         <p className="sub-title">Some description if needed</p>
+
         <Card>
           <h4 className="form-title">Create Quick Quiz</h4>
           <p className="form-sub-title">
@@ -78,6 +80,7 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({
     );
   }
 
+  //create moderated quiz
   return (
     <Wrapper>
       <div className="img-div">

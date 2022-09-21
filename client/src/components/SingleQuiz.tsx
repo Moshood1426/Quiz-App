@@ -50,6 +50,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({
       >
         <span>{quiz.quizTitle[0]}</span>
       </div>
+
       <div className="single-quiz-content">
         <div className="single-quiz-header">
           <div>
@@ -60,6 +61,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({
             {quiz.createdAt}
           </Moment>
         </div>
+
         {extraDetails && (
           <div className="single-quiz-code">
             <p>
@@ -68,6 +70,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({
             </p>
           </div>
         )}
+
         <div className="single-quiz-subheader">
           <p>
             📝{" "}
@@ -83,6 +86,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({
           </p>
           {<p>{quiz.privacy ? "🔒 Private" : "🔓 Public"} quiz</p>}
         </div>
+
         <div className="single-quiz-footer">
           <div className="single-quiz-date">
             {quiz.published ? (
@@ -91,6 +95,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({
               <p className="single-quiz-date-time">⏰ not published</p>
             )}
           </div>
+          
           <div>
             {extraDetails ? (
               <div>

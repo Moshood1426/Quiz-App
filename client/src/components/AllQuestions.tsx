@@ -52,6 +52,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
           Total points:{" "}
           <span className="total-points">{totalPoints} points</span>
         </p>
+
         {editCurrentQuiz && (
           <div className="add-new-questions">
             <div
@@ -63,6 +64,7 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
           </div>
         )}
       </div>
+
       <div className="questions-container">
         {isLoading /*!editingQuestion || addQuestion === (false || undefined)*/ ? (
           <Loading />

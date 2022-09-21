@@ -19,6 +19,7 @@ const AddQuestionType = () => {
   return (
     <Wrapper>
       <h4 className="card-title">Select Question Type</h4>
+      
       <div className="add-ques">
         <div
           className="add-ques-type"
@@ -32,6 +33,7 @@ const AddQuestionType = () => {
             <span className="emoji">📝</span>Multiple Choice
           </h5>
         </div>
+
         <div
           className="add-ques-type"
           onMouseOver={() => displayImage(fillGap)}
@@ -44,6 +46,7 @@ const AddQuestionType = () => {
             <span className="emoji">📝</span>Fill The Gap
           </h5>
         </div>
+
         <div
           className="add-ques-type"
           onMouseOver={() => displayImage(trueFalse)}
@@ -57,6 +60,7 @@ const AddQuestionType = () => {
           </h5>
         </div>
       </div>
+
       {descImage !== "" && (
         <div className="description">
           <img src={descImage} alt="description"/>

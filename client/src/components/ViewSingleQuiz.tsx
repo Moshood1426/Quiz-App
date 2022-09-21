@@ -81,9 +81,11 @@ const ViewSingleQuiz: React.FC = () => {
           <span className="cancel-btn" onClick={() => endManageQuiz()}>
             ❌
           </span>
+
           <div className="content-container">
             <div className="content">
               <div className="alert-div">{showAlert && <Alert />}</div>
+
               <div className="content-main">
                 {singleQuizDetails.published ? (
                   <p className="content-status">
@@ -150,6 +152,7 @@ const ViewSingleQuiz: React.FC = () => {
                     </div>
                   </>
                 )}
+
                 {singleQuizDetails && (
                   <SingleQuiz
                     quiz={singleQuizDetails}
@@ -157,10 +160,12 @@ const ViewSingleQuiz: React.FC = () => {
                     viewAddParticipant={() => setAddParticipantModal(true)}
                   />
                 )}
+
                 {!isLoading && (
                   <AllQuestions quizDetails={singleQuizQuestions} />
                 )}
               </div>
+
               <div className="side-bar">
                 <AddParticipant />
               </div>

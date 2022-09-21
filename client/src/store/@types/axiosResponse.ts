@@ -1,4 +1,4 @@
-import { User, SingleQuiz, SingleQuestion, SingleParticipant } from "./context";
+import { User, SingleQuiz, SingleQuestion, SingleParticipant, ParticipantQuestion } from "./context";
 
 export type LoginResponse = {
   user: User;
@@ -23,3 +23,24 @@ export interface GetQuizQuestionsResponse {
 export interface GetAllParticipantResponse {
     participant: SingleParticipant[]
 }
+
+export interface GetQuizSubmissionResponse {
+    quiz: SingleQuiz
+}
+
+export interface GetSingleQuizSubmissionRes {
+    participant: SingleParticipant[]
+    questions: ParticipantQuestion[]
+}
+
+export interface GetDBQuestionsResponse {
+    response_code: number;
+    results: {
+      category: string;
+      type: string;
+      difficulty: string;
+      question: string;
+      correct_answer: string;
+      incorrect_answers: string[];
+    }[];
+  }
