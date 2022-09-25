@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
+  padding-bottom: 3em;
   .title {
     font-weight: bold;
     color: var(--grey-700);
@@ -32,6 +33,7 @@ const Wrapper = styled.div`
   }
 
   .submission-content {
+    width: 100%;
     overflow: auto;
   }
 
@@ -62,7 +64,6 @@ const Wrapper = styled.div`
   .view-details {
     color: var(--primary-brown);
     text-transform: uppercase;
-    font-size: 0.8rem;
     cursor: pointer;
   }
 
@@ -76,6 +77,55 @@ const Wrapper = styled.div`
     margin: 0;
     max-width: 100%;
     margin-bottom: 1em;
+  }
+
+  .participant-table {
+    margin-top: 1.5em;
+    width: 100%;
+  }
+
+  .participant-table td,
+  .participant-table th {
+    padding: 0.5em 0.65em;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+
+  @media (max-width: 500px) {
+    .participant-table thead {
+      display: none;
+    }
+
+    .participant-table,
+    .participant-table tbody,
+    .participant-table tr,
+    .participant-table td {
+      display: block;
+      width: 100%;
+    }
+
+    .participant-table tr {
+      margin-bottom: 15px;
+    }
+
+    .participant-table td {
+      text-align: right;
+      padding-left: 50%;
+      text-align: right;
+      position: relative;
+      overflow: auto;
+    }
+
+    .participant-table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      padding-left: 15px;
+      font-size: 15px;
+      font-weight: bold;
+      text-align: left;
+    }
   }
 
   @media (min-width: 900px) {

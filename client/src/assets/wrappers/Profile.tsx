@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.section`
+  padding-bottom: 4em;
   .profile-card {
     max-width: 600px;
     background-color: var(--white);
@@ -24,11 +25,11 @@ const Wrapper = styled.section`
     border-bottom: var(--primary-400) solid 2px;
     display: flex;
     align-items: center;
-    padding-bottom: .5em;
+    padding-bottom: 0.5em;
   }
 
   .profile-card-item-icon {
-    margin-right: .5em;
+    margin-right: 0.5em;
     color: var(--primary-200);
   }
 
@@ -39,9 +40,9 @@ const Wrapper = styled.section`
     width: 80%;
   }
 
-  @media(min-width: 450px) {
+  @media (min-width: 450px) {
     .profile-card {
-        padding: 2em 2.5em;
+      padding: 2em 2.5em;
     }
   }
 `;

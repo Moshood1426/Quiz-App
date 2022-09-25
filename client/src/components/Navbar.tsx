@@ -12,6 +12,11 @@ const Navbar: React.FC = () => {
   const { user, logoutUser } = useAppContext();
   const nameTag = user?.firstName[0] || "A";
 
+  const signOut = () => {
+    logoutUser()
+    navigate("/landing")
+  }
+
   return (
     <Wrapper>
       <div className="nav-container">
@@ -60,7 +65,7 @@ const Navbar: React.FC = () => {
                 Settings
               </p>
             </div>
-            <span className="dropdown-btn" onClick={() => logoutUser()}>
+            <span className="dropdown-btn" onClick={() => signOut()}>
               Sign out
             </span>
           </div>

@@ -96,6 +96,9 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     return {
       ...state,
       quizParticipantsLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Participant added succesfully",
     };
   }
   if (action.type === ActionType.ADD_PARTICIPANT_FAILED) {
@@ -232,8 +235,10 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      editCurrentQuiz: false,
-      editSingleQuizDetails: { details: null, questions: null },
+      editSingleQuizDetails: {
+        ...state.editSingleQuizDetails,
+        details: action.payload,
+      },
     };
   }
   if (action.type === ActionType.EDIT_QUIZ_DETAILS_FAILED) {
@@ -441,7 +446,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       numOfQuestions: action.payload.numOfQuestions,
       participantQuestions: action.payload.participantQuestions,
       participantInfo: action.payload.participant,
-      questionsAnswered: action.payload.questionsAnswered
+      questionsAnswered: action.payload.questionsAnswered,
     };
   }
   if (action.type === ActionType.SET_QUESTION_ANSWER_BEGIN) {
@@ -455,7 +460,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       ...state,
       singleAnswerLoading: false,
       participantQuestions: action.payload.participantQuestions,
-      questionsAnswered: action.payload.questionsAnswered
+      questionsAnswered: action.payload.questionsAnswered,
     };
   }
   if (action.type === ActionType.CHANGE_PAGE_SUCCESS) {
@@ -609,7 +614,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
   }
   if (action.type === ActionType.LOGOUT_USER) {
     return {
-      ...initialState
+      ...initialState,
     };
   }
   /* if (action.type === ActionType.DELETE_ACCOUNT_SUCCESS) {

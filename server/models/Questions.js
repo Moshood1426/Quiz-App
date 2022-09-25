@@ -43,5 +43,9 @@ const QuestionsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+QuestionsSchema.pre("remove", async function () {
+  /* await this.model("quiz").updateOne({ forQuiz: this._id }); */
+});
+
 module.exports = mongoose.model("question", QuestionsSchema);
  

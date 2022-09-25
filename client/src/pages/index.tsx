@@ -12,11 +12,13 @@ import Register from "./Register";
 import ResetPassword from "./ResetPassword";
 import StartTest from "./StartTest";
 import TakeTest from "./TakeTest";
+import ProtectedParticipantRoute from "./ProtectedParticipantRoute";
 
 export {
   Landing,
   Register,
   ProtectedRoute,
+  ProtectedParticipantRoute,
   SharedLayout,
   ResetPassword,
   Submission,

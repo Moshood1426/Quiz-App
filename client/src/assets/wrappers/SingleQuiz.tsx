@@ -61,7 +61,7 @@ const Wrapper = styled.div`
   .single-quiz-subheader {
     display: flex;
     gap: 1em;
-    margin-bottom: 1em;
+    margin-bottom: 3em;
   }
 
   .single-quiz-footer {

@@ -5,14 +5,15 @@ import useAppContext from "../store/appContext";
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { user } = useAppContext();
 
-  if (!user) {
+const ProtectedParticipantRoute: React.FC<ProtectedRouteProps>= ({ children }) => {
+  const { validateParticipant } = useAppContext();
+
+  if (!validateParticipant) {
     return <Navigate to="/landing" />;
   }
 
   return <>{children}</>;
 };
 
-export default ProtectedRoute;
+export default ProtectedParticipantRoute;

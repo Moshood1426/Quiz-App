@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../assets/wrappers/AllQuestions";
 import {
   ParticipantQuestion,
@@ -21,6 +21,8 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
   extraDetails,
   addQuestion,
 }) => {
+  const [totalPoints, setTotalPoints] = useState(0);
+
   const {
     singleQuizQuestions,
     numOfQuestions,
@@ -28,14 +30,17 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
     editSingleQuizDetails,
     isLoading,
   } = useAppContext();
+  
+
+  useEffect(() => {
+    setTotalPoints(() => calculateTotalPoints(singleQuizQuestions));
+  }, [singleQuizQuestions]);
 
   const calculateTotalPoints = (arg: SingleQuestionType[]) => {
     return arg.reduce((acc, item) => {
       return (acc += item.points);
     }, 0);
   };
-
-  const totalPoints = calculateTotalPoints(singleQuizQuestions);
 
   return (
     <Wrapper>

@@ -31,8 +31,13 @@ const Wrapper = styled.div`
     margin-bottom: 2em;
   }
 
-  .submit-btn:hover {
-    background-color: var(--primary-400);
+  .edit-save-btn:hover {
+    background-color: #c8f5c8;
+  }
+
+  .edit-save-btn:disabled {
+    cursor: not-allowed;
+    opacity: .7;
   }
 
   @media (min-width: 450px) {

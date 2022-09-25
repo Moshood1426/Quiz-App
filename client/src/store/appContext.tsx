@@ -13,7 +13,6 @@ import {
   questionEdit,
   PublishQuizDetails,
   SingleQuestion,
-  SingleQuiz,
 } from "./@types/context";
 import {
   LoginResponse,
@@ -25,6 +24,7 @@ import {
   GetQuizSubmissionResponse,
   GetSingleQuizSubmissionRes,
   GetDBQuestionsResponse,
+  EditQuizDetailsResponse
 } from "./@types/axiosResponse";
 import ActionType from "./actions";
 import { shuffleArray } from "../utils/actions";
@@ -307,7 +307,9 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         lastName,
         identifier,
       });
+      
       getAllParticipant(quizId);
+      dispatch({ type: ActionType.ADD_PARTICIPANT_SUCCESS });
     } catch (error) {
       const message = handleAxiosError(error);
       dispatch({
@@ -377,8 +379,13 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.EDIT_QUIZ_DETAILS_BEGIN });
 
     try {
-      await authFetch.patch(`/quiz/${quizId}`, { ...quizObj });
-      dispatch({ type: ActionType.EDIT_QUIZ_DETAILS_SUCCESS });
+      
+      const { data } = await authFetch.patch<EditQuizDetailsResponse>(`/quiz/${quizId}`, { ...quizObj });
+     
+      dispatch({
+        type: ActionType.EDIT_QUIZ_DETAILS_SUCCESS,
+        payload: data.quizDetails,
+      });
       return true;
     } catch (error) {
       const message = handleAxiosError(error);

@@ -119,6 +119,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({
             )}
           </div>
         </div>
+        
         {extraDetails && (
           <div className="add-participant" onClick={viewAddParticipant}>
             Click here to view and add participant

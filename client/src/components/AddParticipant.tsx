@@ -102,52 +102,17 @@ const AddParticipant = () => {
         <div className="participant-info">
           {singleQuizParticipants.map((item, index) => {
             return (
-              <>
-                <p className="participant-identifier" key={index}>
-                  {item.identifier}
-                  <span
-                    onClick={() =>
-                      deleteParticipant(singleQuizDetails?._id!, item._id)
-                    }
-                    className="delete-participant"
-                  >
-                    ❌
-                  </span>
-                </p>
-                <p className="participant-identifier" key={index}>
-                  {item.identifier}
-                  <span
-                    onClick={() =>
-                      deleteParticipant(singleQuizDetails?._id!, item._id)
-                    }
-                    className="delete-participant"
-                  >
-                    ❌
-                  </span>
-                </p>
-                <p className="participant-identifier" key={index}>
-                  {item.identifier}
-                  <span
-                    onClick={() =>
-                      deleteParticipant(singleQuizDetails?._id!, item._id)
-                    }
-                    className="delete-participant"
-                  >
-                    ❌
-                  </span>
-                </p>
-                <p className="participant-identifier" key={index}>
-                  {item.identifier}
-                  <span
-                    onClick={() =>
-                      deleteParticipant(singleQuizDetails?._id!, item._id)
-                    }
-                    className="delete-participant"
-                  >
-                    ❌
-                  </span>
-                </p>
-              </>
+              <p className="participant-identifier" key={index}>
+                {item.identifier}
+                <span
+                  onClick={() =>
+                    deleteParticipant(singleQuizDetails?._id!, item._id)
+                  }
+                  className="delete-participant"
+                >
+                  ❌
+                </span>
+              </p>
             );
           })}
         </div>

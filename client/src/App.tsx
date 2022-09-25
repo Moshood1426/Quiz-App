@@ -12,13 +12,12 @@ import {
   NotFound,
   StartTest,
   TakeTest,
+  ProtectedParticipantRoute,
 } from "./pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Submission from "./pages/dashboard/Submission";
-import useAppContext from "./store/appContext";
 
 function App() {
-  const { user, validateParticipant } = useAppContext();
   return (
     <Router>
       <Routes>
@@ -28,7 +27,7 @@ function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute client={user}>
+            <ProtectedRoute>
               <SharedLayout />
             </ProtectedRoute>
           }
@@ -42,7 +41,7 @@ function App() {
         <Route
           path="/:id"
           element={
-            <ProtectedRoute client={user}>
+            <ProtectedRoute>
               <EditQuiz />
             </ProtectedRoute>
           }
@@ -51,9 +50,9 @@ function App() {
         <Route
           path="/take-test"
           element={
-            <ProtectedRoute client={validateParticipant}>
+            <ProtectedParticipantRoute>
               <TakeTest />
-            </ProtectedRoute>
+            </ProtectedParticipantRoute>
           }
         />
         <Route path="/*" element={<NotFound />} />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Wrapper from "../assets/wrappers/EditQuiz";
-import { AddQuestionsModal, EditQuizDetails, Navbar } from "../components";
+import { AddQuestionsModal, EditQuizDetails } from "../components";
 import AllQuestions from "../components/AllQuestions";
 import useAppContext from "../store/appContext";
 import { useParams } from "react-router-dom";
@@ -78,7 +78,9 @@ const EditQuiz = () => {
     }
   };
 
-  const saveEdit = async () => {
+  const saveEdit = async (event: React.FormEvent) => {
+
+    event.preventDefault();
     //eslint-disable-next-line
     const quizId = new String(id);
     const { privacy, quizTitle, quizCode } = formData;
@@ -91,10 +93,8 @@ const EditQuiz = () => {
       quizTitle,
       quizCode,
     };
-    const result = await editQuizDetails(quizId, quizObj);
-    if (result) {
-      navigate("/");
-    }
+    editQuizDetails(quizId, quizObj);
+
   };
 
   return (
@@ -108,11 +108,12 @@ const EditQuiz = () => {
               className="btn alert-danger edit-cancel-btn"
               onClick={cancelEdit}
             >
-              Done
+              Go Back
             </button>
           </div>
         </div>
       </div>
+
       <div className="edit-quiz-content">
         <EditQuizDetails
           formData={formData}
@@ -126,6 +127,7 @@ const EditQuiz = () => {
           quizDetails={questions === null ? [] : questions}
         />
       </div>
+
       {(addQuestion || editingQuestion) && (
         <AddQuestionsModal startAddingQuestion={startAddingQuestions} />
       )}

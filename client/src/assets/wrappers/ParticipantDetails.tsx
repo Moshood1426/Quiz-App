@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   column-gap: 2em;
   place-content: start;
   border: var(--grey-200) solid 1px;
@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   height: fit-content;
   margin-bottom: 2em;
   box-shadow: var(--shadow-2);
+  overflow: auto;
 
   .quiz-content {
     max-width: 1200px;
@@ -23,6 +24,10 @@ const Wrapper = styled.div`
     display: flex;
     font-size: 0.9rem;
     margin-bottom: 0.5em;
+  }
+
+  @media(min-width: 650px) {
+    grid-template-columns: 1fr 1fr;
   }
 
   @media (min-width: 900px) {

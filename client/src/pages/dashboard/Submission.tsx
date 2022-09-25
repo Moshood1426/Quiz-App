@@ -49,6 +49,7 @@ const Submission = () => {
     const singleSubmission = quizWithSubmission.find(
       (item) => item._id === submissionParticipant.quizId
     );
+
     return (
       <Wrapper>
         <div className="submission-header">
@@ -58,41 +59,43 @@ const Submission = () => {
 
         <SingleSubmission item={singleSubmission!} />
 
-        <div className="submission-content">
-          <div className="single-participant single-participant-title">
-            <p className="single-participant-text">S/N</p>
-            <p className="single-participant-text">Name</p>
-            <p className="single-participant-text">Identifier</p>
-            <p className="single-participant-text">Details</p>
-          </div>
+        {isLoading ? (
+          <Loading />
+        ) : quizWithSubmission.length < 1 ? (
+          <p className="no-submission">
+            No submission has been received for any quiz
+          </p>
+        ) : (
+          <table className="participant-table">
+            <thead>
+              <th>S/N</th>
+              <th>Name</th>
+              <th>Identifier</th>
+              <th>Details</th>
+            </thead>
+            <tbody>
+              {submissionParticipant.participants.map((item, index) => {
+                return (
+                  <tr>
+                    <td data-label="S/N">{index + 1}</td>
+                    <td data-label="Name">
+                      {item.firstName + " " + item.lastName}
+                    </td>
+                    <td data-label="Identifier">{item.identifier}</td>
 
-          {isLoading ? (
-            <Loading />
-          ) : quizWithSubmission.length < 1 ? (
-            <p className="no-submission">
-              No submission has been received for any quiz
-            </p>
-          ) : (
-            submissionParticipant.participants.map((item, index) => {
-              return (
-                <div className="single-participant" key={index}>
-                  <p>{index + 1}</p>
-                  <p>{item.firstName + " " + item.lastName}</p>
-                  <p className="single-participant-identifier">
-                    {item.identifier}
-                  </p>
-
-                  <p
-                    className="view-details"
-                    onClick={() => getResults(item._id)} //sets displayResult to true and renders first condition
-                  >
-                    view details
-                  </p>
-                </div>
-              );
-            })
-          )}
-        </div>
+                    <td
+                      data-label="Details"
+                      onClick={() => getResults(item._id)} //sets displayResult to true and renders first condition
+                      className="view-details"
+                    >
+                      view details
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
       </Wrapper>
     );
   }

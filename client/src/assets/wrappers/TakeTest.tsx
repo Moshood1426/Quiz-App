@@ -60,7 +60,7 @@ const Wrapper = styled.div`
 
   .quiz-details {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     column-gap: 2em;
     place-content: start;
     border: var(--grey-200) solid 1px;
@@ -78,6 +78,12 @@ const Wrapper = styled.div`
     display: flex;
     font-size: 0.9rem;
     margin-bottom: 0.5em;
+  }
+
+  @media(min-width: 600px) {
+    .quiz-details {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   @media (min-width: 900px) {

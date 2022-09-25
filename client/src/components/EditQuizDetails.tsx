@@ -17,7 +17,7 @@ interface EditQuizDetailsProps {
   handleChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
-  saveChanges: () => void;
+  saveChanges: (event: React.FormEvent) => void;
 }
 
 const EditQuizDetails: React.FC<EditQuizDetailsProps> = ({
@@ -25,7 +25,7 @@ const EditQuizDetails: React.FC<EditQuizDetailsProps> = ({
   handleChange,
   saveChanges,
 }) => {
-  const { showAlert } = useAppContext();
+  const { showAlert, isLoading } = useAppContext();
 
   return (
     <Wrapper>
@@ -33,7 +33,7 @@ const EditQuizDetails: React.FC<EditQuizDetailsProps> = ({
         {showAlert && <Alert />}
         <h4 className="edit-quiz-details-title">Quiz Details</h4>
 
-        <form className="edit-quiz-details-form">
+        <form className="edit-quiz-details-form" onSubmit={saveChanges}>
           <FormItem
             label={true}
             labelText="Quiz Title"
@@ -68,13 +68,13 @@ const EditQuizDetails: React.FC<EditQuizDetailsProps> = ({
             disabled={true}
           />
           <button
+            disabled={isLoading}
             className="btn alert-success edit-save-btn"
-            onClick={saveChanges}
+            type="submit"
           >
             Save
           </button>
         </form>
-        
       </div>
     </Wrapper>
   );

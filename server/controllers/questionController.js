@@ -16,7 +16,6 @@ const createQuestion = async (req, res) => {
     const setQuestion = await Question.insertMany(data);
 
     const quiz = await Quiz.findOne({ _id: forQuiz });
-    console.log(data.length)
     quiz.noOfQuestions = quiz.noOfQuestions + data.length;
     await quiz.save();
 
@@ -101,6 +100,10 @@ const deleteQuestion = async (req, res) => {
     throw new NotFoundError("Invalid question selected");
   }
   await question.remove();
+
+  const quiz = await Quiz.findOne({ _id: question.forQuiz });
+  quiz.noOfQuestions = quiz.noOfQuestions + 1;
+  await quiz.save();
 
   res.status(StatusCodes.OK).json({ msg: "Question deleted succesfully" });
 };

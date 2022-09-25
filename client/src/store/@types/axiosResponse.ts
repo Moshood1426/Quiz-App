@@ -44,3 +44,7 @@ export interface GetDBQuestionsResponse {
       incorrect_answers: string[];
     }[];
   }
+
+  export interface EditQuizDetailsResponse {
+    quizDetails: SingleQuiz
+  }

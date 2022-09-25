@@ -120,14 +120,13 @@ const editQuiz = async (req, res) => {
   quiz.privacy = privacy === "private" ? true : false;
   await quiz.save();
 
-  res.status(StatusCodes.OK).json({ msg: "Quiz details updated successfully" });
+  res.status(StatusCodes.OK).json({ quizDetails: quiz });
 };
 
 const publishQuiz = async (req, res) => {
   const { anytime, startDate, endDate } = req.body;
   const { quizId } = req.params;
 
-  console.log(req.body);
   if (!anytime) {
     if (!startDate && !endDate) {
       throw new BadRequestError(
