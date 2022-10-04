@@ -834,9 +834,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
 
   const pickAnswer = (answer: string) => {
     dispatch({ type: ActionType.PICK_ANSWER, payload: answer });
-  };
-
-  
+  }; 
 
   const setQuestionAnswer = async () => {
     dispatch({ type: ActionType.SET_QUESTION_ANSWER_BEGIN });

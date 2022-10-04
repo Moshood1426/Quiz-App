@@ -22,8 +22,8 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 2em 2em;
-    border-bottom: var(--grey-200) solid 2px;
-    margin-bottom: 2em;
+    //border-bottom: var(--grey-200) solid 2px;
+    margin-bottom: 1em;
   }
 
   .img-div img {
@@ -31,13 +31,13 @@ const Wrapper = styled.div`
   }
 
   .take-test-welcome {
-    background-color: #cbecec;
-    color: var(--primary-300);
     padding: 0.5em;
     font-size: 1.2rem;
     border-radius: 10px;
     margin-bottom: 1em;
     padding: 1em 2em;
+    background-color: #fce7ff;
+    color: #400a45;
   }
 
   .welcome-text {
@@ -80,7 +80,7 @@ const Wrapper = styled.div`
     margin-bottom: 0.5em;
   }
 
-  @media(min-width: 600px) {
+  @media (min-width: 600px) {
     .quiz-details {
       grid-template-columns: 1fr 1fr;
     }

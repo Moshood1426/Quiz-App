@@ -36,11 +36,6 @@ const TestQuestions = () => {
     }
   }, []);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const questionId = new String(event.target.name);
-    const value = event.target.value;
-  };
-
   /*
   if(participantQuizDetails) {
     const currentTime = moment().format().slice(0, 16);
@@ -90,9 +85,7 @@ const TestQuestions = () => {
                     <FormItem
                       type="text"
                       name={item._id.toString()}
-                      onChange={(event) =>
-                        pickAnswer(event.target.value)
-                      }
+                      onChange={(event) => pickAnswer(event.target.value)}
                       value={item.answer}
                       placeholder={"enter answer here"}
                     />
@@ -100,6 +93,7 @@ const TestQuestions = () => {
                   <button
                     className="alert alert-success submit-answer"
                     onClick={() => setQuestionAnswer()}
+                    disabled={singleAnswerLoading}
                   >
                     Submit
                   </button>
@@ -142,7 +136,9 @@ const TestQuestions = () => {
               <span
                 className={item === page ? "pageBtn active" : "pageBtn"}
                 key={index}
-                onClick={() => newPage && changeQuestionPage(newPage)}
+                onClick={() =>
+                  !singleAnswerLoading && newPage && changeQuestionPage(newPage)
+                }
               >
                 {item}
               </span>

@@ -132,5 +132,9 @@ const Wrapper = styled.div`
   .submit-answer:hover {
     background-color: #aef1ae;
   }
+
+  .submit-answer:disabled {
+    cursor: not-allowed;
+  }
 `;
 export default Wrapper;

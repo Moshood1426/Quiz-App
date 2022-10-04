@@ -42,28 +42,35 @@ const TakeTest = () => {
           <div className="quiz-content">
             <div className="take-test-welcome">
               <h5 className="welcome-text-title">
-                Welcome to today's quiz, Moshood.
+                Welcome for {participantQuizDetails?.quizTitle}, Moshood.
               </h5>
-              <p className="welcome-text-subtitle">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim ve
-              </p>
+
               <ul className="instruction">
-                Instructions
+                Before you begin...
                 <li className="instruction-item">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt
+                  Questions may come in different format(true-false, fill gap,
+                  multiple choice). Kindly answer all questions
                 </li>
                 <li className="instruction-item">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt
+                  Test may be scheduled to finish any time. Kindly pay attention
+                  to the duration of the test.
                 </li>
                 <li className="instruction-item">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt
+                  Uncompleted test would be submitted automatically after time
+                  elapse
+                </li>
+                <li className="instruction-item">
+                  Right beside all questions is the number of questions you
+                  answered slash total number of questions.
+                </li>
+                <li className="instruction-item">
+                  All your progress is saved and you can continue test from
+                  where you stopped in case of network failure.
                 </li>
               </ul>
+              <p className="welcome-text-subtitle">
+                We at Quizzal wish you the very best as you begin your test.
+              </p>
             </div>
             <div className="quiz-details">
               <div>
