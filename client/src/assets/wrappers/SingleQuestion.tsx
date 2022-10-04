@@ -46,11 +46,17 @@ const Wrapper = styled.div`
     text-transform: capitalize;
   }
 
+  .question-options {
+    z-index: 1;
+  }
+
   .question-options-item {
     color: #293264;
     border: solid 1.5px #293264;
     padding: 0 1em;
     border-radius: 10px;
+    position: relative;
+    z-index: 1;
   }
 
   .correct-answer {
@@ -96,6 +102,14 @@ const Wrapper = styled.div`
 
   .client-answer-wrong {
     background-color: var(--red-light);
+  }
+
+  .question-options > li {
+    position: relative;
+  }
+
+  .question-options {
+    position: relative;
   }
 
   @media (min-width: 550px) {

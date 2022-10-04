@@ -158,7 +158,7 @@ const getParticipantQuestions = async (req, res) => {
   const participant = await Participant.findOne({
     _id: participantId,
     quizId: quizId,
-  });
+  })
   //getting participant details
   if (!participant) {
     throw new UnauthenticatedError("User not allowed to take this test");

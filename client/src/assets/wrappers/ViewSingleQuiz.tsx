@@ -16,6 +16,8 @@ const Wrapper = styled.div`
     display: grid;
     grid-column-gap: 1em;
     margin-bottom: 2em;
+    border: var(--primary-400) solid 1px;
+    padding: 1.5em;
   }
 
   .cancel-btn {
@@ -68,12 +70,18 @@ const Wrapper = styled.div`
     margin-bottom: 3em;
   }
 
+  .close-publish {
+    cursor: pointer;
+  }
+
   .publish-quiz > div:first-child {
     grid-column: 1/-1;
   }
 
   .publish-quiz-anytime {
     margin-bottom: 1em;
+    display: flex;
+    justify-content: space-between;
   }
 
   .publish-start {
@@ -108,8 +116,7 @@ const Wrapper = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%)
-    
+    transform: translate(-50%, -50%);
   }
 
   @media (min-width: 550px) {

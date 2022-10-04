@@ -57,6 +57,7 @@ const Wrapper = styled.div`
     width: inherit;
     width: 90%;
     max-width: 1200px;
+    z-index: 3;
   }
 
   .add-new-ques-child {
@@ -81,6 +82,8 @@ const Wrapper = styled.div`
   .questions-container > div:last-child {
     margin-bottom: 2.5em;
   }
+
+  
 
   @media (min-width: 1050px) {
     .add-new-questions {

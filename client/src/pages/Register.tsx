@@ -63,10 +63,10 @@ const Register: React.FC = () => {
 
     let reqObj;
     if (!clientIsUser) {
-      reqObj = { firstName, lastName, email, password };
+      reqObj = { firstName, lastName, email: email.toLowerCase(), password };
       register(reqObj);
     } else {
-      reqObj = { email, password };
+      reqObj = { email: email.toLowerCase(), password };
       login(reqObj);
     }
   };

@@ -137,7 +137,7 @@ const Profile = () => {
               labelText="New Password"
               name={"newPassword"}
               placeholder={"enter new password"}
-              type={"text"}
+              type={"password"}
               value={formData.newPassword}
               onChange={handleChange}
             />
@@ -146,7 +146,7 @@ const Profile = () => {
               labelText="Confirm New Password"
               name={"confirmNewPassword"}
               placeholder={"re-enter new password"}
-              type={"text"}
+              type={"password"}
               value={formData.confirmNewPassword}
               onChange={handleChange}
             />

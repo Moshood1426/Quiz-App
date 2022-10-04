@@ -24,22 +24,27 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
   const [totalPoints, setTotalPoints] = useState(0);
 
   const {
-    singleQuizQuestions,
     numOfQuestions,
     editCurrentQuiz,
-    editSingleQuizDetails,
     isLoading,
   } = useAppContext();
-  
 
   useEffect(() => {
-    setTotalPoints(() => calculateTotalPoints(singleQuizQuestions));
-  }, [singleQuizQuestions]);
+    if (quizDetails) setTotalPoints(() => calculateTotalPoints(quizDetails));
+  }, [quizDetails]);
 
-  const calculateTotalPoints = (arg: SingleQuestionType[]) => {
-    return arg.reduce((acc, item) => {
-      return (acc += item.points);
-    }, 0);
+  const calculateTotalPoints = (
+    arg: SingleQuestionType[] | ParticipantQuestion[]
+  ) => {
+    const result = arg
+      .map((item) => {
+        return item.points;
+      })
+      .reduce((acc, item) => {
+        return (acc += item);
+      }, 0);
+
+    return result;
   };
 
   return (
@@ -48,8 +53,8 @@ const AllQuestions: React.FC<AllQuestionsProps> = ({
         <h3>
           All Questions{" "}
           <span className="num-of-questions">
-            {editCurrentQuiz
-              ? editSingleQuizDetails.questions?.length
+            {quizDetails
+              ? quizDetails.length
               : numOfQuestions}
           </span>
         </h3>

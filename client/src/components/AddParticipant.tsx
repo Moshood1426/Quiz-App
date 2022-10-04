@@ -60,7 +60,7 @@ const AddParticipant = () => {
   return (
     <Wrapper>
       <div className="add-participants">
-        <div>{showAlert && <Alert />}</div>
+        <div className="alert">{showAlert && <Alert />}</div>
 
         <form className="add-participant-form" onSubmit={handleSubmit}>
           <h5 className="form-title">Add Participant</h5>

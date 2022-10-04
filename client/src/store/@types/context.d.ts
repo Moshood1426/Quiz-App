@@ -85,7 +85,8 @@ export interface ContextType extends InitialState {
     lastName?: string;
   }) => Promise<void>;
   getParticipantQuizInfo: () => Promise<void>;
-  setQuestionAnswer: (questionId: object, answer: string) => void;
+  pickAnswer: (answer: string) => void;
+  setQuestionAnswer: () => void;
   changeQuestionPage: (page: number) => void;
   endTest: () => void;
   getAllQuizSubmission: () => void;

@@ -115,14 +115,17 @@ const ViewSingleQuiz: React.FC = () => {
                   <>
                     <div className="publish-quiz">
                       <div className="publish-quiz-anytime">
-                        <input
-                          type="checkbox"
-                          name="anytime"
-                          onChange={handleTimeChange}
-                        />
-                        <label htmlFor="anytime">
-                          Click to publish without time restriction
-                        </label>
+                        <div>
+                          <input
+                            type="checkbox"
+                            name="anytime"
+                            onChange={handleTimeChange}
+                          />
+                          <label htmlFor="anytime">
+                            Click to publish without time restriction
+                          </label>
+                        </div>
+                        <div onClick={() => setPublishQuiz(false)} className="close-publish">❌</div>
                       </div>
                       <FormItem
                         type="datetime-local"

@@ -24,7 +24,7 @@ import {
   GetQuizSubmissionResponse,
   GetSingleQuizSubmissionRes,
   GetDBQuestionsResponse,
-  EditQuizDetailsResponse
+  EditQuizDetailsResponse,
 } from "./@types/axiosResponse";
 import ActionType from "./actions";
 import { shuffleArray } from "../utils/actions";
@@ -64,7 +64,7 @@ const initialState: InitialState = {
   participantQuestions: null,
   singleAnswerLoading: false,
   questionsAnswered: 0,
-  limit: 5,
+  limit: 1,
   page: 1,
   quizWithSubmission: [],
   submissionParticipant: { quizId: null, participants: [] },
@@ -307,7 +307,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         lastName,
         identifier,
       });
-      
+
       getAllParticipant(quizId);
       dispatch({ type: ActionType.ADD_PARTICIPANT_SUCCESS });
     } catch (error) {
@@ -379,9 +379,11 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.EDIT_QUIZ_DETAILS_BEGIN });
 
     try {
-      
-      const { data } = await authFetch.patch<EditQuizDetailsResponse>(`/quiz/${quizId}`, { ...quizObj });
-     
+      const { data } = await authFetch.patch<EditQuizDetailsResponse>(
+        `/quiz/${quizId}`,
+        { ...quizObj }
+      );
+
       dispatch({
         type: ActionType.EDIT_QUIZ_DETAILS_SUCCESS,
         payload: data.quizDetails,
@@ -830,16 +832,32 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
-  const setQuestionAnswer = async (questionId: object, answer: string) => {
+  const pickAnswer = (answer: string) => {
+    dispatch({ type: ActionType.PICK_ANSWER, payload: answer });
+  };
+
+  
+
+  const setQuestionAnswer = async () => {
     dispatch({ type: ActionType.SET_QUESTION_ANSWER_BEGIN });
 
-    //get single question from all questions in state and set its answer
-    const result = state.participantQuestions?.map((item) => {
-      if (item._id === questionId) {
-        return { ...item, answer };
-      }
-      return { ...item };
-    });
+    const questionId = state.participantQuestions
+      ? state.participantQuestions[0]._id
+      : null;
+
+    const answer = state.participantQuestions
+      ? state.participantQuestions[0].answer
+      : null;
+
+    console.log(questionId, answer);
+
+    if (!answer || !questionId) {
+      validateInput(
+        "Kindly select an answer or click next to access next question"
+      );
+      clearAlert();
+      return;
+    }
 
     try {
       const { data } = await axios.post("/api/v1/participant/take-test", {
@@ -849,10 +867,11 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       dispatch({
         type: ActionType.SET_QUESTION_ANSWER_SUCCESS,
         payload: {
-          participantQuestions: result,
           questionsAnswered: data.questionsAnswered,
         },
       });
+      const number = state.page < state.numOfQuestions ? state.page + 1 : 1;
+      changeQuestionPage(number);
     } catch (error) {
       console.log(error);
       //endTest()
@@ -867,6 +886,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         `/participant/take-test?limit=${state.limit}&page=${page}&result=questions`
       );
       const { questions, participant } = data;
+      console.log(data)
       const participantQuestions = questions.map((item: SingleQuestion) => {
         if (participant.answers.length < 1) return { ...item, answer: "" };
         const result = participant.answers.find(
@@ -947,6 +967,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         updatePassword,
         deleteAccount,
         logoutUser,
+        pickAnswer,
       }}
     >
       {children}

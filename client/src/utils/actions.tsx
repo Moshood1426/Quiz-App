@@ -1,4 +1,4 @@
-import moment from "moment"
+import moment from "moment";
 
 const actions = [
   { id: 1, title: "Explore", to: "/explore" },
@@ -19,7 +19,7 @@ const getTime = (startDate: Date | "", endDate: Date | "") => {
       </>
     );
   }
-  if(!startDate && endDate) {
+  if (!startDate && endDate) {
     const endDat = moment(endDate).format("lll");
     return (
       <>
@@ -28,7 +28,7 @@ const getTime = (startDate: Date | "", endDate: Date | "") => {
       </>
     );
   }
-  if(startDate && !endDate) {
+  if (startDate && !endDate) {
     const startDat = moment(startDate).format("lll");
     return (
       <>
@@ -37,11 +37,48 @@ const getTime = (startDate: Date | "", endDate: Date | "") => {
       </>
     );
   }
-  if(!startDate && !endDate) {
+  if (!startDate && !endDate) {
     return (
       <>
         <p className="single-quiz-date-time">⏰ Start: anytime</p>
         <p className="single-quiz-date-time">⏰ End: anytime</p>
+      </>
+    );
+  }
+};
+
+const getSubmissionTime = (startDate: Date | "", endDate: Date | "") => {
+  if (startDate && endDate) {
+    const startDat = moment(startDate).format("lll");
+    const endDat = moment(endDate).format("lll");
+    return (
+      <>
+        <p className="single-quiz-date-time">
+          {startDat} - {endDat}
+        </p>
+      </>
+    );
+  }
+  if (!startDate && endDate) {
+    const endDat = moment(endDate).format("lll");
+    return (
+      <>
+        <p className="single-quiz-date-time">anytime - {endDat}</p>
+      </>
+    );
+  }
+  if (startDate && !endDate) {
+    const startDat = moment(startDate).format("lll");
+    return (
+      <>
+        <p className="single-quiz-date-time">{startDat} - anytime</p>
+      </>
+    );
+  }
+  if (!startDate && !endDate) {
+    return (
+      <>
+        <p className="single-quiz-date-time">anytime - anytime</p>
       </>
     );
   }
@@ -55,5 +92,48 @@ const shuffleArray = (array: (string | number)[]) => {
   return array;
 };
 
-export default actions
-export { getTime, shuffleArray }
+const paginationGenerator = (current: number, last: number, width = 1) => {
+  const left = current - width;
+  const right = current + width + 1;
+  const range = [];
+  const rangeWithDots: (string | number)[] = [];
+  let l: number;
+
+  for (let i = 1; i <= last; i += 1) {
+    if (i === 1 || i === last || (i >= left && i <= right)) {
+      range.push(i);
+    } else if (i < left) {
+      i = left - 1;
+    } else if (i > right) {
+      range.push(last);
+      break;
+    }
+  }
+
+  range.forEach((i) => {
+    if (l) {
+      if (i - l === 2) {
+        rangeWithDots.push(l + 1);
+      } else if (i - l !== 1) {
+        rangeWithDots.push("...");
+      }
+    }
+    rangeWithDots.push(i);
+    l = i;
+  });
+
+  return rangeWithDots;
+};
+
+const getTestDuration = (
+  startDate: Date | string,
+  endDate: Date | string
+) => {
+  let result;
+  const currentDate = moment().format("lll");
+
+  return "testing"
+};
+
+export default actions;
+export { getTime, shuffleArray, getSubmissionTime, paginationGenerator, getTestDuration };

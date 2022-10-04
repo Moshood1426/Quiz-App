@@ -449,6 +449,17 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       questionsAnswered: action.payload.questionsAnswered,
     };
   }
+  if (action.type === ActionType.PICK_ANSWER) {
+    return {
+      ...state,
+      participantQuestions: [
+        {
+          ...state.participantQuestions![0],
+          answer: action.payload,
+        },
+      ],
+    };
+  }
   if (action.type === ActionType.SET_QUESTION_ANSWER_BEGIN) {
     return {
       ...state,
@@ -459,7 +470,6 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     return {
       ...state,
       singleAnswerLoading: false,
-      participantQuestions: action.payload.participantQuestions,
       questionsAnswered: action.payload.questionsAnswered,
     };
   }

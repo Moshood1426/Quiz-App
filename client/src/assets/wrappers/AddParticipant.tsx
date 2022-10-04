@@ -84,6 +84,14 @@ const Wrapper = styled.div`
 
   @media (min-width: 900px) {
     padding: 2em 1.2em;
+
+    .participant-info {
+      max-height: fit-content;
+    }
+
+    .alert {
+      display: none;
+    }
   }
 `;
 export default Wrapper;

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import Wrapper from "../assets/wrappers/TakeTest";
-import { Navigate } from "react-router-dom";
 import Logo from "../components/Logo";
 import useAppContext from "../store/appContext";
 import Loading from "../components/Loading";
 import { TestQuestions } from "../components";
 import moment from "moment";
+import { getTestDuration } from "../utils/actions";
 
 const TakeTest = () => {
   const {
@@ -19,7 +19,7 @@ const TakeTest = () => {
 
   useEffect(() => {
     if (!validateParticipant) {
-     // <Navigate to="/start-test" />;
+      // <Navigate to="/start-test" />;
       return;
     }
     getParticipantQuizInfo();
@@ -82,7 +82,12 @@ const TakeTest = () => {
               </div>
               <div>
                 <span className="quiz-details-title">Duration</span>
-                <h5>20 mins</h5>
+                <h5>
+                  {getTestDuration(
+                    participantQuizDetails?.startDate!,
+                    participantQuizDetails?.endDate!
+                  )}
+                </h5>
               </div>
               <div>
                 <span className="quiz-details-title">Start Date</span>

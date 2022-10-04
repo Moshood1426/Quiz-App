@@ -6,6 +6,7 @@ import SingleQuestion from "./SingleQuestions";
 import FormItem from "./FormItem";
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from "react-icons/hi";
 import moment from "moment";
+import { paginationGenerator } from "../utils/actions";
 
 const TestQuestions = () => {
   const [duration, setDuration] = useState("0:00");
@@ -18,7 +19,8 @@ const TestQuestions = () => {
     limit,
     page,
     setQuestionAnswer,
-    singleAnswerLoading
+    pickAnswer,
+    singleAnswerLoading,
   } = useAppContext();
 
   useEffect(() => {
@@ -37,7 +39,6 @@ const TestQuestions = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const questionId = new String(event.target.name);
     const value = event.target.value;
-    setQuestionAnswer(questionId, value);
   };
 
   /*
@@ -52,7 +53,7 @@ const TestQuestions = () => {
   */
 
   const numOfPages = Math.ceil(numOfQuestions / limit);
-  const pages = Array.from({ length: numOfPages }, (v, i) => i + 1);
+  const pages = paginationGenerator(page, numOfQuestions);
 
   return (
     <Wrapper>
@@ -69,41 +70,59 @@ const TestQuestions = () => {
           participantQuestions.map((item, index) => {
             if (item.type === "fill-in-gap") {
               return (
-                <SingleQuestionWrapper key={item._id.toString()}>
-                  <div className="question-header">
-                    <p className="question-tag">
-                      Question {limit * (page - 1) + index + 1}
-                    </p>
-                  </div>
-                  <div className="question-footer">
-                    <span className="question-type">
-                      📝Question Type: {item.type.split("-").join(" ")}
-                    </span>
-                    <span className="question-point">
-                      ⚪ Point: {item.points}
-                    </span>
-                  </div>
-                  <h5 className="question-content">{item.question}</h5>
-                  <FormItem
-                    type="text"
-                    name={item._id.toString()}
-                    onChange={handleChange}
-                    value={item.answer}
-                    placeholder={"enter answer here"}
-                  />
-                </SingleQuestionWrapper>
+                <>
+                  <SingleQuestionWrapper key={item._id.toString()}>
+                    <div className="question-header">
+                      <p className="question-tag">
+                        Question {limit * (page - 1) + index + 1}
+                      </p>
+                    </div>
+                    <div className="question-footer">
+                      <span className="question-type">
+                        📝Question Type: {item.type.split("-").join(" ")}
+                      </span>
+                      <span className="question-point">
+                        ⚪ Point: {item.points}
+                      </span>
+                    </div>
+                    <h5 className="question-content">{item.question}</h5>
+
+                    <FormItem
+                      type="text"
+                      name={item._id.toString()}
+                      onChange={(event) =>
+                        pickAnswer(event.target.value)
+                      }
+                      value={item.answer}
+                      placeholder={"enter answer here"}
+                    />
+                  </SingleQuestionWrapper>
+                  <button
+                    className="alert alert-success submit-answer"
+                    onClick={() => setQuestionAnswer()}
+                  >
+                    Submit
+                  </button>
+                </>
               );
             } else {
               return (
-                <SingleQuestion
-                  key={item._id.toString()}
-                  question={item}
-                  index={index}
-                  id={item._id}
-                  setAnswer={true}
-                  answer={item.answer}
-                  number={limit * (page - 1) + index + 1}
-                />
+                <div key={item._id.toString()}>
+                  <SingleQuestion
+                    question={item}
+                    index={index}
+                    id={item._id}
+                    setAnswer={true}
+                    answer={item.answer}
+                    number={limit * (page - 1) + index + 1}
+                  />
+                  <button
+                    className="alert alert-success submit-answer"
+                    onClick={() => setQuestionAnswer()}
+                  >
+                    Submit
+                  </button>
+                </div>
               );
             }
           })}
@@ -118,16 +137,15 @@ const TestQuestions = () => {
         </button>
         <div className="btn-container">
           {pages.map((item, index) => {
+            const newPage = typeof item === "number" ? item : null;
             return (
-              <button
-                type="button"
+              <span
                 className={item === page ? "pageBtn active" : "pageBtn"}
                 key={index}
-                onClick={() => changeQuestionPage(item)}
-                disabled={singleAnswerLoading}
+                onClick={() => newPage && changeQuestionPage(newPage)}
               >
                 {item}
-              </button>
+              </span>
             );
           })}
         </div>

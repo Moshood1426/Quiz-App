@@ -44,7 +44,7 @@ const Submission = () => {
     );
   }
 
-  //renders result of all participant for a single quiz in table
+  //renders result of all participant for a single quiz in tabular format
   if (submissionParticipant.quizId !== null) {
     const singleSubmission = quizWithSubmission.find(
       (item) => item._id === submissionParticipant.quizId
@@ -76,7 +76,7 @@ const Submission = () => {
             <tbody>
               {submissionParticipant.participants.map((item, index) => {
                 return (
-                  <tr>
+                  <tr key={index}>
                     <td data-label="S/N">{index + 1}</td>
                     <td data-label="Name">
                       {item.firstName + " " + item.lastName}

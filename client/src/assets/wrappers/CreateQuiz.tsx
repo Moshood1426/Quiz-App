@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   }
 
   .create-quiz-div {
-    padding: 1em;
+    padding: 1.5em;
     margin-bottom: 3em;
   }
 

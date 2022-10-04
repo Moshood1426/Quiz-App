@@ -31,8 +31,8 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
     setEditQuestion,
     deleteQuestion,
     editQuiz,
-    setQuestionAnswer,
     user,
+    pickAnswer
   } = useAppContext();
 
   const editQuestion = (id: object) => {
@@ -101,7 +101,7 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
               }
               ${setAnswer ? (singleAnswerLoading ? "disabled" : "enabled") : ""}`}
               onClick={() =>
-                setAnswer && !singleAnswerLoading && setQuestionAnswer(id, item)
+                setAnswer && !singleAnswerLoading && pickAnswer(item)
               }
             >
               {item}
