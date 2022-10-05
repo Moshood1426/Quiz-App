@@ -91,6 +91,8 @@ export interface ContextType extends InitialState {
   endTest: () => void;
   getAllQuizSubmission: () => void;
   getSingleQuizSubmission: (quizId: object) => Promise<void>;
+  releaseResult: (quizId: object) => Promise<void>;
+  withdrawResult: (quizId: object) => Promise<void>;
   resetSingleQuizSubmission: () => void;
   resetSubmissionParticipant: () => void;
   getResults: (participantId: object) => void;
@@ -163,6 +165,7 @@ export interface QuizWithSubmission {
   quizTitle: string;
   quizCode: string;
   noOfSubmissions: number;
+  releaseResults: boolean;
 }
 
 export interface AuthorizeParticipant {
@@ -185,6 +188,7 @@ export interface SingleQuiz {
   createdAt: Date;
   updatedAt: Date;
   __v: Number;
+  releaseResults: boolean;
 }
 
 export interface SingleParticipant {

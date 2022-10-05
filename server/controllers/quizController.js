@@ -29,7 +29,7 @@ const getAllQuiz = async (req, res) => {
     const quiz = await Quiz.find({
       ...queryObj,
       noOfSubmissions: { $gte: 1 },
-    }).select("_id quizTitle quizCode startDate endDate noOfSubmissions");
+    }).select("_id quizTitle quizCode startDate endDate noOfSubmissions releaseResults");
     res.status(StatusCodes.OK).json({ quiz });
     return;
   }

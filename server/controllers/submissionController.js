@@ -2,6 +2,7 @@
 
 const Participant = require("../models/Participant");
 const Questions = require("../models/Questions");
+const Quiz = require("../models/Quiz");
 const { StatusCodes } = require("http-status-codes");
 
 const getAllSubmissions = async (req, res) => {
@@ -23,4 +24,29 @@ const getSingleSubmission = async (req, res) => {
   const participant = await Participant.findOne({ _id: participantId });
 };
 
-module.exports = { getAllSubmissions };
+const releaseResult = async (req, res) => {
+  const { quizId } = req.params;
+  const { withdraw } = req.query;
+
+  if (!quizId) {
+    throw new BadRequestError("quiz id cannot be empty");
+  }
+
+  const quiz = await Quiz.findOne({ _id: quizId });
+  if (!quiz) {
+    throw new NotFoundError("quiz cannot be found");
+  }
+
+  if (withdraw) {
+    quiz.releaseResults = false;
+  } else {
+    quiz.releaseResults = true;
+  }
+  await quiz.save();
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Quiz result can now be accessed by participant" });
+};
+
+module.exports = { getAllSubmissions, releaseResult };

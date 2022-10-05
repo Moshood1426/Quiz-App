@@ -57,7 +57,7 @@ const Submission = () => {
           <span onClick={resetSingleQuizSubmission}>{"<<"} go back</span>
         </div>
 
-        <SingleSubmission item={singleSubmission!} />
+        <SingleSubmission item={singleSubmission!} extraDetails={true}/>
 
         {isLoading ? (
           <Loading />

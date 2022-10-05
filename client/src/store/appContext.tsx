@@ -595,6 +595,35 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     });
   };
 
+  //release results
+  const releaseResult = async (quizId: object) => {
+    dispatch({ type: ActionType.RELEASE_RESULT_BEGIN });
+    try {
+      interface ReleaseResultRes {
+        msg: string;
+      }
+      await authFetch.patch<ReleaseResultRes>(`/submission/${quizId}`);
+      getAllQuizSubmission();
+    } catch (error) {
+      //logoutUser();
+    }
+  };
+
+  const withdrawResult = async (quizId: object) => {
+    dispatch({ type: ActionType.RELEASE_RESULT_BEGIN });
+    try {
+      interface ReleaseResultRes {
+        msg: string;
+      }
+      await authFetch.patch<ReleaseResultRes>(
+        `/submission/${quizId}?withdraw=true`
+      );
+      getAllQuizSubmission();
+    } catch (error) {
+      //logoutUser();
+    }
+  };
+
   //go back to all participant submission for single quiz
   const resetSubmissionParticipant = () => {
     const { participantQuestions } = state;
@@ -834,7 +863,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
 
   const pickAnswer = (answer: string) => {
     dispatch({ type: ActionType.PICK_ANSWER, payload: answer });
-  }; 
+  };
 
   const setQuestionAnswer = async () => {
     dispatch({ type: ActionType.SET_QUESTION_ANSWER_BEGIN });
@@ -884,7 +913,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         `/participant/take-test?limit=${state.limit}&page=${page}&result=questions`
       );
       const { questions, participant } = data;
-      console.log(data)
+      console.log(data);
       const participantQuestions = questions.map((item: SingleQuestion) => {
         if (participant.answers.length < 1) return { ...item, answer: "" };
         const result = participant.answers.find(
@@ -956,6 +985,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         endTest,
         getAllQuizSubmission,
         getSingleQuizSubmission,
+        releaseResult,
+        withdrawResult,
         resetSingleQuizSubmission,
         resetSubmissionParticipant,
         getResults,

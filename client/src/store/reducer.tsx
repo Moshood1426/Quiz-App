@@ -284,6 +284,12 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       },
     };
   }
+  if (action.type === ActionType.RELEASE_RESULT_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
   if (action.type === ActionType.SET_EDIT_QUESTION) {
     return {
       ...state,

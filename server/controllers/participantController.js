@@ -158,7 +158,7 @@ const getParticipantQuestions = async (req, res) => {
   const participant = await Participant.findOne({
     _id: participantId,
     quizId: quizId,
-  })
+  });
   //getting participant details
   if (!participant) {
     throw new UnauthenticatedError("User not allowed to take this test");
@@ -203,15 +203,13 @@ const getParticipantQuestions = async (req, res) => {
     throw new NotFoundError("questions not allocated to this quiz");
   }
 
-  res
-    .status(StatusCodes.OK)
-    .json({
-      totalQuestions,
-      quiz,
-      questions,
-      participant,
-      questionsAnswered: participant.answers.length,
-    });
+  res.status(StatusCodes.OK).json({
+    totalQuestions,
+    quiz,
+    questions,
+    participant,
+    questionsAnswered: participant.answers.length,
+  });
 };
 
 const addParticipantAnswers = async (req, res) => {
@@ -271,6 +269,38 @@ const submitParticipantAnswers = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Submission succesful" });
 };
 
+const checkResults = async (req, res) => {
+  const { quizCode, identifier } = req.body;
+
+  //find the test if it exists
+  const quiz = await Quiz.findOne({ quizCode: quizCode });
+  if (!quiz) {
+    throw new NotFoundError("quiz cannot be found");
+  }
+
+  //find the participant if it exists
+  const participant = await Participant.findOne({
+    identifier: identifier,
+    quizId: quiz._id,
+  });
+  if (!participant) {
+    throw new UnauthenticatedError("Participant not registered for this test");
+  }
+  if (!participant.submitted) {
+    throw new BadRequestError("Participant has not taken this test");
+  }
+
+  //check if test results was released
+  if(!quiz.releaseResults) {
+    throw new BadRequestError("Results unavailable at this moment")
+  }
+
+  let result = await Questions.find({ forQuiz: quiz._id })
+
+
+
+};
+
 module.exports = {
   createParticipant,
   validateParticipant,
@@ -280,4 +310,5 @@ module.exports = {
   addParticipantAnswers,
   submitParticipantAnswers,
   getParticipantQuiz,
+  checkResults,
 };

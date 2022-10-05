@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { QuizWithSubmission } from "../store/@types/context";
 import Wrapper from "../assets/wrappers/SingleSubmission";
 import useAppContext from "../store/appContext";
@@ -6,10 +6,21 @@ import { getSubmissionTime } from "../utils/actions";
 
 interface SingleSubmissionProps {
   item: QuizWithSubmission;
+  extraDetails?: boolean;
 }
 
-const SingleSubmission: React.FC<SingleSubmissionProps> = ({ item }) => {
-  const { getSingleQuizSubmission, submissionParticipant } = useAppContext();
+const SingleSubmission: React.FC<SingleSubmissionProps> = ({
+  item,
+  extraDetails,
+}) => {
+  const [buttonText, setButtonText] = useState("");
+  const {
+    getSingleQuizSubmission,
+    releaseResult,
+    withdrawResult,
+    submissionParticipant,
+    isLoading,
+  } = useAppContext();
 
   //get single quiz with all submission received
   const getParticipant = (quizId: object) => {
@@ -17,6 +28,10 @@ const SingleSubmission: React.FC<SingleSubmissionProps> = ({ item }) => {
       getSingleQuizSubmission(quizId);
     }
   };
+
+  useEffect(() => {
+    setButtonText(item.releaseResults ? "Withdraw result" : "Release result");
+  }, [item]);
 
   return (
     <Wrapper>
@@ -32,6 +47,19 @@ const SingleSubmission: React.FC<SingleSubmissionProps> = ({ item }) => {
         {item.noOfSubmissions} submission{item.noOfSubmissions > 1 && "s"}{" "}
         received
       </p>
+      {extraDetails && (
+        <button
+          className="btn results-btn"
+          onClick={() =>
+            !item.releaseResults
+              ? releaseResult(item._id)
+              : withdrawResult(item._id)
+          }
+          disabled={isLoading}
+        >
+          {buttonText}
+        </button>
+      )}
     </Wrapper>
   );
 };

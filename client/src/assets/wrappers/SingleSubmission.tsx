@@ -25,20 +25,28 @@ const Wrapper = styled.div`
   .quiz-title {
     color: #4e6b54;
     margin: 0;
-    margin-bottom: .35em;
+    margin-bottom: 0.35em;
   }
 
   .quiz-submission-num {
     color: #123812;
     font-size: 0.95rem;
     opacity: 0.8;
-    border-bottom: solid .5px var(--green-light);
+    border-bottom: solid 0.5px var(--green-light);
     width: fit-content;
   }
 
   .quiz-submission-num:hover {
     color: var(--primary-brown);
     cursor: pointer;
+  }
+
+  .results-btn {
+    margin-top: 2em;
+  }
+
+  .results-btn:disabled {
+    cursor: not-allowed;
   }
 `;
 export default Wrapper;

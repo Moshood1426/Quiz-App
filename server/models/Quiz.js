@@ -33,6 +33,10 @@ const QuizSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    releaseResults: {
+      type: Boolean,
+      default: false,
+    },
     noOfQuestions: {
       type: Number,
       default: 0,
