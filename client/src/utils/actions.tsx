@@ -125,15 +125,47 @@ const paginationGenerator = (current: number, last: number, width = 1) => {
   return rangeWithDots;
 };
 
-const getTestDuration = (
+function dateDifference(startDate: Date, endDate: Date) {
+  return moment(startDate).diff(moment(endDate), "seconds");
+}
+
+const getTestTimeLeft = (
+  currentDate: Date,
   startDate: Date | string,
   endDate: Date | string
 ) => {
-  let result;
-  const currentDate = moment().format("lll");
+  if (!endDate) {
+    return "anytime";
+  } else {
+    const finish = new Date(endDate);
+    const result = dateDifference(finish, currentDate);
+    return result;
+  }
+};
 
-  return "testing"
+const getTestDuration = (startDate: Date | null, endDate: Date | null) => {
+  const currentDate = new Date();
+  if (startDate && endDate) {
+    return dateDifference(endDate, startDate);
+  }
+  if (!startDate && endDate) {
+    return dateDifference(endDate, currentDate);
+  }
+  if (startDate && !endDate) {
+    return "anytime";
+  }
+  if (!startDate && !endDate) {
+    return "anytime";
+  }
+  return "anytime"
 };
 
 export default actions;
-export { getTime, shuffleArray, getSubmissionTime, paginationGenerator, getTestDuration };
+export {
+  getTime,
+  shuffleArray,
+  getSubmissionTime,
+  paginationGenerator,
+  getTestTimeLeft,
+  getTestDuration,
+};

@@ -38,6 +38,7 @@ const Wrapper = styled.div`
     padding: 1em 2em;
     background-color: #fce7ff;
     color: #400a45;
+    box-shadow: var(--shadow-2)
   }
 
   .welcome-text {

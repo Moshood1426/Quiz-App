@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../assets/wrappers/TakeTest";
 import Logo from "../components/Logo";
 import useAppContext from "../store/appContext";
 import Loading from "../components/Loading";
 import { TestQuestions } from "../components";
 import moment from "moment";
-import { getTestDuration } from "../utils/actions";
+import { getTestDuration} from "../utils/actions";
 
 const TakeTest = () => {
+  const [duration, setDuration] = useState<string | number>(0);
   const {
     isLoading,
     validateParticipant,
@@ -25,6 +26,13 @@ const TakeTest = () => {
     getParticipantQuizInfo();
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    const endDate = participantQuizDetails?.endDate!;
+    const startDate = participantQuizDetails?.startDate!;
+
+    setDuration(() => getTestDuration(startDate, endDate));
+  }, [participantQuizDetails]);
 
   return (
     <Wrapper>
@@ -90,10 +98,9 @@ const TakeTest = () => {
               <div>
                 <span className="quiz-details-title">Duration</span>
                 <h5>
-                  {getTestDuration(
-                    participantQuizDetails?.startDate!,
-                    participantQuizDetails?.endDate!
-                  )}
+                  {moment("1900-01-01 00:00:00")
+                    .add(duration, "seconds")
+                    .format("HH:mm:ss")}
                 </h5>
               </div>
               <div>

@@ -6,10 +6,11 @@ import SingleQuestion from "./SingleQuestions";
 import FormItem from "./FormItem";
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from "react-icons/hi";
 import moment from "moment";
-import { paginationGenerator } from "../utils/actions";
+import { paginationGenerator, getTestTimeLeft } from "../utils/actions";
 
 const TestQuestions = () => {
-  const [duration, setDuration] = useState("0:00");
+  const [timeLeft, setTimeLeft] = useState<string | number>("0:00");
+
   const {
     participantQuizDetails,
     participantQuestions,
@@ -20,32 +21,29 @@ const TestQuestions = () => {
     page,
     setQuestionAnswer,
     pickAnswer,
+    endTest,
     singleAnswerLoading,
   } = useAppContext();
 
   useEffect(() => {
-    if (participantQuizDetails) {
-      const currentTime = moment().format();
-      const endTime = participantQuizDetails.endDate
-        ? participantQuizDetails.endDate
-        : null;
+    const endDate = participantQuizDetails?.endDate!;
+    const startDate = participantQuizDetails?.startDate!;
 
-      if (endTime) {
-        //const duration = moment(endTime.diff(currentTime)).format("m[m] s[s]");
-      }
+    const timer = setInterval(() => {
+      const currentDate = new Date();
+      setTimeLeft(() => getTestTimeLeft(currentDate, startDate, endDate));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [participantQuizDetails]);
+
+  //checks the timer and end test once time ends
+  useEffect(() => {
+    if (typeof timeLeft === "number" && timeLeft < 1) {
+      endTest();
     }
-  }, []);
-
-  /*
-  if(participantQuizDetails) {
-    const currentTime = moment().format().slice(0, 16);
-    const endTime = participantQuizDetails.endDate ? participantQuizDetails.endDate : null
-  }
-  moment( (participantQuizDetails?.endDate).diff(
-                participantQuizDetails.startDate
-              )
-            ).format("m[m] s[s]")
-  */
+    //eslint-disable-next-line
+  }, [timeLeft]);
 
   const numOfPages = Math.ceil(numOfQuestions / limit);
   const pages = paginationGenerator(page, numOfQuestions);
@@ -57,7 +55,12 @@ const TestQuestions = () => {
           All Questions <span>{questionsAnswered + "/" + numOfQuestions}</span>
         </h3>
         <p className="all-questions-points">
-          Duration <span className="total-points">{}</span>
+          Duration:
+          <span className="total-points">
+            {moment("1900-01-01 00:00:00")
+              .add(timeLeft, "seconds")
+              .format("HH:mm:ss")}
+          </span>
         </p>
       </div>
       <div>
