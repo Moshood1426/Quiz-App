@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navbar, Card, FormItem, Alert } from "../components";
+import { Navbar, FormItem, Alert } from "../components";
 import Wrapper from "../assets/wrappers/Register";
 import useAppContext from "../store/appContext";
 import { useNavigate } from "react-router-dom";
@@ -101,7 +101,7 @@ const Register: React.FC = () => {
               login
             </p>
           </div>
-          <Card>
+          <div className="card">
             <h3 className="form-title">Forgot Credentials</h3>
             {showAlert && <Alert />}
             <form onSubmit={handleForgotPassword}>
@@ -126,7 +126,7 @@ const Register: React.FC = () => {
                 Back To Login?
               </span>
             </form>
-          </Card>
+          </div>
           <div className="foot-div">
             <p className="foot-text">
               If you’re here to take tests,{" "}

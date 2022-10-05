@@ -137,7 +137,7 @@ const StartTest = () => {
 
   return (
     <Wrapper>
-      <div className="img-div">
+      <div className="img-div" onClick={() => navigate("/landing")}>
         <Logo />
       </div>
       <p className="sub-title">Some description if needed</p>

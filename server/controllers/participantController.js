@@ -273,7 +273,9 @@ const checkResults = async (req, res) => {
   const { quizCode, identifier } = req.body;
 
   //find the test if it exists
-  const quiz = await Quiz.findOne({ quizCode: quizCode });
+  const quiz = await Quiz.findOne({ quizCode: quizCode }).select(
+    "_id quizTitle quizCode startDate endDate noOfSubmissions releaseResults"
+  );
   if (!quiz) {
     throw new NotFoundError("quiz cannot be found");
   }
@@ -291,14 +293,14 @@ const checkResults = async (req, res) => {
   }
 
   //check if test results was released
-  if(!quiz.releaseResults) {
-    throw new BadRequestError("Results unavailable at this moment")
+  if (!quiz.releaseResults) {
+    throw new BadRequestError("Results unavailable at this moment");
   }
 
-  let result = await Questions.find({ forQuiz: quiz._id })
+  //find quiz questions
+  const questions = await Questions.find({ forQuiz: quiz._id });
 
-
-
+  res.status(StatusCodes.OK).json({ participant, quiz, questions });
 };
 
 module.exports = {

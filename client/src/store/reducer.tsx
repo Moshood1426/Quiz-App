@@ -45,6 +45,30 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       alertType: "danger",
     };
   }
+  if(action.type === ActionType.FORGOT_PASSWORD_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if(action.type === ActionType.FORGOT_PASSWORD_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertText: action.payload.message.msg,
+      alertType: "success",
+    }
+  }
+  if (action.type === ActionType.FORGOT_PASSWORD_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertText: action.payload.message.msg,
+      alertType: "danger",
+    };
+  }
   if (action.type === ActionType.CREATE_QUIZ_BEGIN) {
     return {
       ...state,
@@ -631,6 +655,50 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
   if (action.type === ActionType.LOGOUT_USER) {
     return {
       ...initialState,
+    };
+  }
+
+  if (action.type === ActionType.CHECK_RESULTS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === ActionType.CHECK_RESULTS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      participantResult: {
+        ...action.payload,
+      },
+    };
+  }
+
+  if (action.type === ActionType.CHECK_RESULTS_FAILED) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload,
+    };
+  }
+
+  if (action.type === ActionType.RESET_CHECK_RESULTS) {
+    return {
+      ...state,
+      participantResult: {
+        quizTitle: "",
+        quizCode: "",
+        pointsObtained: 0,
+        pointsObtainable: 0,
+        percentage: 0,
+        remarks: "",
+        firstName: "",
+        lastName: "",
+        identifier: "",
+      }
     };
   }
   /* if (action.type === ActionType.DELETE_ACCOUNT_SUCCESS) {

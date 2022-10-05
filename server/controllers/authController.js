@@ -75,8 +75,8 @@ const forgotPassword = async (req, res) => {
   }
 
   const userObj = { email: user.email, firstName: user.firstName };
-
-  sendForgotPasswordEmail({
+  console.log(email);
+  await sendForgotPasswordEmail({
     to: user.email,
     origin: "http://localhost:3000",
     userObj,
@@ -184,5 +184,5 @@ module.exports = {
   changePassword,
   changeProfileDetails,
   updatePassword,
-  deleteAccount
+  deleteAccount,
 };

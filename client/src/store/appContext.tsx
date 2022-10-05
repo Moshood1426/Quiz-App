@@ -25,6 +25,7 @@ import {
   GetSingleQuizSubmissionRes,
   GetDBQuestionsResponse,
   EditQuizDetailsResponse,
+  CheckResultsResponse,
 } from "./@types/axiosResponse";
 import ActionType from "./actions";
 import { shuffleArray } from "../utils/actions";
@@ -69,6 +70,17 @@ const initialState: InitialState = {
   quizWithSubmission: [],
   submissionParticipant: { quizId: null, participants: [] },
   displayResult: false,
+  participantResult: {
+    quizTitle: "",
+    quizCode: "",
+    pointsObtained: 0,
+    pointsObtainable: 0,
+    percentage: 0,
+    remarks: "",
+    firstName: "",
+    lastName: "",
+    identifier: "",
+  },
 };
 
 const AppContext = createContext<ContextType | null>(null);
@@ -174,7 +186,27 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
 
   //forgot-password functionality
   const forgotPassword = async (email: string) => {
-    console.log(email);
+    dispatch({ type: ActionType.FORGOT_PASSWORD_BEGIN });
+
+    try {
+      interface ForgotPasswordRes {
+        msg: string;
+      }
+      const { data } = await authFetch.post<ForgotPasswordRes>(
+        "/auth/forgot-password",
+        { email }
+      );
+      console.log(data)
+      dispatch({
+        type: ActionType.FORGOT_PASSWORD_SUCCESS,
+        payload: { message: data.msg },
+      });
+    } catch (error) {
+      console.log(error)
+      const message = handleAxiosError(error);
+      dispatch({ type: ActionType.AUTH_USER_FAILED, payload: { message } });
+    }
+    clearAlert();
   };
 
   //create moderated quiz functionality
@@ -951,6 +983,80 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.LOGOUT_USER });
   };
 
+  /* 
+    -- Check Results Functionalities Begin --
+  */
+
+  const checkResults = async (quizCode: string, identifier: string) => {
+    dispatch({ type: ActionType.CHECK_RESULTS_BEGIN });
+    try {
+      const { data } = await axios.post<CheckResultsResponse>(
+        "/api/v1/participant/check-results",
+        {
+          quizCode,
+          identifier,
+        }
+      );
+      const { participant, quiz, questions } = data;
+
+      const result = questions.map((item) => {
+        const test = participant.answers.find(
+          (answer) => answer.questionId === item._id
+        );
+        if (test) {
+          return { ...item, answer: test.answer };
+        } else {
+          return { ...item, answer: "" };
+        }
+      });
+
+      const pointsObtainable = questions.reduce((acc, item) => {
+        return (acc += item.points);
+      }, 0);
+
+      const pointsObtained = result.reduce((acc, item) => {
+        return item.answer === item.correctAnswer ? (acc += item.points) : acc;
+      }, 0);
+
+      const percentage = Math.round((pointsObtained / pointsObtainable) * 100);
+
+      const remarks =
+        percentage > 75
+          ? "Excellent"
+          : percentage > 50
+          ? "Very Good"
+          : percentage > 35
+          ? "Good"
+          : "Try Harder";
+
+      dispatch({
+        type: ActionType.CHECK_RESULTS_SUCCESS,
+        payload: {
+          quizTitle: quiz.quizTitle,
+          quizCode: quiz.quizCode,
+          pointsObtained,
+          pointsObtainable,
+          percentage,
+          remarks,
+          firstName: participant.firstName,
+          lastName: participant.lastName,
+          identifier: participant.identifier,
+        },
+      });
+    } catch (error) {
+      const message = handleAxiosError(error);
+      dispatch({
+        type: ActionType.CHECK_RESULTS_FAILED,
+        payload: message.msg,
+      });
+      clearAlert();
+    }
+  };
+
+  const resetCheckResults = () => {
+    dispatch({ type: ActionType.RESET_CHECK_RESULTS });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -997,6 +1103,8 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         deleteAccount,
         logoutUser,
         pickAnswer,
+        checkResults,
+        resetCheckResults,
       }}
     >
       {children}

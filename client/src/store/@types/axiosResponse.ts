@@ -48,3 +48,9 @@ export interface GetDBQuestionsResponse {
   export interface EditQuizDetailsResponse {
     quizDetails: SingleQuiz
   }
+
+  export interface CheckResultsResponse {
+    participant: SingleParticipant, 
+    quiz: SingleQuiz,
+    questions: SingleQuestion[]
+  }

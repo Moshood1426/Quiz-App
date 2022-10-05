@@ -41,6 +41,7 @@ export interface InitialState {
     participants: SingleParticipant[];
   };
   displayResult: boolean;
+  participantResult: ParticipantResult;
 }
 
 export interface ContextType extends InitialState {
@@ -116,6 +117,8 @@ export interface ContextType extends InitialState {
   }) => Promise<void>;
   deleteAccount: () => Promise<void>;
   logoutUser: () => void;
+  checkResults: (quizCode: string, identifier: string) => Promise<void>;
+  resetCheckResults: () => void
 }
 
 export interface registerArgs {
@@ -263,4 +266,16 @@ export interface questionEdit {
   options: string[];
   correctAnswer: string;
   points: number;
+}
+
+export interface ParticipantResult {
+  quizTitle: string;
+  quizCode: string;
+  pointsObtained: number;
+  pointsObtainable: number;
+  percentage: number;
+  remarks: string;
+  firstName: string;
+  lastName: string;
+  identifier: string;
 }

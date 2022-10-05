@@ -4,23 +4,33 @@ import Logo from "./Logo";
 import { AiOutlineMenu } from "react-icons/ai";
 import useAppContext from "../store/appContext";
 import { useNavigate } from "react-router-dom";
+import SmallNavModal from "./SmallNavModal";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  goHome?: boolean
+}
+
+const Navbar: React.FC<NavbarProps> = ({goHome}) => {
   const [showLogout, setShowLogout] = useState(false);
+  const [showSideBar, setShowSideBar] = useState(false);
   const navigate = useNavigate();
 
   const { user, logoutUser } = useAppContext();
   const nameTag = user?.firstName[0] || "A";
 
   const signOut = () => {
-    logoutUser()
-    navigate("/landing")
-  }
+    logoutUser();
+    navigate("/landing");
+  };
+
+  const toggleSideBar = () => {
+    setShowSideBar((value) => !value);
+  };
 
   return (
     <Wrapper>
       <div className="nav-container">
-        <div>
+        <div onClick={() => goHome && navigate("/landing")}>
           <Logo />
         </div>
 
@@ -31,7 +41,10 @@ const Navbar: React.FC = () => {
         </ul>
 
         <div className="btn-div">
-          <button className="btn get-started-btn" onClick={() => navigate("/register")}>
+          <button
+            className="btn get-started-btn"
+            onClick={() => navigate("/register")}
+          >
             Get Started
           </button>
         </div>
@@ -71,9 +84,20 @@ const Navbar: React.FC = () => {
           </div>
         </div>
 
-        <div className="nav-toggle" aria-label="toggle navigation">
+        <div
+          className="nav-toggle"
+          aria-label="toggle navigation"
+          onClick={() => setShowSideBar(true)}
+        >
           <AiOutlineMenu />
         </div>
+
+        {showSideBar && (
+          <SmallNavModal
+            showSidebar={showSideBar}
+            toggleSideBar={toggleSideBar}
+          />
+        )}
       </div>
     </Wrapper>
   );

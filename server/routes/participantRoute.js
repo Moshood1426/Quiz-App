@@ -12,7 +12,8 @@ const {
   addParticipantAnswers,
   submitParticipantAnswers,
   getAllParticipant,
-  getParticipantQuiz
+  getParticipantQuiz,
+  checkResults,
 } = require("../controllers/participantController");
 
 router.route("/").post(validateParticipant).get(getParticipantQuiz);
@@ -22,6 +23,8 @@ router
   .get(authenticateParticipant, getParticipantQuestions)
   .post(authenticateParticipant, addParticipantAnswers)
   .patch(authenticateParticipant, submitParticipantAnswers);
+
+router.route("/check-results").post(checkResults);
 
 router
   .route("/:quizId")

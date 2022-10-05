@@ -1,4 +1,8 @@
 import moment from "moment";
+import { IoBarChartSharp } from 'react-icons/io5'
+import { MdQueryStats } from 'react-icons/md'
+import { FaWpforms } from 'react-icons/fa'
+import { ImProfile } from 'react-icons/im'
 
 const actions = [
   { id: 1, title: "Explore", to: "/explore" },
@@ -160,6 +164,13 @@ const getTestDuration = (startDate: Date | null, endDate: Date | null) => {
   return "anytime"
 };
 
+const links = [
+  { id: 1, text: 'home', path: '/landing', icon: <IoBarChartSharp /> },
+  { id: 2, text: 'take test', path: '/start-test', icon: <MdQueryStats /> },
+  { id: 3, text: 'check results', path: '/check-results', icon: <FaWpforms /> },
+  { id: 4, text: 'sign in', path: '/register', icon: <ImProfile /> },
+]
+
 export default actions;
 export {
   getTime,
@@ -168,4 +179,5 @@ export {
   paginationGenerator,
   getTestTimeLeft,
   getTestDuration,
+  links
 };
