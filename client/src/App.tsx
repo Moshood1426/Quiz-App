@@ -13,6 +13,7 @@ import {
   StartTest,
   TakeTest,
   ProtectedParticipantRoute,
+  CheckResults
 } from "./pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Submission from "./pages/dashboard/Submission";
@@ -55,6 +56,7 @@ function App() {
             </ProtectedParticipantRoute>
           }
         />
+        <Route path="/check-results" element={<CheckResults />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>

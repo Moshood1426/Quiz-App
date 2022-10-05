@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
         <ul className="nav-items">
           <li onClick={() => navigate("/landing")}>Home</li>
           <li onClick={() => navigate("/start-test")}>Take Test</li>
-          <li>Check Results</li>
+          <li onClick={() => navigate("/check-results")}>Check Results</li>
         </ul>
 
         <div className="btn-div">

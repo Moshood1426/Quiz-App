@@ -13,6 +13,7 @@ import ResetPassword from "./ResetPassword";
 import StartTest from "./StartTest";
 import TakeTest from "./TakeTest";
 import ProtectedParticipantRoute from "./ProtectedParticipantRoute";
+import CheckResults from "./CheckResults";
 
 export {
   Landing,
@@ -29,5 +30,6 @@ export {
   Profile,
   NotFound,
   StartTest,
-  TakeTest
+  TakeTest,
+  CheckResults
 };
