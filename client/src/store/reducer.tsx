@@ -45,22 +45,31 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       alertType: "danger",
     };
   }
-  if(action.type === ActionType.FORGOT_PASSWORD_BEGIN) {
+  if (
+    action.type === ActionType.FORGOT_PASSWORD_BEGIN ||
+    action.type === ActionType.RESET_PASSWORD_BEGIN
+  ) {
     return {
       ...state,
-      isLoading: true
-    }
+      isLoading: true,
+    };
   }
-  if(action.type === ActionType.FORGOT_PASSWORD_SUCCESS) {
+  if (
+    action.type === ActionType.FORGOT_PASSWORD_SUCCESS ||
+    action.type === ActionType.RESET_PASSWORD_SUCCESS
+  ) {
     return {
       ...state,
       isLoading: false,
       showAlert: true,
-      alertText: action.payload.message.msg,
+      alertText: action.payload.message,
       alertType: "success",
-    }
+    };
   }
-  if (action.type === ActionType.FORGOT_PASSWORD_FAILED) {
+  if (
+    action.type === ActionType.FORGOT_PASSWORD_FAILED ||
+    action.type === ActionType.RESET_PASSWORD_FAILED
+  ) {
     return {
       ...state,
       isLoading: false,
@@ -698,7 +707,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
         firstName: "",
         lastName: "",
         identifier: "",
-      }
+      },
     };
   }
   /* if (action.type === ActionType.DELETE_ACCOUNT_SUCCESS) {

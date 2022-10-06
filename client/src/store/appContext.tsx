@@ -13,6 +13,7 @@ import {
   questionEdit,
   PublishQuizDetails,
   SingleQuestion,
+  resetPasswordArgs,
 } from "./@types/context";
 import {
   LoginResponse,
@@ -196,17 +197,41 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         "/auth/forgot-password",
         { email }
       );
-      console.log(data)
+
       dispatch({
         type: ActionType.FORGOT_PASSWORD_SUCCESS,
         payload: { message: data.msg },
       });
     } catch (error) {
-      console.log(error)
       const message = handleAxiosError(error);
       dispatch({ type: ActionType.AUTH_USER_FAILED, payload: { message } });
     }
     clearAlert();
+  };
+
+  const resetPassword = async (reqObj: resetPasswordArgs) => {
+    dispatch({ type: ActionType.RESET_PASSWORD_BEGIN });
+
+    try {
+      interface ResetPasswordRes {
+        msg: string;
+      }
+      const { data } = await authFetch.post<ResetPasswordRes>(
+        `/auth/reset-password?token=${reqObj.token}&email=${reqObj.email}`,
+        { ...reqObj }
+      );
+      dispatch({
+        type: ActionType.RESET_PASSWORD_SUCCESS,
+        payload: { message: data.msg },
+      });
+    } catch (error) {
+      const message = handleAxiosError(error);
+      dispatch({
+        type: ActionType.RESET_PASSWORD_FAILED,
+        payload: { message },
+      });
+    }
+    clearAlert()
   };
 
   //create moderated quiz functionality
@@ -1065,6 +1090,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         validateInput,
         login,
         forgotPassword,
+        resetPassword,
         createQuiz,
         getAllQuiz,
         addParticipant,

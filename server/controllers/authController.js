@@ -87,7 +87,7 @@ const forgotPassword = async (req, res) => {
     .json({ msg: "Kindly check your email for next step" });
 };
 
-const changePassword = async (req, res) => {
+const resetPassword = async (req, res) => {
   const { token, email } = req.query;
   const { newPassword, confirmNewPass } = req.body;
 
@@ -181,7 +181,7 @@ module.exports = {
   register,
   login,
   forgotPassword,
-  changePassword,
+  resetPassword,
   changeProfileDetails,
   updatePassword,
   deleteAccount,

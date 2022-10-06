@@ -1,19 +1,24 @@
-const sendEmail = require("./sendEmail")
-const { createJWT }  = require("./jwt")
+const { createJWT } = require("./jwt");
+const sgMail = require("@sendgrid/mail");
+const jwt = require("jsonwebtoken");
 
-const sendForgotPasswordEmail = async ({to, origin, userObj}) => {
-    const twentyMins = 1000 * 60 * 20;
-    const token = createJWT(userObj)
-    const link = `${origin}/reset-password?token=${token}&email=${to}`
+const sendForgotPasswordEmail = async ({ to, origin, userObj }) => {
+  const twentyMins = 1000 * 60 * 10;
+  const token = jwt.sign(userObj, process.env.JWT_SECRET, {
+    expiresIn: twentyMins,
+  });
+  const link = `${origin}/reset-password?token=${token}&email=${to}`;
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-    console.log("start send email")
-    await sendEmail({
-        to: to,
-        subject: "Reset Your Password",
-        html: `<h3>Forgot your password? Kindly click <a href=${link}>here</a> to reset</h3>`
-    })
-    console.log("send email finish")
-    return token
-}
+  console.log("start send email");
+  const msg = {
+    to: to,
+    from: "abdullahi.yemi10@gmail.com",
+    subject: "Reset Your Password",
+    html: `<h3>Forgot your password? Kindly click <a href=${link}>here</a> to create a new password</h3>`,
+  };
+  const info = await sgMail.send(msg);
+  return token;
+};
 
-module.exports = sendForgotPasswordEmail
+module.exports = sendForgotPasswordEmail;

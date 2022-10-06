@@ -48,6 +48,7 @@ export interface ContextType extends InitialState {
   register: (reqObj: registerArgs) => Promise<void>;
   login: (reqObj: registerArgs) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
+  resetPassword: (reqObj: resetPasswordArgs) => Promise<void>;
   validateInput: (arg?: string) => void;
   createQuiz: (quizTitle, quizCode) => Promise<boolean>;
   getAllQuiz: (reqObj: GetAllQuizArgs) => Promise<void>;
@@ -118,7 +119,7 @@ export interface ContextType extends InitialState {
   deleteAccount: () => Promise<void>;
   logoutUser: () => void;
   checkResults: (quizCode: string, identifier: string) => Promise<void>;
-  resetCheckResults: () => void
+  resetCheckResults: () => void;
 }
 
 export interface registerArgs {
@@ -126,6 +127,13 @@ export interface registerArgs {
   lastName?: string;
   email: string;
   password: string;
+}
+
+export interface resetPasswordArgs {
+  newPassword: string;
+  confirmNewPass: string;
+  token: string;
+  email: string;
 }
 
 export interface editQuizArg {
