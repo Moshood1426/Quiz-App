@@ -2,7 +2,8 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const Question = require("../models/Questions");
 const Quiz = require("../models/Quiz");
 const { StatusCodes } = require("http-status-codes");
-const Questions = require("../models/Questions");
+const checkPermissions = require("../utils/checkPermissions")
+
 
 const createQuestion = async (req, res) => {
   //if multiple question is to be added, multipleData will be an array of the questions
@@ -82,6 +83,7 @@ const editQuestion = async (req, res) => {
     throw new NotFoundError("Invalid question edited");
   }
 
+  checkPermissions(req.user, questionObj.createdBy)
   questionObj.type = type;
   questionObj.question = question;
   questionObj.options = options;
@@ -99,10 +101,11 @@ const deleteQuestion = async (req, res) => {
   if (!question) {
     throw new NotFoundError("Invalid question selected");
   }
+  checkPermissions(req.user, questionObj.createdBy)
   await question.remove();
 
   const quiz = await Quiz.findOne({ _id: question.forQuiz });
-  quiz.noOfQuestions = quiz.noOfQuestions + 1;
+  quiz.noOfQuestions = quiz.noOfQuestions - 1;
   await quiz.save();
 
   res.status(StatusCodes.OK).json({ msg: "Question deleted succesfully" });

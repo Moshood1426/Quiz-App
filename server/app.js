@@ -12,7 +12,16 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 //setting up middleware and invoking them
+const helmet = require("helmet")
+const xss = require("xss-clean")
+const mongoSanitize = require("express-mongo-sanitize")
+
+
 app.use(express.json());
+app.use(helmet())
+app.use(xss())
+app.use(mongoSanitize())
+
 app.use(cookieParser(process.env.JWT_SECRET))
 
 //setting up routes and invoking them

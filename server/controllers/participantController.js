@@ -9,6 +9,7 @@ const Participant = require("../models/Participant");
 const { attachCookiesToRes } = require("../utils/jwt");
 const validator = require("validator");
 const Questions = require("../models/Questions");
+const checkPermissions = require("../utils/checkPermissions");
 const moment = require("moment");
 
 const createParticipant = async (req, res) => {
@@ -54,6 +55,9 @@ const deleteParticipant = async (req, res) => {
   if (!participant) {
     throw new NotFoundError("Invalid participant selected");
   }
+  const quiz = await Quiz.findOne({ _id: participant.quizId });
+
+  checkPermissions(req.user, quiz.createdBy);
   await participant.remove();
 
   res.status(StatusCodes.OK).json({ msg: "Participant deleted succesfully" });

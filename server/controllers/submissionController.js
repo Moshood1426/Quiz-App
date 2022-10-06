@@ -1,4 +1,3 @@
-//const participants = Participant.find({quizId: quiz, submitted: true})
 
 const Participant = require("../models/Participant");
 const Questions = require("../models/Questions");

@@ -49,6 +49,6 @@ const ParticipantSchema = new mongoose.Schema({
 });
 
 //edit such that identifier should be unique for different quizId
-ParticipantSchema.index({ identifier: 1, quizId: 1 }, { unique: true });
+ParticipantSchema.index({ quizId: 1, identifier: 1 }, { unique: true });
 
 module.exports = mongoose.model("participant", ParticipantSchema);

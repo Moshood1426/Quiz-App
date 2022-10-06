@@ -12,10 +12,19 @@ const {
 } = require("../controllers/authController");
 const { authenticateUser } = require("../middleware/authMiddleware");
 
-router.route("/register").post(register);
-router.route("/login").post(login);
-router.route("/forgot-password").post(forgotPassword);
-router.route("/reset-password").post(resetPassword);
+const rateLimiter = require("express-rate-limit");
+
+const apiLimiter = rateLimiter({
+  windowMs: 15 * 60 * 1000, // 15 mins,
+  max: 10,
+  message:
+    "Too many requests from this IP address, please try again after 15 minutes",
+});
+
+router.route("/register").post(apiLimiter, register);
+router.route("/login").post(apiLimiter, login);
+router.route("/forgot-password").post(apiLimiter, forgotPassword);
+router.route("/reset-password").post(apiLimiter, resetPassword);
 router.route("/updateUser").patch(authenticateUser, changeProfileDetails);
 router.route("/updatePassword").patch(authenticateUser, updatePassword);
 router.route("/deleteAccount").delete(authenticateUser, deleteAccount);

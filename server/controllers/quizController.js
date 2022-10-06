@@ -4,6 +4,7 @@ const Participant = require("../models/Participant");
 const Question = require("../models/Questions");
 const { StatusCodes } = require("http-status-codes");
 const Questions = require("../models/Questions");
+const checkPermissions = require("../utils/checkPermissions")
 
 const createQuiz = async (req, res) => {
   const { quizCode, quizTitle, quizType } = req.body;
@@ -96,6 +97,7 @@ const deleteSingleQuiz = async (req, res) => {
     throw new NotFoundError("Kindly input a valid quizId");
   }
 
+  checkPermissions(req.user, quiz.createdBy)
   await quiz.remove();
   res.status(StatusCodes.OK).json({ msg: "Quiz deleted succesfully" });
 };
@@ -115,6 +117,7 @@ const editQuiz = async (req, res) => {
     throw new NotFoundError("Something went wrong");
   }
 
+  checkPermissions(req.user, quiz.createdBy)
   quiz.quizCode = quizCode;
   quiz.quizTitle = quizTitle;
   quiz.privacy = privacy === "private" ? true : false;
@@ -140,6 +143,7 @@ const publishQuiz = async (req, res) => {
     throw new NotFoundError("quiz not found");
   }
 
+  checkPermissions(req.user, quiz.createdBy)
   if (anytime) {
     quiz.published = true;
     quiz.startDate = "";
