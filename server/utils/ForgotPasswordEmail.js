@@ -10,7 +10,6 @@ const sendForgotPasswordEmail = async ({ to, origin, userObj }) => {
   const link = `${origin}/reset-password?token=${token}&email=${to}`;
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-  console.log("start send email");
   const msg = {
     to: to,
     from: "abdullahi.yemi10@gmail.com",

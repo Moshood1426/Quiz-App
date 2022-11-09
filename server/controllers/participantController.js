@@ -26,6 +26,12 @@ const createParticipant = async (req, res) => {
     throw new NotFoundError("quiz with id not found");
   }
 
+  const participantExist = await Participant.findOne({ identifier, quizId });
+
+  if (participantExist) {
+    throw new BadRequestError("Participant has been added to quiz");
+  }
+
   await Participant.create({ identifier, quizId, firstName, lastName });
 
   res.status(StatusCodes.CREATED).json({ msg: "Created" });
