@@ -5,7 +5,7 @@ const errorHandlerMiddleware = (error, req, res, next) => {
     status_code: error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
     message: error.message || "Something went wrong, Please try again later..",
   };
-
+  
   //Handling mongoose validation error
   if (error.name === "ValidationError") {
     (defaultError.status_code = StatusCodes.BAD_REQUEST),

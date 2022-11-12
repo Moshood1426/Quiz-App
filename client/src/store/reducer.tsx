@@ -527,6 +527,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       validateParticipant: null,
       participantInfo: null,
       participantQuestions: null,
+      participantQuizDetails: null,
       limit: 5,
       page: 1,
     };

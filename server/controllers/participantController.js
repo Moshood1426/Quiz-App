@@ -32,9 +32,14 @@ const createParticipant = async (req, res) => {
     throw new BadRequestError("Participant has been added to quiz");
   }
 
-  await Participant.create({ identifier, quizId, firstName, lastName });
+  const participant = await Participant.create({
+    identifier,
+    quizId,
+    firstName,
+    lastName,
+  });
 
-  res.status(StatusCodes.CREATED).json({ msg: "Created" });
+  res.status(StatusCodes.CREATED).json({ msg: "Created", participant });
 };
 
 const getAllParticipant = async (req, res) => {
