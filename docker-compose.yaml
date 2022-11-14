@@ -1,6 +1,6 @@
 version: "3.8"
 services:   
-  backend:
+  server:
     build: ./server
     container_name: server
     ports:
@@ -22,4 +22,4 @@ services:
     stdin_open: true
     tty: true
     depends_on:
-      - backend
+      - server
