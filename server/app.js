@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 require("dotenv").config();
 require("express-async-errors");
 
@@ -15,13 +16,11 @@ if (process.env.NODE_ENV !== "production") {
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
-const cors = require("cors");
 
 app.use(express.json());
 app.use(helmet());
 app.use(xss());
 app.use(mongoSanitize());
-app.use(cors());
 
 app.use(cookieParser(process.env.JWT_SECRET));
 
@@ -31,6 +30,8 @@ const quizRoute = require("./routes/quizRoute");
 const questionRoute = require("./routes/questionRoute");
 const participantRoute = require("./routes/participantRoute");
 const submissionRoute = require("./routes/submissionRoute");
+
+app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 app.get("/api/v1", (req, res) => {
   res.status(200).json({ msg: "connection succesful" });
@@ -51,7 +52,7 @@ app.use(errorHandlerMiddleware);
 
 //setting up DB and invoking route
 const connectDB = require("./db/connectDB");
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 80;
 
 const start = async () => {
   try {

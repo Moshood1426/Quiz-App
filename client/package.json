@@ -11,6 +11,7 @@
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "axios": "^0.27.2",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
@@ -50,5 +51,5 @@
     "@types/react-icons": "^3.0.0",
     "@types/styled-components": "^5.1.26"
   },
-  "proxy": "http://host.docker.internal:5000"
+  "proxy": "http://localhost:5000"
 }

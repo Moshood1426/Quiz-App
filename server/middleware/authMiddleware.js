@@ -2,6 +2,7 @@ const { UnauthenticatedError, BadRequestError } = require("../errors");
 const { verifyJWT } = require("../utils/jwt");
 
 const authenticateUser = (req, res, next) => {
+
   const { token } = req.signedCookies;
 
   if (!token) {

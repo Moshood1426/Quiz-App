@@ -1,4 +1,4 @@
-FROM "node"
+FROM node:16-alpine
 
 WORKDIR /app
 
@@ -8,6 +8,16 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 5000
+EXPOSE 80
+
+ENV MONGO_URI=secret
+
+ENV PORT=80
+
+ENV JWT_SECRET=secret
+
+ENV JWT_LIFETIME=10d
+
+ENV SENDGRID_API_KEY=secret
 
 CMD ["node", "app"]

@@ -71,19 +71,6 @@ const Wrapper = styled.div`
     margin-bottom: 0.75em;
   }
 
-  ::before {
-    content: "";
-    background-color: var(--primary-cream);
-    position: absolute;
-    height: 250px;
-    width: 250px;
-    left: -80px;
-    top: -80px;
-    transform: matrix(-0.62, -0.83, 0.74, -0.63, 0, 0);
-    border-radius: 55% 45% 70% 45% / 39% 30% 70% 70%;
-    z-index: 0;
-  }
-
   .log-in {
     color: var(--primary-200);
   }

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  
 
   .background-div {
     position: fixed;
@@ -10,7 +9,7 @@ const Wrapper = styled.div`
     height: 100vh;
     width: 100%;
     background-color: rgba(54, 43, 43, 0.73);
-    z-index: 2;
+    z-index: 3;
   }
 `;
 export default Wrapper;

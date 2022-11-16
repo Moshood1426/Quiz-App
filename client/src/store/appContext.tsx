@@ -98,15 +98,15 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   });
 
   //axios instance interceptors
-  authFetch.interceptors.request.use(
-    (config) => {
-      //config.headers.common["Authorization"] = `Bearer ${state.token}`;
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
+  // authFetch.interceptors.request.use(
+  //   (config) => {
+  //     //config.headers.common["Authorization"] = `Bearer ${state.token}`;
+  //     return config;
+  //   },
+  //   (error) => {
+  //     return Promise.reject(error);
+  //   }
+  // );
 
   authFetch.interceptors.response.use(
     (response) => {
@@ -116,18 +116,26 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       if (error.response.status === 401) {
         logoutUser();
       }
+      if (error.response.status === 500) {
+        error.special = { msg: "Something went wrong" };
+      }
       return Promise.reject(error);
     }
   );
 
   const handleAxiosError = (error: any): { msg: string } => {
+    console.log(error);
     let message;
     if (axios.isAxiosError(error)) {
       interface Response {
         msg: string;
       }
       message = error.response?.data as Response;
-    } else {
+    }
+    if (error.special) {
+      message = { msg: "Something went wrong, try again later" };
+    }
+    if (!message) {
       message = { msg: "An unexpected error occurred" };
     }
     return message;
@@ -231,7 +239,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         payload: { message },
       });
     }
-    clearAlert()
+    clearAlert();
   };
 
   //create moderated quiz functionality
@@ -276,7 +284,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       });
     } catch (error) {
       const message = handleAxiosError(error);
-      validateInput(message.msg);
+      dispatch({ type: ActionType.AUTH_USER_FAILED, payload: { message } });
     }
   };
 
@@ -839,12 +847,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         payload: data.quiz,
       });
     } catch (error) {
-      let message: any;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.GET_TEST_FAILED,
         payload: message,
@@ -863,19 +866,16 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.AUTHORIZE_PARTICIPANT_BEGIN });
 
     try {
-      const { data } = await axios.post("/api/v1/participant", { ...reqObj });
+      const { data } = await axios.post(`/api/v1/participant`, {
+        ...reqObj,
+      });
       dispatch({
         type: ActionType.AUTHORIZE_PARTICIPANT_SUCCESS,
         payload: data.user,
       });
       localStorage.setItem("participant", JSON.stringify(data.user));
     } catch (error) {
-      let message;
-      if (axios.isAxiosError(error)) {
-        message = error.response?.data;
-      } else {
-        message = { msg: "An unexpected error occurred" };
-      }
+      const message = handleAxiosError(error);
       dispatch({
         type: ActionType.AUTHORIZE_PARTICIPANT_FAILED,
         payload: message,
@@ -913,8 +913,12 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         },
       });
     } catch (error) {
-      console.log(error);
-      //endTest()
+      const message = handleAxiosError(error);
+      dispatch({
+        type: ActionType.AUTHORIZE_PARTICIPANT_FAILED,
+        payload: message,
+      });
+      clearAlert();
     }
   };
 
@@ -944,7 +948,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
 
     try {
-      const { data } = await axios.post("/api/v1/participant/take-test", {
+      const { data } = await axios.post(`/api/v1/participant/take-test`, {
         answers: { questionId, answer },
       });
 
@@ -957,8 +961,12 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       const number = state.page < state.numOfQuestions ? state.page + 1 : 1;
       changeQuestionPage(number);
     } catch (error) {
-      console.log(error);
-      //endTest()
+      const message = handleAxiosError(error);
+      dispatch({
+        type: ActionType.AUTHORIZE_PARTICIPANT_FAILED,
+        payload: message,
+      });
+      clearAlert();
     }
   };
 
@@ -988,14 +996,18 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         },
       });
     } catch (error) {
-      console.log(error);
-      //endTest()
+      const message = handleAxiosError(error);
+      dispatch({
+        type: ActionType.AUTHORIZE_PARTICIPANT_FAILED,
+        payload: message,
+      });
+      clearAlert();
     }
   };
 
   const endTest = async () => {
     try {
-      await axios.patch("/api/v1/participant/take-test");
+      await axios.patch(`/api/v1/participant/take-test`);
     } catch (error) {
       console.log(error);
     }
@@ -1016,7 +1028,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.CHECK_RESULTS_BEGIN });
     try {
       const { data } = await axios.post<CheckResultsResponse>(
-        "/api/v1/participant/check-results",
+        `/api/v1/participant/check-results`,
         {
           quizCode,
           identifier,
