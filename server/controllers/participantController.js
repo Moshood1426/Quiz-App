@@ -120,6 +120,7 @@ const validateParticipant = async (req, res) => {
   }
 
   let participant;
+  //setup participant for private quiz
   if (privacy === true) {
     participant = await Participant.findOne({
       quizId,
@@ -137,15 +138,18 @@ const validateParticipant = async (req, res) => {
     }
   }
 
+  //setup participant for public quiz
   if (privacy === false) {
+    console.log(privacy);
     if (!identifier || !firstName || !lastName) {
       throw new BadRequestError("Please input all necessary details");
     }
     const user = await Participant.findOne({ identifier });
-    if (user.submitted) {
-      throw new BadRequestError("Your submission for this test was received");
-    }
+
     if (user) {
+      if (user.submitted) {
+        throw new BadRequestError("Your submission for this test was received");
+      }
       participant = user;
     } else {
       const identifierIsEmail = validator.isEmail(identifier);
