@@ -43,7 +43,7 @@ const ManageQuiz = () => {
     if (!user) {
       navigate("/register");
     }
-  //eslint-disabble-next-line
+  //eslint-disable-next-line
   }, [user]);
 
   //gets all quiz on first render if all quiz does not exist
