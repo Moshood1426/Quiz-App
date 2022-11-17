@@ -2,8 +2,9 @@ const { BadRequestError, NotFoundError } = require("../errors");
 const Question = require("../models/Questions");
 const Quiz = require("../models/Quiz");
 const { StatusCodes } = require("http-status-codes");
-const checkPermissions = require("../utils/checkPermissions")
-
+const checkPermissions = require("../utils/checkPermissions");
+const axios = require("axios");
+const fetch = require("node-fetch");
 
 const createQuestion = async (req, res) => {
   //if multiple question is to be added, multipleData will be an array of the questions
@@ -83,7 +84,7 @@ const editQuestion = async (req, res) => {
     throw new NotFoundError("Invalid question edited");
   }
 
-  checkPermissions(req.user, questionObj.createdBy)
+  checkPermissions(req.user, questionObj.createdBy);
   questionObj.type = type;
   questionObj.question = question;
   questionObj.options = options;
@@ -101,7 +102,7 @@ const deleteQuestion = async (req, res) => {
   if (!question) {
     throw new NotFoundError("Invalid question selected");
   }
-  checkPermissions(req.user, questionObj.createdBy)
+  checkPermissions(req.user, question.createdBy);
   await question.remove();
 
   const quiz = await Quiz.findOne({ _id: question.forQuiz });
@@ -111,9 +112,31 @@ const deleteQuestion = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Question deleted succesfully" });
 };
 
+const getQuickQuestions = async (req, res) => {
+  const { type, difficulty, category, amount } = req.query;
+
+  let url = `https://opentdb.com/api.php?encode=url3986&amount=${amount}`;
+  if (category > 8) {
+    url = url + `&category=${category}`;
+  }
+  if (type) {
+    const result = type === "Multiple Choice" ? "multiple" : "boolean";
+    url += `&type=${result}`;
+  }
+  if (difficulty) {
+    url += `&difficulty=${difficulty}`;
+  }
+  console.log(url);
+  const resp = await fetch(url);
+  const data = await resp.json();
+
+  res.status(StatusCodes.OK).json({ data });
+};
+
 module.exports = {
   createQuestion,
   getQuizQuestions,
   editQuestion,
   deleteQuestion,
+  getQuickQuestions,
 };

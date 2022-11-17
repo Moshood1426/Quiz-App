@@ -5,10 +5,14 @@ const {
   getQuizQuestions,
   editQuestion,
   deleteQuestion,
+  getQuickQuestions,
 } = require("../controllers/questionController");
 const { authenticateUser } = require("../middleware/authMiddleware");
 
 router.route("/").post(authenticateUser, createQuestion);
+
+router.route("/quick").get(authenticateUser, getQuickQuestions);
+
 router
   .route("/:quizId")
   .get(authenticateUser, getQuizQuestions)

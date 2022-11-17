@@ -180,6 +180,7 @@ const Explore = () => {
               <button type="submit" className="btn" disabled={isLoading}>
                 Submit 2/2
               </button>
+              <p onClick={() => setFormPage(1)} className="go-back">Go Back</p>
             </div>
           </>
         )}

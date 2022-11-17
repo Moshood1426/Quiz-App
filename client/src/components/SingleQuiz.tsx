@@ -33,7 +33,7 @@ const SingleQuiz: React.FC<SingleQuizProps> = ({
         await getAllQuiz({
           title: "",
           code: "",
-          sort: "all",
+          sort: "latest",
           privacy: "all",
           type: "all",
         });

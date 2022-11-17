@@ -1,4 +1,10 @@
-import { User, SingleQuiz, SingleQuestion, SingleParticipant, ParticipantQuestion } from "./context";
+import {
+  User,
+  SingleQuiz,
+  SingleQuestion,
+  SingleParticipant,
+  ParticipantQuestion,
+} from "./context";
 
 export type LoginResponse = {
   user: User;
@@ -21,19 +27,20 @@ export interface GetQuizQuestionsResponse {
 }
 
 export interface GetAllParticipantResponse {
-    participant: SingleParticipant[]
+  participant: SingleParticipant[];
 }
 
 export interface GetQuizSubmissionResponse {
-    quiz: SingleQuiz
+  quiz: SingleQuiz;
 }
 
 export interface GetSingleQuizSubmissionRes {
-    participant: SingleParticipant[]
-    questions: ParticipantQuestion[]
+  participant: SingleParticipant[];
+  questions: ParticipantQuestion[];
 }
 
 export interface GetDBQuestionsResponse {
+  data: {
     response_code: number;
     results: {
       category: string;
@@ -43,14 +50,15 @@ export interface GetDBQuestionsResponse {
       correct_answer: string;
       incorrect_answers: string[];
     }[];
-  }
+  };
+}
 
-  export interface EditQuizDetailsResponse {
-    quizDetails: SingleQuiz
-  }
+export interface EditQuizDetailsResponse {
+  quizDetails: SingleQuiz;
+}
 
-  export interface CheckResultsResponse {
-    participant: SingleParticipant, 
-    quiz: SingleQuiz,
-    questions: SingleQuestion[]
-  }
+export interface CheckResultsResponse {
+  participant: SingleParticipant;
+  quiz: SingleQuiz;
+  questions: SingleQuestion[];
+}

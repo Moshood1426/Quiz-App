@@ -7,19 +7,19 @@ import { useNavigate } from "react-router-dom";
 import SmallNavModal from "./SmallNavModal";
 
 interface NavbarProps {
-  goHome?: boolean
+  goHome?: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({goHome}) => {
+const Navbar: React.FC<NavbarProps> = ({ goHome }) => {
   const [showLogout, setShowLogout] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
   const navigate = useNavigate();
 
-  const { user, logoutUser } = useAppContext();
+  const { user, endSession } = useAppContext();
   const nameTag = user?.firstName[0] || "A";
 
   const signOut = () => {
-    logoutUser();
+    endSession();
     navigate("/landing");
   };
 

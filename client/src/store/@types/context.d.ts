@@ -120,6 +120,7 @@ export interface ContextType extends InitialState {
   logoutUser: () => void;
   checkResults: (quizCode: string, identifier: string) => Promise<void>;
   resetCheckResults: () => void;
+  endSession: () => void;
 }
 
 export interface registerArgs {

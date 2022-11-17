@@ -69,11 +69,22 @@ const Wrapper = styled.div`
   .btn {
     padding: 0.75em;
     width: 100%;
+    margin-bottom: 1em;
   }
 
   .btn:disabled {
-    background-color: var(--primary-400);
+    background-color: var(--primary-200);
     cursor: not-allowed;
+  }
+
+  .go-back {
+    margin: 0;
+    place-self: center center;
+    text-align: center;
+    margin-bottom: 1em;
+    color: var(--primary-brown);
+    font-size: 1.2rem;
+    cursor: pointer;
   }
 
   @media (min-width: 800px) {

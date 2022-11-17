@@ -31,7 +31,7 @@ const questionRoute = require("./routes/questionRoute");
 const participantRoute = require("./routes/participantRoute");
 const submissionRoute = require("./routes/submissionRoute");
 
-app.use(express.static(path.resolve(__dirname, "../client/build")));
+app.use("/", express.static(path.resolve(__dirname, "../client/build")));
 
 app.get("/api/v1", (req, res) => {
   res.status(200).json({ msg: "connection succesful" });
@@ -42,6 +42,11 @@ app.use("/api/v1/quiz", quizRoute);
 app.use("/api/v1/question", questionRoute);
 app.use("/api/v1/participant", participantRoute);
 app.use("/api/v1/submission", submissionRoute);
+
+// only when ready to deploy
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
+})
 
 //setting up error handlers and invoking them
 const errorHandlerMiddleware = require("./middleware/error-handler");

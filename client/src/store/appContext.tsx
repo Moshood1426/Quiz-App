@@ -720,7 +720,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     const { quizCode, quizTitle, type, difficulty, category, amount } = data;
 
     //conjuring the URL together
-    let url = `https://opentdb.com/api.php?encode=url3986&amount=${amount}`;
+    let url = `/api/v1/question/quick?amount=${amount}`;
     if (category > 8) {
       url = url + `&category=${category}`;
     }
@@ -732,19 +732,26 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
       url += `&difficulty=${difficulty}`;
     }
 
+    console.log(url);
     try {
-      //creating quiz from DB
-      const { data: quiz } = await authFetch.post<CreateQuizResponse>("/quiz", {
-        quizCode,
-        quizTitle,
-        quizType: "quick",
-      });
-      const quizId = quiz.quiz._id;
-
       //get quiz questions from DB
-      const { data: questions } = await axios.get<GetDBQuestionsResponse>(url);
+      const {
+        data: { data: questions },
+      } = await axios.get<GetDBQuestionsResponse>(url);
 
       //formatting result from DB to fit questions Schema request on backend
+      if (questions.results.length < 1) {
+        dispatch({
+          type: ActionType.CREATE_QUESTION_FAILED,
+          payload: {
+            message: {
+              msg: ` ${amount} questions unavailable. Select any type and any difficulty for more chances of getting questions`,
+            },
+          },
+        });
+        clearAlert();
+        return false;
+      }
       const result = questions.results.map((item) => {
         const options = item.incorrect_answers.map((item) =>
           decodeURIComponent(item)
@@ -759,6 +766,14 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         };
         return result;
       });
+
+      //creating quiz from DB
+      const { data: quiz } = await authFetch.post<CreateQuizResponse>("/quiz", {
+        quizCode,
+        quizTitle,
+        quizType: "quick",
+      });
+      const quizId = quiz.quiz._id;
 
       //creating questions for test with result
       await authFetch.post("/question", {
@@ -1015,6 +1030,20 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     dispatch({ type: ActionType.LOGOUT_PARTICIPANT });
   };
 
+  const endSession = async () => {
+    try {
+      await authFetch.get("/auth/logout");
+      logoutUser();
+    } catch (error) {
+      const message = handleAxiosError(error);
+      dispatch({
+        type: ActionType.GET_SINGLE_QUIZ_FAILED,
+        payload: message.msg,
+      });
+      clearAlert();
+    }
+  };
+
   const logoutUser = () => {
     localStorage.removeItem("user");
     dispatch({ type: ActionType.LOGOUT_USER });
@@ -1143,6 +1172,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         pickAnswer,
         checkResults,
         resetCheckResults,
+        endSession,
       }}
     >
       {children}

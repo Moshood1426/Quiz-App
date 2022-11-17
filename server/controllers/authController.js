@@ -177,6 +177,14 @@ const deleteAccount = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "user profile deleted." });
 };
 
+const logout = (req, res) => {
+  res.cookie("token", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000),
+  });
+  res.status(StatusCodes.OK).json({ msg: "user logged out!" });
+};
+
 module.exports = {
   register,
   login,
@@ -185,4 +193,5 @@ module.exports = {
   changeProfileDetails,
   updatePassword,
   deleteAccount,
+  logout,
 };

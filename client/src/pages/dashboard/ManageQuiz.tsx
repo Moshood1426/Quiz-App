@@ -11,12 +11,13 @@ import Loading from "../../components/Loading";
 import { GetAllQuizArgs } from "../../store/@types/context";
 import useAppContext from "../../store/appContext";
 import { BiRefresh } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const initialState: GetAllQuizArgs = {
   title: "",
   code: "",
-  sortOptions: ["all", "latest", "oldest", "a-z", "z-a"],
-  sort: "all",
+  sortOptions: ["latest", "oldest", "a-z", "z-a"],
+  sort: "latest",
   privacyOptions: ["all", "private", "public"],
   privacy: "all",
 };
@@ -28,13 +29,22 @@ const ManageQuiz = () => {
   );
 
   const {
+    user,
     getAllQuiz,
     quiz: allQuiz,
     isLoading,
     manageSingleQuiz,
   } = useAppContext();
+  const navigate = useNavigate();
 
   const firstUpdate = useRef("no render");
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/register");
+    }
+  //eslint-disabble-next-line
+  }, [user]);
 
   //gets all quiz on first render if all quiz does not exist
   useEffect(() => {
