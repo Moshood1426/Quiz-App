@@ -22,6 +22,7 @@ const StartTest = () => {
     authorizeParticipant: authParticipant,
     validateInput,
     getTestBegin,
+    resetGetTestBegin
   } = useAppContext();
 
   const navigate = useNavigate();
@@ -97,6 +98,7 @@ const StartTest = () => {
       <button type="submit" className="btn">
         Submit
       </button>
+      <p onClick={() => resetGetTestBegin()} className="go-back">Go Back</p>
     </form>
   );
 
@@ -132,6 +134,7 @@ const StartTest = () => {
       <button className="btn" type="submit">
         Submit
       </button>
+      <p onClick={() => resetGetTestBegin()} className="go-back">Go Back</p>
     </form>
   );
 

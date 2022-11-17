@@ -125,6 +125,11 @@ const Wrapper = styled.div`
     margin-bottom: 0.5em;
   }
 
+  .go-back {
+    text-align: center;
+    color: var(--primary-brown)
+  }
+
   @media (max-height: 600px) {
     .result-modal {
       min-height: 120vh;

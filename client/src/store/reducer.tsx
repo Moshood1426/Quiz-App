@@ -440,6 +440,13 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
       participantQuizDetails: action.payload,
     };
   }
+  if (action.type === ActionType.RESET_GET_TEST_BEGIN) {
+    return {
+      ...state,
+      isLoading: false,
+      participantQuizDetails: null,
+    };
+  }
   if (action.type === ActionType.GET_TEST_FAILED) {
     return {
       ...state,

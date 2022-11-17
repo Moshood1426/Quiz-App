@@ -79,6 +79,7 @@ export interface ContextType extends InitialState {
     publishQuizDetails: PublishQuizDetails
   ) => Promise<boolean>;
   getTestBegin: (quizCode: string) => Promise<void>;
+  resetGetTestBegin: () =>  void
   authorizeParticipant: (reqObj: {
     quizId: object;
     privacy: boolean;

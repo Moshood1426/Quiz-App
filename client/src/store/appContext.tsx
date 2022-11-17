@@ -871,6 +871,12 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
     }
   };
 
+  const resetGetTestBegin = () => {
+    dispatch({
+      type: ActionType.RESET_GET_TEST_BEGIN,
+    });
+  };
+
   const authorizeParticipant = async (reqObj: {
     quizId: object;
     privacy: boolean;
@@ -1151,6 +1157,7 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
         deleteQuestion,
         publishQuiz,
         getTestBegin,
+        resetGetTestBegin,
         authorizeParticipant,
         getParticipantQuizInfo,
         setQuestionAnswer,
