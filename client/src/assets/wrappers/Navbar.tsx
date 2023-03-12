@@ -18,7 +18,7 @@ const Wrapper = styled.nav`
   }
 
   .logo-img {
-    height: 30px;
+    height: 28px;
     width: fit-content;
     margin-right: 1em;
     display: flex;
@@ -51,7 +51,7 @@ const Wrapper = styled.nav`
   }
 
   img {
-    height: 40px;
+    height: 28px;
   }
 
   .user-container {
@@ -104,7 +104,11 @@ const Wrapper = styled.nav`
   }
 
   @media (min-width: 600px) {
-    .logoImg {
+    .logo-img {
+      height: 40px;
+    }
+
+    img {
       height: 40px;
     }
 
