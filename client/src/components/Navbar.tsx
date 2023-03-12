@@ -30,7 +30,10 @@ const Navbar: React.FC<NavbarProps> = ({ goHome }) => {
   return (
     <Wrapper>
       <div className="nav-container">
-        <div onClick={() => goHome && navigate("/landing")}>
+        <div
+          className="logo-img"
+          onClick={() => goHome && navigate("/landing")}
+        >
           <Logo />
         </div>
 

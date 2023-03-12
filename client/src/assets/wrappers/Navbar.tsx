@@ -17,6 +17,13 @@ const Wrapper = styled.nav`
     padding: 1em 0;
   }
 
+  .logo-img {
+    height: 30px;
+    width: fit-content;
+    margin-right: 1em;
+    display: flex;
+  }
+
   .nav-items {
     display: none;
     margin: 0;
@@ -97,6 +104,10 @@ const Wrapper = styled.nav`
   }
 
   @media (min-width: 600px) {
+    .logoImg {
+      height: 40px;
+    }
+
     .nav-toggle {
       display: none;
     }
