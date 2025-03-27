@@ -18,6 +18,13 @@ const Wrapper = styled.nav`
   }
 
   .logo-img {
+    height: 28px;
+    width: fit-content;
+    margin-right: 1em;
+    display: flex;
+  }
+
+  .logo-img {
     height: 27.5px;
     width: fit-content;
     margin-right: 1em;
@@ -104,7 +111,11 @@ const Wrapper = styled.nav`
   }
 
   @media (min-width: 600px) {
-    .logoImg {
+    .logo-img {
+      height: 40px;
+    }
+
+    img {
       height: 40px;
     }
 
