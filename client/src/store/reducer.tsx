@@ -9,7 +9,7 @@ const reducer: React.Reducer<InitialState, Action> = (state, action) => {
     return {
       ...state,
       showAlert: true,
-      alertType: "danger",
+      alertType: action.payload.type,
       alertText: action.payload.text
         ? action.payload.text
         : "Kindly input necesary values",

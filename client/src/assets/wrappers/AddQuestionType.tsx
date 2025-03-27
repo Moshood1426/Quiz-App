@@ -28,6 +28,7 @@ const Wrapper = styled.div`
 
   .add-ques-type {
     background-color: var(--primary-200);
+    cursor: pointer;
   }
 
   .add-ques-type-image {

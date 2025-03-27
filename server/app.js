@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const cors = require('cors');
 require("dotenv").config();
 require("express-async-errors");
 
@@ -16,6 +17,7 @@ if (process.env.NODE_ENV !== "production") {
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
+
 
 app.use(express.json());
 app.use(helmet());
@@ -57,6 +59,7 @@ app.use(errorHandlerMiddleware);
 
 //setting up DB and invoking route
 const connectDB = require("./db/connectDB");
+const { default: Credentials } = require("next-auth/providers/credentials");
 const port = process.env.PORT || 80;
 
 const start = async () => {

@@ -15,21 +15,21 @@ const Process = () => {
               <img src={questionImg} alt="setting questions" />
             </div>
             <h4>Set Questions</h4>
-            <p>Lorem ipsum dolor sit amet, tur adipiscing elit, sed </p>
+            <p>Use our amazing resources to generate creative questions </p>
           </div>
           <div className="process">
             <div className="process-img-div">
               <img src={reviewImg} alt="setting questions" />
             </div>
             <h4>Review Answers</h4>
-            <p>Lorem ipsum dolor sit amet, tur adipiscing elit, sed </p>
+            <p>Monitor your student's performance by exploring answers </p>
           </div>
           <div className="process process-feedback">
             <div className="process-img-div">
               <img src={feedbackImg} alt="setting questions" />
             </div>
             <h4>Drop Feedback</h4>
-            <p>Lorem ipsum dolor sit amet, tur adipiscing elit, sed </p>
+            <p>Provide helpful feedback to help students grow . </p>
           </div>
         </div>
       </div>

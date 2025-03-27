@@ -142,8 +142,14 @@ const AppProvider: React.FC<ContextProps> = ({ children }) => {
   };
 
   //throws error if inputs are poorly filled
-  const validateInput = (text?: string) => {
-    dispatch({ type: ActionType.VALIDATE_INPUT, payload: { text: text } });
+  const validateInput = (
+    text?: string,
+    type: "danger" | "success" = "danger"
+  ) => {
+    dispatch({
+      type: ActionType.VALIDATE_INPUT,
+      payload: { text: text, type: type },
+    });
     clearAlert();
   };
 

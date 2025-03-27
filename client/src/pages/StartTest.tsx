@@ -143,7 +143,7 @@ const StartTest = () => {
       <div className="img-div" onClick={() => navigate("/landing")}>
         <Logo />
       </div>
-      <p className="sub-title">Some description if needed</p>
+      <p className="sub-title">The Ultimate Quiz Creation Tool</p>
       <Card>
         {
           //if participant entered valid quiz code

@@ -73,14 +73,14 @@ const AddParticipant = () => {
           />
           <FormItem
             name={"lastName"}
-            placeholder={"participant first name"}
+            placeholder={"participant last name"}
             type={"text"}
             value={participantData.lastName}
             onChange={handleChange}
           />
           <FormItem
             name={"identifier"}
-            placeholder={"enter unique identifier"}
+            placeholder={"participant email"}
             type={"text"}
             value={participantData.identifier}
             onChange={handleChange}

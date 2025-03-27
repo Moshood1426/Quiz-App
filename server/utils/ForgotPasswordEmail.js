@@ -16,6 +16,7 @@ const sendForgotPasswordEmail = async ({ to, origin, userObj }) => {
     subject: "Reset Your Password",
     html: `<h3>Forgot your password? Kindly click <a href=${link}>here</a> to create a new password</h3>`,
   };
+  
   const info = await sgMail.send(msg);
   return token;
 };

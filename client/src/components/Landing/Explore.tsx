@@ -11,10 +11,11 @@ const Explore = () => {
         </div>
         <div className="explore-text-div">
           <span>Looking for open questions?</span>
-          <h2>Explore Pre-existing Questions Based On Your Field Of Study</h2>
+          <h2>Explore Pre-existing Questions From Our Database</h2>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incidid
+            Avoiding the stress of setting finding the right questions? Let's
+            help with our amazing data of questions available for several fields
+            and subjects of study.
           </p>
           <button className="btn">Explore Now</button>
         </div>

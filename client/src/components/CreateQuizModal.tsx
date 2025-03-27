@@ -53,13 +53,14 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({
         <div className="img-div">
           <Logo />
         </div>
-        <p className="sub-title">Some description if needed</p>
+        <p className="sub-title">The Ultimate Quiz Creation Tool</p>
 
         <Card>
           <h4 className="form-title">Create Quick Quiz</h4>
           <p className="form-sub-title">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua
+            Generate quizzes instantly with a vast collection of pre-made
+            questions. Customize tests effortlessly and assess your students
+            with ease.
           </p>
           <button
             className="btn submitBtn"
@@ -86,7 +87,7 @@ const CreateQuizModal: React.FC<CreateQuizModalProps> = ({
       <div className="img-div">
         <Logo />
       </div>
-      <p className="sub-title">Some description if needed</p>
+      <p className="sub-title">The Ultimate Quiz Creation Tool</p>
       <Card>
         <h4 className="form-title">Create Moderated Quiz</h4>
         <form onSubmit={handleSubmit}>

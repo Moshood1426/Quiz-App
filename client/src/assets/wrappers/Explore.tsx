@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
 const Wrapper = styled.section`
-  padding: 5rem 0;
+  padding: 8rem 0;
   
   .explore-img-div {
     display: none;
+    max-width: 550px;
   }
 
   .explore-container {
@@ -28,7 +29,7 @@ const Wrapper = styled.section`
   @media (min-width: 950px) {
     .explore-img-div {
       display: block;
-      max-width: 100%;
+     
     }
 
     .explore-container {

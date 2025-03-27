@@ -11,9 +11,11 @@ const Wrapper = styled.div`
 
   .side-bar-title {
     font-size: 1rem;
+    font-weight: bold;
   }
 
-  .side-bar-subtitle, li {
+  .side-bar-subtitle,
+  li {
     font-size: 0.85rem;
   }
 

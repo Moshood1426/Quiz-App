@@ -12,7 +12,7 @@ const Intro = () => {
           <img src={introImg} alt="asking questions" />
         </div>
         <div className="intro-text-div">
-          <h1>A New Approach To Quizing Students</h1>
+          <h1>The Best Approach To Testing Students</h1>
           <p>
             Create intuitive test to engage your students from anywhere around
             the world

@@ -87,8 +87,8 @@ const Explore = () => {
       <span className="explore-sub-title">Not sure what to set?</span>
       <h3 className="explore-title">Explore The OpenTDI Database</h3>
       <p className="explore-details">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ve
+        Generate quizzes instantly with a vast collection of pre-made questions.
+        Customize tests effortlessly and assess your students with ease.
       </p>
       <form className="form-card" onSubmit={(event) => handleSubmit(event)}>
         {formPage === 1 ? (
@@ -180,7 +180,9 @@ const Explore = () => {
               <button type="submit" className="btn" disabled={isLoading}>
                 Submit 2/2
               </button>
-              <p onClick={() => setFormPage(1)} className="go-back">Go Back</p>
+              <p onClick={() => setFormPage(1)} className="go-back">
+                Go Back
+              </p>
             </div>
           </>
         )}

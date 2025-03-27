@@ -13,7 +13,8 @@ import {
   StartTest,
   TakeTest,
   ProtectedParticipantRoute,
-  CheckResults
+  CheckResults,
+  Policies
 } from "./pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Submission from "./pages/dashboard/Submission";
@@ -24,6 +25,7 @@ function App() {
       <Routes>
         <Route path="/landing" element={<Landing />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/policies" element={<Policies />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/"

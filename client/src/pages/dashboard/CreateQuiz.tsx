@@ -21,9 +21,9 @@ const CreateQuiz = () => {
               Quick Quiz
             </h4>
             <p className="create-quiz-text-subtitle">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim ve
+              Generate quizzes instantly with a vast collection of pre-made
+              questions. Customize tests effortlessly and assess your students
+              with ease.
             </p>
             <button
               className="btn create-quiz-btn quick-quiz-btn"
@@ -46,9 +46,9 @@ const CreateQuiz = () => {
               Moderated Quiz
             </h4>
             <p className="create-quiz-text-subtitle">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim ve
+              Explore our tools to create structured quizzes one question at a
+              time. Customize each question to fit your needs and build a
+              tailored assessment effortlessly.
             </p>
             <button
               className="btn create-quiz-btn moderated-quiz-btn"

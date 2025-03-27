@@ -49,7 +49,7 @@ export interface ContextType extends InitialState {
   login: (reqObj: registerArgs) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   resetPassword: (reqObj: resetPasswordArgs) => Promise<void>;
-  validateInput: (arg?: string) => void;
+  validateInput: (arg?: string, type?: "danger" | "success") => void;
   createQuiz: (quizTitle, quizCode) => Promise<boolean>;
   getAllQuiz: (reqObj: GetAllQuizArgs) => Promise<void>;
   addParticipant: (reqObj: {
@@ -79,7 +79,7 @@ export interface ContextType extends InitialState {
     publishQuizDetails: PublishQuizDetails
   ) => Promise<boolean>;
   getTestBegin: (quizCode: string) => Promise<void>;
-  resetGetTestBegin: () =>  void
+  resetGetTestBegin: () => void;
   authorizeParticipant: (reqObj: {
     quizId: object;
     privacy: boolean;

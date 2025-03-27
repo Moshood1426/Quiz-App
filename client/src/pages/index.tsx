@@ -14,12 +14,14 @@ import StartTest from "./StartTest";
 import TakeTest from "./TakeTest";
 import ProtectedParticipantRoute from "./ProtectedParticipantRoute";
 import CheckResults from "./CheckResults";
+import Policies from "./Policies";
 
 export {
   Landing,
   Register,
   ProtectedRoute,
   ProtectedParticipantRoute,
+  Policies,
   SharedLayout,
   ResetPassword,
   Submission,

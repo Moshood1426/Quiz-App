@@ -5,11 +5,13 @@ const QuizActivities = () => {
   return (
     <Wrapper>
       <div className="side-bar-item">
-        <h5 className="side-bar-title">What is Quizzal</h5>
+        <h5 className="side-bar-title">What is Quizzal ?</h5>
         <p className="side-bar-subtitle">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim ve
+          Quizzal is a powerful quiz creation tool that helps educators design
+          customized assessments with ease. Whether generating questions from
+          our extensive database or adding your own, Quizzal simplifies the
+          process, allowing you to create structured, engaging quizzes in
+          minutes.
         </p>
       </div>
 

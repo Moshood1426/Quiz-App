@@ -12,9 +12,9 @@ const TakeTests = () => {
       <div className="take-test-container">
         <h2>Take Tests From Anywhere Around The World</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim ve
+          Have you received a test invitation in your email or do you have an
+          active quiz code? Click below to seamlessly take your test by
+          inputting the quiz code
         </p>
         <button className="btn" onClick={() => navigate("/start-test")}>
           Start Your Test
