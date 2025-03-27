@@ -59,7 +59,6 @@ app.use(errorHandlerMiddleware);
 
 //setting up DB and invoking route
 const connectDB = require("./db/connectDB");
-const { default: Credentials } = require("next-auth/providers/credentials");
 const port = process.env.PORT || 80;
 
 const start = async () => {
